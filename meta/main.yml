@@ -1,0 +1,10 @@
+---
+dependencies:
+- role: omero-runtime
+- role: nginx
+  when: omero_web_install
+- role: omero-web-runtime
+  when: omero_web_install
+- role: omero-omego
+- role: postgresql
+  postgresql_install_server: omero_db_create
