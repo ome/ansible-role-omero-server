@@ -1,9 +1,20 @@
----
-dependencies:
-- role: omero-runtime
-- role: nginx
-  when: omero_web_install
-- role: omero-web-runtime
-  when: omero_web_install
-- role: postgresql
-  postgresql_install_server: omero_db_create
+galaxy_info:
+  author: ome-devel@lists.openmicroscopy.org.uk
+  description: Install and configure OMERO.server, OMERO.web and optionally PostgreSQL
+  company: Open Microscopy Environment
+  license: BSD
+  min_ansible_version: 2.1
+  platforms:
+  - name: EL
+    versions:
+    - 7
+  galaxy_tags: []
+
+  dependencies:
+  - role: omero-runtime
+  - role: nginx
+    when: omero_web_install
+  - role: omero-web-runtime
+    when: omero_web_install
+  - role: postgresql
+    postgresql_install_server: omero_db_create
