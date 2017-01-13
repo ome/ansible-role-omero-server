@@ -20,6 +20,9 @@ RestartSec=10
 TimeoutSec=300
 ExecStart={{ omero_serverdir }}/{{ omero_server_symlink }}/bin/omero admin start
 ExecStop={{ omero_serverdir }}/{{ omero_server_symlink }}/bin/omero admin stop
+{% if omero_server_limit_nofile %}
+LimitNOFILE={{ omero_server_limit_nofile }}
+{% endif %}
 
 [Install]
 WantedBy=multi-user.target
