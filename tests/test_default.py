@@ -13,17 +13,20 @@ def test_services_running_and_enabled(Service, name):
     assert service.is_enabled
 
 
-def test_omero_version(Command, TestinfraBackend):
+def test_omero_version(Command, Sudo, TestinfraBackend):
     host = TestinfraBackend.get_hostname()
-    ver = Command.check_output("/home/omero/OMERO.server/bin/omero version")
+    with Sudo('omero'):
+        ver = Command.check_output(
+            "/home/omero/OMERO.server/bin/omero version")
     if host == 'omero-server-ice35':
         assert re.match('\d+\.\d+\.\d+-ice35-', ver)
     else:
         assert re.match('\d+\.\d+\.\d+-ice36-', ver)
 
 
-def test_omero_root_login(Command):
-    Command.run_expect(
-        [0],
-        "/home/omero/OMERO.server/bin/omero login -C "
-        "-s localhost -u root -w omero")
+def test_omero_root_login(Command, Sudo):
+    with Sudo('omero'):
+        Command.run_expect(
+            [0],
+            "/home/omero/OMERO.server/bin/omero login -C "
+            "-s localhost -u root -w omero")
