@@ -1,0 +1,20 @@
+---
+- hosts: omero-server-ice35
+  roles:
+    - role: ansible-role-omero-server
+      ice_version: "3.5"
+      postgresql_users_databases:
+      - user: omero
+        password: omero
+        databases: [omero]
+      omero_systemd_setup: True
+
+- hosts: omero-server-ice36
+  roles:
+    - role: ansible-role-omero-server
+      ice_version: "3.6"
+      postgresql_users_databases:
+      - user: omero
+        password: omero
+        databases: [omero]
+      omero_systemd_setup: True

@@ -1,0 +1,31 @@
+---
+dependency:
+  name: galaxy
+  requirements_file: tests/requirements.yml
+driver:
+  name: vagrant
+vagrant:
+  platforms:
+    - name: centos7
+      box: centos/7
+  providers:
+    - name: virtualbox
+      type: virtualbox
+      options:
+        memory: 2048
+        cpus: 2
+  instances:
+    - name: omero-server-ice35
+    - name: omero-server-ice36
+verifier:
+  name: testinfra
+
+# Skip the idempotence test
+molecule:
+  test:
+    sequence:
+      #- destroy
+      - create
+      - converge
+      - verify
+      #- destroy
