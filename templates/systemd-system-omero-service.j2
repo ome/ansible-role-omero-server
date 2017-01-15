@@ -5,7 +5,9 @@ Description=OMERO.server
 # PostgreSQL may be running on a different server so don't set Requires
 #Requires=postgresql-9.4.service
 After=postgresql-9.4.service
+{% if omero_server_systemd_require_network %}
 Requires=network.service
+{% endif %}
 After=network.service
 
 [Service]
