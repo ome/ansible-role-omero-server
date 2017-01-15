@@ -17,6 +17,19 @@ vagrant:
   instances:
     - name: omero-server-ice35
     - name: omero-server-ice36
+
+docker:
+  # TODO: use a plain systemd image
+  containers:
+  - name: omero-server-ice35
+    image: openmicroscopy/omero-ssh-c7
+    image_version: latest
+    privileged: True
+  - name: omero-server-ice36
+    image: openmicroscopy/omero-ssh-c7
+    image_version: latest
+    privileged: True
+
 verifier:
   name: testinfra
 

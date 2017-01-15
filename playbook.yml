@@ -8,6 +8,7 @@
         password: omero
         databases: [omero]
       omero_systemd_setup: True
+      omero_server_systemd_require_network: False
 
 - hosts: omero-server-ice36
   roles:
@@ -18,3 +19,4 @@
         password: omero
         databases: [omero]
       omero_systemd_setup: True
+      omero_server_systemd_require_network: False
