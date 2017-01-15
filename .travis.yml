@@ -6,7 +6,7 @@ services:
 
 install:
   - pip install 'ansible<2.2'
-  - pip install molecule
+  - pip install docker-py molecule
 
 script:
   - molecule test
