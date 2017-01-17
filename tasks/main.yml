@@ -46,7 +46,8 @@
 # OMERO.server
 
 # TODO: omero_reinstall_on_error
-- fail:
+- name: omero | check if unsupported parameter passed
+  fail:
     msg: "omero_reinstall_on_error not implemented"
   when: omero_reinstall_on_error | default(False)
 
@@ -62,7 +63,8 @@
   # Set a custom error message
   ignore_errors: yes
 
-- fail:
+- name: omero | check omero version could be obtained
+  fail:
     msg: "OMERO.server found but unable to get version, you may have a corrupt installation"
   when: omero_server_symlink_st.stat.exists and omero_server_version is undefined
 

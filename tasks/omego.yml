@@ -11,7 +11,7 @@
   become: yes
   pip:
     name: omego
-    state: latest
+    state: present
     virtualenv: "{{ omero_omego_venv }}"
     virtualenv_site_packages: yes
 

@@ -1,0 +1,52 @@
+---
+dependency:
+  name: galaxy
+  requirements_file: tests/requirements.yml
+
+driver:
+  name: docker
+
+vagrant:
+  platforms:
+    - name: centos7
+      box: centos/7
+  providers:
+    - name: virtualbox
+      type: virtualbox
+      options:
+        memory: 2048
+        cpus: 2
+  instances:
+    - name: omero-server-ice35
+    - name: omero-server-ice36
+
+docker:
+  containers:
+  - name: omero-server-ice35
+    image: centos/systemd
+    image_version: latest
+    privileged: True
+  - name: omero-server-ice36
+    image: centos/systemd
+    image_version: latest
+    privileged: True
+
+ansible:
+  host_vars:
+    omero-server-ice35:
+    - ice_version: "3.5"
+    omero-server-ice36:
+    - ice_version: "3.6"
+
+verifier:
+  name: testinfra
+
+# If the idempotence test fails (typically due to pip incorrectly showing
+# changes) you can override the sequence to skip the idempotence test
+# molecule:
+#   test:
+#     sequence:
+#       - create
+#       - converge
+#       - verify
+#       - destroy

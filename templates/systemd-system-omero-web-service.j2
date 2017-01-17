@@ -2,7 +2,9 @@
 Description=OMERO.web
 # Not mandatory, Nginx may be running on a different server
 #Requires=nginx.service
+{% if omero_server_systemd_require_network %}
 Requires=network.service
+{% endif %}
 After=network.service
 
 # TODO: Run web in foreground mode so that it can be monitored by systemd
