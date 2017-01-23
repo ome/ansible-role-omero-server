@@ -30,3 +30,19 @@ def test_omero_root_login(Command, Sudo):
             [0],
             "/home/omero/OMERO.server/bin/omero login -C "
             "-s localhost -u root -w omero")
+
+
+def test_omero_datadir(File):
+    d = File('/OMERO')
+    assert d.is_directory
+    assert d.user == 'omero'
+    assert d.group == 'root'
+    assert d.mode == 0o755
+
+
+def test_omero_managedrepo(File):
+    d = File('/OMERO/ManagedRepository')
+    assert d.is_directory
+    assert d.user == 'omero'
+    assert d.group == 'importer'
+    assert d.mode == 0o2775

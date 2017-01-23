@@ -16,31 +16,7 @@
     path: "{{ omero_serverdir }}/{{ omero_server_symlink }}"
   register: omero_server_symlink_st
 
-# OMERO data directory: If it already exists assume the permissions are
-# correct, don't touch anything
-
-- name: Check omero data directory
-  become: yes
-  stat:
-    path: "{{ omero_datadir }}"
-  register: stdd
-
-- name: omero | create omero data directory
-  become: yes
-  file:
-    owner: "{{ omero_system_user }}"
-    path: "{{ omero_datadir }}"
-    state: directory
-  when: omero_datadir_create and not stdd.stat.exists
-
-- name: omero | override omero data owner
-  become: yes
-  file:
-    owner: "{{ omero_system_user }}"
-    path: "{{ omero_datadir }}"
-    recurse: yes
-    state: directory
-  when: omero_datadir_chown
+- include: omero-datadir.yml
 
 
 # OMERO.server

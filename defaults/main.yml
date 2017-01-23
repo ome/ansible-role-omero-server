@@ -17,6 +17,9 @@ omero_reinstall_on_error: False
 # OMERO system user
 omero_system_user: omero
 
+# system group for the ManagedRepository
+omero_system_managedrepo_group: omero
+
 # OMERO system user ID (If not defined one is chosen automatically)
 #omero_system_uid:
 
@@ -42,12 +45,21 @@ omero_rootpassword: omero
 # OMERO data directory
 omero_datadir: /OMERO
 
+# OMERO ManagedRepository directory
+omero_datadir_managedrepo: "{{ omero_datadir }}/ManagedRepository"
+
 # Create the OMERO data directory, set to False if storage is externally managed
 omero_datadir_create: True
 
 # Recursively set the owner on the OMERO data directory, use if the directory
 # has been copied with an incorrect owner
 omero_datadir_chown: False
+
+# Permissions for OMERO data directories apart from ManagedRepository
+omero_datadir_mode: "u=rwX,g=rX,o=rX"
+
+# Permissions for OMERO ManagedRepository
+omero_datadir_managedrepo_mode: "u=rwX,g=srwX,o=rX"
 
 # Path of the omego virtualenv
 omero_omego_venv: "{{ omero_basedir }}/omego"

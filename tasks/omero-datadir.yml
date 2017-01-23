@@ -1,0 +1,47 @@
+---
+# OMERO data directory: If the directories already exist assume the
+# permissions are correct and don't touch anything unless omero_datadir_chown
+# is True
+
+- name: Check omero data directories
+  become: yes
+  stat:
+    path: "{{ item }}"
+  register: omero_datadir_st
+  with_items:
+  - "{{ omero_datadir }}"
+  - "{{ omero_datadir }}/BioFormatsCache"
+  - "{{ omero_datadir }}/Files"
+  - "{{ omero_datadir }}/Thumbnails"
+  - "{{ omero_datadir }}/DropBox"
+  - "{{ omero_datadir }}/FullText"
+  - "{{ omero_datadir }}/Pixels"
+
+- name: Check omero ManagedRepository
+  become: yes
+  stat:
+    path: "{{ omero_datadir_managedrepo }}"
+  register: omero_managedrepo_st
+
+- name: omero | create omero data directories
+  become: yes
+  file:
+    owner: "{{ omero_system_user }}"
+    mode: "{{ omero_datadir_mode }}"
+    path: "{{ item.item }}"
+    recurse: "{{ omero_datadir_chown }}"
+    state: directory
+  with_items:
+  - "{{ omero_datadir_st.results }}"
+  when: "{{ (omero_datadir_create and not item.stat.exists) or omero_datadir_chown }}"
+
+- name: omero | create omero ManagedRepository
+  become: yes
+  file:
+    owner: "{{ omero_system_user }}"
+    group: "{{ omero_system_managedrepo_group }}"
+    mode: "{{ omero_datadir_managedrepo_mode }}"
+    path: "{{ omero_datadir_managedrepo }}"
+    recurse: "{{ omero_datadir_chown }}"
+    state: directory
+  when: "{{ (omero_datadir_create and not omero_managedrepo_st.stat.exists) or omero_datadir_chown }}"

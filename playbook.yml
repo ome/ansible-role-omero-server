@@ -8,3 +8,4 @@
         databases: [omero]
       omero_systemd_setup: True
       omero_server_systemd_require_network: False
+      omero_system_managedrepo_group: importer
