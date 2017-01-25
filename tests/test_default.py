@@ -15,7 +15,7 @@ def test_services_running_and_enabled(Service, name):
 
 def test_omero_version(Command, Sudo, TestinfraBackend):
     host = TestinfraBackend.get_hostname()
-    with Sudo('omero'):
+    with Sudo('data-importer'):
         ver = Command.check_output(
             "/home/omero/OMERO.server/bin/omero version")
     if host == 'omero-server-ice35':
@@ -25,11 +25,37 @@ def test_omero_version(Command, Sudo, TestinfraBackend):
 
 
 def test_omero_root_login(Command, Sudo):
-    with Sudo('omero'):
+    with Sudo('data-importer'):
         Command.run_expect(
             [0],
             "/home/omero/OMERO.server/bin/omero login -C "
             "-s localhost -u root -w omero")
+
+
+def test_inplace_import(Command, File, Sudo):
+    omero = '/home/omero/OMERO.server/bin/omero'
+
+    with Sudo('data-importer'):
+        Command.check_output('%s login -s localhost -u root -w omero', omero)
+        outimport = Command.check_output(
+            '%s import -- --transfer=ln_s /data/import/test.fake', omero)
+
+    imageid = int(outimport)
+    assert imageid
+
+    query = ('SELECT concat(ofile.path, ofile.name) '
+             'FROM FilesetEntry AS fse '
+             'JOIN fse.fileset AS fileset '
+             'JOIN fse.originalFile AS ofile '
+             'JOIN fileset.images AS image '
+             'WHERE image.id = %d' % imageid)
+    with Sudo('data-importer'):
+        outhql = Command.check_output(
+            '%s hql -q --style plain %s', omero, query)
+
+    f = File('/OMERO/ManagedRepository/%s' % outhql.split(',', 1)[1])
+    assert f.is_symlink
+    assert f.linked_to == '/data/import/test.fake'
 
 
 def test_omero_datadir(File):
