@@ -17,6 +17,9 @@ omero_reinstall_on_error: False
 # OMERO system user
 omero_system_user: omero
 
+# OMERO system user umask
+omero_system_umask: "0002"
+
 # system group for the ManagedRepository
 omero_system_managedrepo_group: omero
 
