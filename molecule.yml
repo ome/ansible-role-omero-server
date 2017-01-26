@@ -18,7 +18,11 @@ vagrant:
         cpus: 2
   instances:
     - name: omero-server-ice35
+      ansible_groups:
+      - vagrant-hosts
     - name: omero-server-ice36
+      ansible_groups:
+      - vagrant-hosts
 
 docker:
   containers:

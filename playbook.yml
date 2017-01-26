@@ -29,3 +29,15 @@
     copy:
       content: ''
       dest: /data/import/test.fake
+
+# testinfra Sudo doesn't use the `-i` flag, so the working directory needs
+# to be accessible
+- hosts: vagrant-hosts
+  tasks:
+  - name: make vagrant home accessible
+    file:
+      owner: vagrant
+      group: vagrant
+      mode: "0711"
+      path: /home/vagrant
+      state: directory
