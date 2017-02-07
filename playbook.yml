@@ -1,5 +1,18 @@
 ---
 - hosts: all
+  tasks:
+
+  - name: omero | print ansible version
+    debug:
+        msg: "Ansible version: {{ ansible_version }}"
+    always_run: True
+
+  - name: omero | venv is broken on ansible 2.2
+    fail: msg="This playbook does not work on Ansible 2.2 or greater."
+    when: ansible_version.major ==  2 and ansible_version.minor >= 2
+    always_run: True
+
+- hosts: all
   roles:
     - role: ansible-role-omero-server
       postgresql_users_databases:
