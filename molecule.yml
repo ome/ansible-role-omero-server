@@ -38,9 +38,9 @@ docker:
 ansible:
   host_vars:
     omero-server-ice35:
-    - ice_version: "3.5"
+      ice_version: "3.5"
     omero-server-ice36:
-    - ice_version: "3.6"
+      ice_version: "3.6"
 
 verifier:
   name: testinfra
