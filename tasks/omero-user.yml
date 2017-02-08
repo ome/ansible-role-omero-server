@@ -12,6 +12,12 @@
     shell: /bin/bash
     uid: "{{ omero_system_uid | default(omit) }}"
 
+- name: omero | create managedrepo group
+  become: yes
+  group:
+    name: "{{ omero_system_managedrepo_group }}"
+    state: present
+
 # Explicitly include omero_basedir so that it'll be world-accessible
 - name: omero | create omero directories
   become: yes
