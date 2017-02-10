@@ -36,6 +36,7 @@ docker:
     privileged: True
 
 ansible:
+  playbook: tests/playbook.yml
   host_vars:
     omero-server-ice35:
       ice_version: "3.5"
