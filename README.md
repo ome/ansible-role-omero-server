@@ -42,7 +42,7 @@ Example Playbooks
     # Install the latest release, including PostgreSQL on the same server
     - hosts: localhost
       roles:
-      - role: omero-server
+      - role: openmicroscopy.omero-server
         postgresql_users_databases:
         - user: omero
           password: omero
@@ -51,7 +51,7 @@ Example Playbooks
     # Install or upgrade to a particular version, use an external database
     - hosts: localhost
       roles:
-      - omero-server
+      - openmicroscopy.omero-server
         omero_upgrade: True
         omero_release: 5.2.2
         omero_dbhost: postgres.example.org
