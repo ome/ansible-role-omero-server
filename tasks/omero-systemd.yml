@@ -12,18 +12,6 @@
   - reload systemd
   - restart omero
 
-- name: omero | web systemd service
-  become: yes
-  template:
-    dest: /etc/systemd/system/omero-web.service
-    force: yes
-    src: systemd-system-omero-web-service.j2
-  register: omero_systemd_web
-  when: omero_web_install
-  notify:
-  - reload systemd
-  - restart omero-web
-
 # Flush handlers to ensure systemd is reloaded
 - name: omero | flush systemd handlers
   meta: flush_handlers
@@ -34,19 +22,3 @@
     enabled: yes
     name: omero.service
     state: started
-
-- name: omero | enable and start web systemd
-  become: yes
-  service:
-    enabled: yes
-    name: omero-web.service
-    state: started
-  when: omero_web_install
-
-- name: omero | enable and start nginx service
-  become: yes
-  service:
-    enabled: yes
-    name: nginx.service
-    state: started
-  when: omero_web_install

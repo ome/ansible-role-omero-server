@@ -77,13 +77,6 @@ omero_server_config: {}
 # `omero load ...` before starting the server
 omero_prestart_file:
 
-# Setup OMERO.web
-omero_web_install: True
-
-# Configure SELinux
-# EXPERIMENTAL
-omero_selinux_setup: False
-
 # Setup systemd services
 # EXPERIMENTAL, may break your system
 omero_systemd_setup: False

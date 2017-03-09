@@ -165,8 +165,5 @@
     chdir: "{{ omero_serverdir }}"
   when: omero_upgrade and omero_update_needed
 
-- include: omero-web.yml
-  when: omero_web_install
-
 - include: omero-systemd.yml
   when: omero_systemd_setup
