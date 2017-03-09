@@ -1,16 +1,4 @@
 ---
-- hosts: all
-  tasks:
-
-  - name: omero | print ansible version
-    debug:
-        msg: "Ansible version: {{ ansible_version }}"
-    always_run: True
-
-  - name: omero | venv is broken on ansible 2.2
-    fail: msg="This playbook does not work on Ansible 2.2 or greater."
-    when: ansible_version.major ==  2 and ansible_version.minor >= 2
-    always_run: True
 
 - hosts: all
   roles:
@@ -19,9 +7,7 @@
       - user: omero
         password: omero
         databases: [omero]
-      omero_systemd_setup: True
-      omero_server_systemd_require_network: False
-      omero_system_managedrepo_group: importer
+      omero_server_system_managedrepo_group: importer
 
 
 # Additional tasks for setting up tests

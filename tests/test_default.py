@@ -1,29 +1,23 @@
 import testinfra.utils.ansible_runner
-import pytest
 import re
 
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     '.molecule/ansible_inventory').get_hosts('all')
 
-OMERO = '/home/omero/OMERO.server/bin/omero'
+OMERO = '/opt/ome/server/OMERO.server/bin/omero'
 OMERO_LOGIN = '-C -s localhost -u root -w omero'
 
 
-@pytest.mark.parametrize("name", ["omero", "omero-web", "nginx"])
-def test_services_running_and_enabled(Service, name):
-    service = Service(name)
+def test_service_running_and_enabled(Service):
+    service = Service('omero-server')
     assert service.is_running
     assert service.is_enabled
 
 
 def test_omero_version(Command, Sudo, TestinfraBackend):
-    host = TestinfraBackend.get_hostname()
     with Sudo('data-importer'):
         ver = Command.check_output("%s version" % OMERO)
-    if host == 'omero-server-ice35':
-        assert re.match('\d+\.\d+\.\d+-ice35-', ver)
-    else:
-        assert re.match('\d+\.\d+\.\d+-ice36-', ver)
+    assert re.match('\d+\.\d+\.\d+-ice36-', ver)
 
 
 def test_omero_root_login(Command, Sudo):
