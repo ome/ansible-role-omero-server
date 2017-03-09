@@ -15,20 +15,18 @@ omero_db_create: True
 omero_reinstall_on_error: False
 
 # OMERO system user
-omero_system_user: omero
+omero_server_system_user: omero
 
 # OMERO system user umask
-omero_system_umask: "0002"
+omero_server_system_umask: "0002"
 
 # system group for the ManagedRepository
-omero_system_managedrepo_group: omero
+omero_server_system_managedrepo_group: omero
 
 # OMERO system user ID (If not defined one is chosen automatically)
 #omero_system_uid:
 
-omero_basedir: /home/omero
-#omero_serverdir: "{{ omero_basedir }}/server"
-omero_serverdir: "{{ omero_basedir }}"
+omero_server_basedir: "{{ ome_common_basedir }}/server"
 omero_server_symlink: OMERO.server
 # WARNING: This will currently always attempt to update the server since the registry check is broken
 omero_release: latest
