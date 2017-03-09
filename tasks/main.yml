@@ -3,13 +3,17 @@
 
 - include: omero-user.yml
 
+- include: omero-datadir.yml
+
+- include: omero-configfiles.yml
+
+
 - name: omero | is server symlink present
   become: yes
   stat:
     path: "{{ omero_serverdir }}/{{ omero_server_symlink }}"
   register: omero_server_symlink_st
 
-- include: omero-datadir.yml
 
 
 # OMERO.server
@@ -30,29 +34,6 @@
   fail:
     msg: "OMERO.server found but unable to get version, you may have a corrupt installation"
   when: omero_server_symlink_st.stat.exists and omero_server_version is undefined
-
-- name: omero | create common configuration file
-  become: yes
-  template:
-    dest: "{{ omero_basedir }}/config/omero-base.config"
-    force: yes
-    src: omero-base.config.j2
-
-- name: omero | empty additional configuration file
-  become: yes
-  copy:
-    content: ""
-    dest: "{{ omero_basedir }}/config/omero-additional.config"
-    force: yes
-  when: omero_prestart_file | default(None) == None
-
-- name: omero | copy additional configuration file
-  become: yes
-  template:
-    dest: "{{ omero_basedir }}/config/omero-additional.config"
-    force: yes
-    src: "{{ omero_prestart_file }}"
-  when: omero_prestart_file | default(None) != None
 
 - name: omero | set omego options
   set_fact:

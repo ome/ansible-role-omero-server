@@ -67,7 +67,8 @@ omero_server_config: {}
 
 # Optional path to an additional template-file to be passed to
 # `omero load ...` before starting the server
-omero_prestart_file:
+# Default is an empty file
+omero_server_prestart_file: omero-additional-config.j2
 
 # Setup systemd services
 # EXPERIMENTAL, may break your system

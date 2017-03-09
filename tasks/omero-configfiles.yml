@@ -1,0 +1,16 @@
+---
+# OMERO template configuration files
+
+- name: omero server | base configuration file
+  become: yes
+  template:
+    dest: "{{ omero_server_basedir }}/config/omero-base.config"
+    force: yes
+    src: omero-base-config.j2
+
+- name: omero server | additional configuration file
+  become: yes
+  template:
+    dest: "{{ omero_server_basedir }}/config/omero-additional.config"
+    force: yes
+    src: "{{ omero_server_prestart_file }}"
