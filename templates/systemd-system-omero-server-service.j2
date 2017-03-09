@@ -11,16 +11,16 @@ Requires=network.service
 After=network.service
 
 [Service]
-User={{ omero_system_user }}
-UMask={{ omero_system_umask }}
+User={{ omero_server_system_user }}
+UMask={{ omero_server_system_umask }}
 Type=forking
-PIDFile={{ omero_serverdir }}/{{ omero_server_symlink }}/var/master/master.pid
-Restart={{ omero_systemd_restart }}
+PIDFile={{ omero_server_basedir }}/{{ omero_server_symlink }}/var/master/master.pid
+Restart={{ omero_server_systemd_restart }}
 RestartSec=10
 # Allow up to 5 min for start/stop
 TimeoutSec=300
-ExecStart={{ omero_serverdir }}/{{ omero_server_symlink }}/bin/omero admin start
-ExecStop={{ omero_serverdir }}/{{ omero_server_symlink }}/bin/omero admin stop
+ExecStart={{ omero_server_basedir }}/{{ omero_server_symlink }}/bin/omero admin start
+ExecStop={{ omero_server_basedir }}/{{ omero_server_symlink }}/bin/omero admin stop
 {% if omero_server_limit_nofile %}
 LimitNOFILE={{ omero_server_limit_nofile }}
 {% endif %}

@@ -2,11 +2,11 @@
 # defaults for omero-server
 
 # If True and server is already installed then upgrade to the version in
-# omero_release, otherwise don't upgrade an existing server.
+# omero_server_release, otherwise don't upgrade an existing server.
 omero_server_upgrade: False
 
 # If true create the postgres database if it doesn't already exist
-omero_db_create: True
+omero_server_db_create: True
 
 # OMERO system user
 omero_server_system_user: omero

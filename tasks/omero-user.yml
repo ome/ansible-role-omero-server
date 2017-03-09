@@ -9,7 +9,7 @@
     createhome: no
     state: present
     system: yes
-    uid: "{{ omero_system_uid | default(omit) }}"
+    uid: "{{ omero_server_system_uid | default(omit) }}"
 
 # TODO: Ideally everything should be read-only apart from the var directory
 - name: omero server | create omero directories
