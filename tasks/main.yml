@@ -10,4 +10,4 @@
 - include: omero-install.yml
 
 - include: omero-systemd.yml
-  when: omero_systemd_setup
+  when: omero_server_systemd_setup

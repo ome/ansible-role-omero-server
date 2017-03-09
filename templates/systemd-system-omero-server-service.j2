@@ -15,7 +15,7 @@ User={{ omero_server_system_user }}
 UMask={{ omero_server_system_umask }}
 Type=forking
 PIDFile={{ omero_server_basedir }}/{{ omero_server_symlink }}/var/master/master.pid
-Restart={{ omero_server_systemd_restart }}
+Restart=no
 RestartSec=10
 # Allow up to 5 min for start/stop
 TimeoutSec=300

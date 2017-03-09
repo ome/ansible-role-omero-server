@@ -71,13 +71,7 @@ omero_server_config: {}
 omero_server_prestart_file: omero-additional-config.j2
 
 # Setup systemd services
-# EXPERIMENTAL, may break your system
 omero_server_systemd_setup: True
-
-# Restart policy for systemd services
-# EXPERIMENTAL, may break your system
-# Quoted to prevent autoconversion to bool
-omero_systemd_restart: "no"
 
 # Change the systemd limit for number of open files (default ignore)
 omero_server_limit_nofile:
