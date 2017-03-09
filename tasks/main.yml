@@ -1,14 +1,7 @@
 ---
-# tasks file for omero-server
+# tasks for omero-server
 
-- include: ansible-prerequisites.yml
-
-# Include this first so that the omero system user gets created with the
-# correct home directory skeleton since if the home directory already exists
-# it won't be modified
 - include: omero-user.yml
-
-- include: omego.yml
 
 - name: omero | is server symlink present
   become: yes
@@ -20,12 +13,6 @@
 
 
 # OMERO.server
-
-# TODO: omero_reinstall_on_error
-- name: omero | check if unsupported parameter passed
-  fail:
-    msg: "omero_reinstall_on_error not implemented"
-  when: omero_reinstall_on_error | default(False)
 
 # This should be safe to always run including in check-mode
 - name: omero | get server version

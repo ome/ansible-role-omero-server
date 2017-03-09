@@ -1,5 +1,5 @@
 ---
-# defaults file for omero-server
+# defaults for omero-server
 
 # If True and server is already installed then upgrade to the version in
 # omero_release, otherwise don't upgrade an existing server.
@@ -7,12 +7,6 @@ omero_upgrade: False
 
 # If true create the postgres database if it doesn't already exist
 omero_db_create: True
-
-# If all the OMERO configuration is handled using ansible it should be
-# possible to delete the entire server and re-install if the current
-# installation appears to be corrupt (the data dir will not be touched)
-# EXPERIMENTAL, may break your system
-omero_reinstall_on_error: False
 
 # OMERO system user
 omero_server_system_user: omero
