@@ -46,23 +46,20 @@ omero_dbpassword: omero
 omero_rootpassword: omero
 
 # OMERO data directory
-omero_datadir: /OMERO
+omero_server_datadir: /OMERO
 
 # OMERO ManagedRepository directory
-omero_datadir_managedrepo: "{{ omero_datadir }}/ManagedRepository"
-
-# Create the OMERO data directory, set to False if storage is externally managed
-omero_datadir_create: True
+omero_server_datadir_managedrepo: "{{ omero_server_datadir }}/ManagedRepository"
 
 # Recursively set the owner on the OMERO data directory, use if the directory
 # has been copied with an incorrect owner
-omero_datadir_chown: False
+omero_server_datadir_chown: False
 
 # Permissions for OMERO data directories apart from ManagedRepository
-omero_datadir_mode: "u=rwX,g=rX,o=rX"
+omero_server_datadir_mode: "u=rwX,g=rX,o=rX"
 
 # Permissions for OMERO ManagedRepository
-omero_datadir_managedrepo_mode: "u=rwX,g=srwX,o=rX"
+omero_server_datadir_managedrepo_mode: "u=rwX,g=srwX,o=rX"
 
 # Path of the omego virtualenv
 omero_omego_venv: "{{ omero_basedir }}/omego"
