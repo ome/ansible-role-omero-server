@@ -17,6 +17,7 @@
 - `omero_reinstall_on_error`: Never implemented
 - `omero_selinux_setup`: Only used by the OMERO.web tasks
 - `omero_serverdir`: Same as `omero_server_basedir`
+- `omero_systemd_restart`: The systemd restart policy is now always `no`
 - `omero_web_install`: OMERO.web is no longer managed by this role
 
 ## Renamed variables
