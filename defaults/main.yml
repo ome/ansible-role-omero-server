@@ -3,7 +3,7 @@
 
 # If True and server is already installed then upgrade to the version in
 # omero_release, otherwise don't upgrade an existing server.
-omero_upgrade: False
+omero_server_upgrade: False
 
 # If true create the postgres database if it doesn't already exist
 omero_db_create: True
@@ -18,24 +18,24 @@ omero_server_system_umask: "0002"
 omero_server_system_managedrepo_group: omero
 
 # OMERO system user ID (If not defined one is chosen automatically)
-#omero_system_uid:
+#omero_server_system_uid:
 
 omero_server_basedir: "{{ ome_common_basedir }}/server"
 omero_server_symlink: OMERO.server
 # WARNING: This will currently always attempt to update the server since the registry check is broken
-omero_release: latest
+omero_server_release: latest
 
 # If non-empty dump the OMERO database to this directory before upgrading
-omero_database_backupdir: "{{ omero_basedir }}/backups"
+omero_server_database_backupdir: "{{ omero_server_basedir }}/backups"
 
 # OMERO database connection parameters
-omero_dbhost: localhost
-omero_dbuser: omero
-omero_dbname: omero
-omero_dbpassword: omero
+omero_server_dbhost: localhost
+omero_server_dbuser: omero
+omero_server_dbname: omero
+omero_server_dbpassword: omero
 
 # OMERO root password
-omero_rootpassword: omero
+omero_server_rootpassword: omero
 
 # OMERO data directory
 omero_server_datadir: /OMERO
@@ -53,14 +53,14 @@ omero_server_datadir_mode: "u=rwX,g=rX,o=rX"
 # Permissions for OMERO ManagedRepository
 omero_server_datadir_managedrepo_mode: "u=rwX,g=srwX,o=rX"
 
-# Path of the omego virtualenv
-omero_omego_venv: "{{ omero_basedir }}/omego"
+# Path of omego
+omero_server_omego: "{{ ome_common_basedir }}/omego/bin/omego"
 
 # Control verbosity of omego
-omero_omego_verbosity: "-qq"
+omero_server_omego_verbosity: "-qq"
 
 # Additional omego aguments passed to upgrade or install
-omero_omego_additional_args: ""
+omero_server_omego_additional_args: ""
 
 # Dictionary of additional OMERO configuration options
 omero_server_config: {}
@@ -72,7 +72,7 @@ omero_server_prestart_file: omero-additional-config.j2
 
 # Setup systemd services
 # EXPERIMENTAL, may break your system
-omero_systemd_setup: False
+omero_server_systemd_setup: True
 
 # Restart policy for systemd services
 # EXPERIMENTAL, may break your system
@@ -84,3 +84,24 @@ omero_server_limit_nofile:
 
 # Should omero systemd services require a network?
 omero_server_systemd_require_network: True
+
+
+######################################################################
+# Expert users only!
+######################################################################
+
+omero_server_omego_options: >
+  --release {{ omero_server_release }}
+  --sym {{ omero_server_symlink }}
+  --prestartfile {{ omero_server_basedir }}/config/omero-base.config
+  --prestartfile {{ omero_server_basedir }}/config/omero-additional.config
+  --ice {{ ice_version }}
+  --no-start
+  {{ omero_server_omego_verbosity }}
+  {{ omero_server_omego_additional_args }}
+
+omero_server_omego_db_options: >
+  --dbhost {{ omero_server_dbhost | quote }}
+  --dbuser {{ omero_server_dbuser | quote }}
+  --dbname {{ omero_server_dbname | quote }}
+  --dbpass {{ omero_server_dbpassword | quote  }}
