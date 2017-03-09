@@ -20,7 +20,7 @@ omero_server_system_managedrepo_group: omero
 # OMERO system user ID (If not defined one is chosen automatically)
 #omero_server_system_uid:
 
-omero_server_basedir: "{{ ome_common_basedir }}/server"
+omero_server_basedir: "{{ omero_common_basedir }}/server"
 omero_server_symlink: OMERO.server
 # WARNING: This will currently always attempt to update the server since the registry check is broken
 omero_server_release: latest
@@ -54,7 +54,7 @@ omero_server_datadir_mode: "u=rwX,g=rX,o=rX"
 omero_server_datadir_managedrepo_mode: "u=rwX,g=srwX,o=rX"
 
 # Path of omego
-omero_server_omego: "{{ ome_common_basedir }}/omego/bin/omego"
+omero_server_omego: "{{ omero_common_basedir }}/omego/bin/omego"
 
 # Control verbosity of omego
 omero_server_omego_verbosity: "-qq"

@@ -11,8 +11,8 @@ galaxy_info:
   galaxy_tags: []
 
 dependencies:
-- name: openmicroscopy.ome-common
-  src: openmicroscopy.ome-common
+- name: openmicroscopy.omero-common
+  src: openmicroscopy.omero-common
 - name: openmicroscopy.omego
   src: openmicroscopy.omego
 - role: openmicroscopy.basedeps

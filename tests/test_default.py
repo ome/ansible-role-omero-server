@@ -4,7 +4,7 @@ import re
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     '.molecule/ansible_inventory').get_hosts('all')
 
-OMERO = '/opt/ome/server/OMERO.server/bin/omero'
+OMERO = '/opt/omero/server/OMERO.server/bin/omero'
 OMERO_LOGIN = '-C -s localhost -u root -w omero'
 
 

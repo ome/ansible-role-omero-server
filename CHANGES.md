@@ -4,9 +4,9 @@
 - All variables are prefixed with `omero_server`.
 - OMERO.web has been moved to an independent role, it is no longer setup by this role.
 - The OMERO data directory creation logic is simplified.
-- Some configuration variables and handlers have been moved to a dependent role `ome-common`.
+- Some configuration variables and handlers have been moved to a dependent role `omero-common`.
 - `omego` is in a dependent role.
-- The `omero` system user has a minimal home directory.
+- The `omero` system user has a minimal home directory: `/opt/omero/server`.
 - The `omero` systemd service has is renamed to `omero-server`.
 - Systemd is setup by default.
 - If you disable systemd setup OMERO.server is not automatically started.
@@ -59,4 +59,4 @@
 
 
 ## Handlers
-- These have been moved to the `ome-common` role so they can be used in other playbooks and roles without depending on this role.
+- These have been moved to the `omero-common` role so they can be used in other playbooks and roles without depending on this role.
