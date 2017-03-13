@@ -1,6 +1,12 @@
 ---
 # defaults for omero-server
 
+# Ice version
+omero_server_ice_version: "3.6"
+
+# Postgres version
+omero_server_postgres_version: "9.6"
+
 # If True and server is already installed then upgrade to the version in
 # omero_server_release, otherwise don't upgrade an existing server.
 omero_server_upgrade: False
@@ -89,7 +95,7 @@ omero_server_omego_options: >
   --sym {{ omero_server_symlink }}
   --prestartfile {{ omero_server_basedir }}/config/omero-base.config
   --prestartfile {{ omero_server_basedir }}/config/omero-additional.config
-  --ice {{ ice_version }}
+  --ice {{ omero_server_ice_version }}
   --no-start
   {{ omero_server_omego_verbosity }}
   {{ omero_server_omego_additional_args }}
