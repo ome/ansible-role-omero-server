@@ -1,5 +1,4 @@
 import testinfra.utils.ansible_runner
-import re
 
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     '.molecule/ansible_inventory').get_hosts('all')
@@ -12,12 +11,6 @@ def test_service_running_and_enabled(Service):
     service = Service('omero-server')
     assert service.is_running
     assert service.is_enabled
-
-
-def test_omero_version(Command, Sudo, TestinfraBackend):
-    with Sudo('data-importer'):
-        ver = Command.check_output("%s version" % OMERO)
-    assert re.match('\d+\.\d+\.\d+-ice36-', ver)
 
 
 def test_omero_root_login(Command, Sudo):

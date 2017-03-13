@@ -17,13 +17,22 @@ vagrant:
         memory: 2048
         cpus: 2
   instances:
-    - name: omero-server-ice36
+    - name: omero-server-olddep
+      ansible_groups:
+      - vagrant-hosts
+    - name: omero-server-newdep
       ansible_groups:
       - vagrant-hosts
 
 docker:
   containers:
-  - name: omero-server-ice36
+  - name: omero-server-olddep
+    image: centos/systemd
+    image_version: latest
+    privileged: True
+    ansible_groups:
+    - docker-hosts
+  - name: omero-server-newdep
     image: centos/systemd
     image_version: latest
     privileged: True
@@ -32,8 +41,9 @@ docker:
 
 ansible:
   host_vars:
-    omero-server-ice36:
-      ice_version: "3.6"
+    omero-server-olddep:
+      omero_server_ice_version: "3.5"
+      omero_server_postgres_version: "9.4"
 
   group_vars:
     docker-hosts:
