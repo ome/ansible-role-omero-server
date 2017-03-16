@@ -21,5 +21,4 @@ dependencies:
 - role: openmicroscopy.ice
   ice_version: "{{ omero_server_ice_version }}"
 - role: openmicroscopy.postgresql
-  postgresql_version: "{{ omero_server_postgres_version }}"
-  postgresql_install_server: omero_server_db_create
+  postgresql_install_server: False

@@ -10,6 +10,7 @@
 - The `omero` systemd service has is renamed to `omero-server`.
 - Systemd is setup by default.
 - If you disable systemd setup OMERO.server is not automatically started.
+- PostgreSQL server is not installed by this role.
 
 ## Removed variables
 - `omero_datadir_create`: OMERO data directories are always created and the top-level owner/group/permissions reset
