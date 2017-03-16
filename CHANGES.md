@@ -53,6 +53,7 @@
 - `omero_system_managedrepo_group`: `omero_server_system_managedrepo_group`
 
 - `omero_systemd_setup`: `omero_server_systemd_setup`
+- `omero_server_limit_nofile`: `omero_server_systemd_limit_nofile`
 
 - `omero_upgrade`: `omero_server_upgrade`
 

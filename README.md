@@ -29,6 +29,11 @@ If a remote database server is used a user and empty database must already exist
 - `ice_version`: This variable originates from the `ice` role, leave unset for the default.
 
 
+Developmental variables (may break across minor releases):
+- `omero_server_systemd_start`: Automatically enable and start/restart systemd omero-server service, default `True`.
+  This is intended for use in server images where installation may be separate from configuration and execution.
+
+
 Warning
 -------
 

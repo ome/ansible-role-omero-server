@@ -3,8 +3,9 @@ Description=OMERO.server
 # Requires: forces the dependency to be started
 # After: ensures this service starts after the dependency, but only if the dependency is also started
 # PostgreSQL may be running on a different server so don't set Requires
-#Requires=postgresql-9.4.service
 After=postgresql-9.4.service
+After=postgresql-9.5.service
+After=postgresql-9.6.service
 {% if omero_server_systemd_require_network %}
 Requires=network.service
 {% endif %}
@@ -22,7 +23,7 @@ TimeoutSec=300
 ExecStart={{ omero_server_basedir }}/{{ omero_server_symlink }}/bin/omero admin start
 ExecStop={{ omero_server_basedir }}/{{ omero_server_symlink }}/bin/omero admin stop
 {% if omero_server_limit_nofile %}
-LimitNOFILE={{ omero_server_limit_nofile }}
+LimitNOFILE={{ omero_server_systemd_limit_nofile }}
 {% endif %}
 
 [Install]
