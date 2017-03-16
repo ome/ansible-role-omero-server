@@ -12,5 +12,5 @@ config set omero.data.dir {{ omero_server_datadir | quote }}
 
 # Additional custom options
 {% for key in omero_server_config_set %}
-config set {{ key | quote }} {{ omero_server_config_set[key] | to_json | quote }}
+config set {{ key | quote }} -- {{ omero_server_config_set[key] | to_json | quote }}
 {% endfor %}
