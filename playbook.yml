@@ -8,6 +8,21 @@
         password: omero
         databases: [omero]
       omero_server_system_managedrepo_group: importer
+      omero_server_config_set:
+        omero.client.ui.tree.type_order:
+          - screen
+          - plate
+          - project
+          - dataset
+
+  tasks:
+    - name: additional config file
+      copy:
+        content: >
+          config set omero.policy.binary_access -- "-read,-write,-image,-plate"
+        dest: /opt/omero/server/config/molecule-additional-config.omero
+      notify:
+      - restart omero-server
 
 
 # Additional tasks for setting up tests

@@ -1,4 +1,5 @@
 import testinfra.utils.ansible_runner
+import pytest
 
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     '.molecule/ansible_inventory').get_hosts('all')
@@ -16,6 +17,18 @@ def test_service_running_and_enabled(Service):
 def test_omero_root_login(Command, Sudo):
     with Sudo('data-importer'):
         Command.check_output('%s login %s' % (OMERO, OMERO_LOGIN))
+
+
+@pytest.mark.parametrize("key,value", [
+    ('omero.data.dir', '/OMERO'),
+    ('omero.client.ui.tree.type_order',
+     '["screen", "plate", "project", "dataset"]'),
+    ('omero.policy.binary_access', '-read,-write,-image,-plate'),
+])
+def test_omero_server_config(Command, Sudo, key, value):
+    with Sudo('omero'):
+        cfg = Command.check_output("%s config get %s", OMERO, key)
+    assert cfg == value
 
 
 def test_inplace_import(Command, File, Sudo):
