@@ -14,6 +14,7 @@
 ## Removed variables
 - `omero_datadir_create`: OMERO data directories are always created and the top-level owner/group/permissions reset
 - `omero_omego_venv`: Replaced by `omero_server_omego` which is the path to the executable
+- `omero_prestart_file`: Replaced by a config directory
 - `omero_reinstall_on_error`: Never implemented
 - `omero_selinux_setup`: Only used by the OMERO.web tasks
 - `omero_serverdir`: Same as `omero_server_basedir`
@@ -41,8 +42,6 @@
 - `omero_omego_additional_args`: `omero_server_omego_additional_args`
 - `omero_omego_verbosity`: `omero_server_omego_verbosity`
 
-- `omero_prestart_file`: `omero_server_prestart_file`
-
 - `omero_release`: `omero_server_release`
 
 - `omero_rootpassword`: `omero_server_rootpassword`
@@ -54,6 +53,8 @@
 
 - `omero_systemd_setup`: `omero_server_systemd_setup`
 - `omero_server_limit_nofile`: `omero_server_systemd_limit_nofile`
+
+- `omero_server_config`: `omero_server_config_set`
 
 - `omero_upgrade`: `omero_server_upgrade`
 

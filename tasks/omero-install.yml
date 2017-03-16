@@ -40,6 +40,9 @@
   args:
     chdir: "{{ omero_server_basedir }}"
     creates: "{{ omero_server_basedir }}/{{ omero_server_symlink }}"
+  notify:
+  - omero-server rewrite omero-server configuration
+  - omero-server restart omero-server
 
 # TODO: Check whether an upgrade is available since `omego upgrade` always
 # restarts the server. It should be possible to use `omero admin checkupgrade`
@@ -98,3 +101,6 @@
   args:
     chdir: "{{ omero_server_basedir }}"
   when: omero_server_upgrade and omero_server_update_needed
+  notify:
+  - omero-server rewrite omero-server configuration
+  - omero-server restart omero-server

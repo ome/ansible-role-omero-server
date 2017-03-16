@@ -69,12 +69,10 @@ omero_server_omego_verbosity: "-qq"
 omero_server_omego_additional_args: ""
 
 # Dictionary of additional OMERO configuration options
-omero_server_config: {}
+omero_server_config_set: {}
 
-# Optional path to an additional template-file to be passed to
-# `omero load ...` before starting the server
-# Default is an empty file
-omero_server_prestart_file: omero-additional-config.j2
+# If True clear the existing configuration before regenerating
+omero_server_always_reset_config: True
 
 # Setup systemd services
 omero_server_systemd_setup: True
@@ -96,8 +94,6 @@ omero_server_systemd_start: True
 omero_server_omego_options: >
   --release {{ omero_server_release }}
   --sym {{ omero_server_symlink }}
-  --prestartfile {{ omero_server_basedir }}/config/omero-base.config
-  --prestartfile {{ omero_server_basedir }}/config/omero-additional.config
   --ice {{ omero_server_ice_version }}
   --no-start
   {{ omero_server_omego_verbosity }}

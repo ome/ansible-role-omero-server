@@ -1,0 +1,17 @@
+---
+# handlers for omero-server
+# Don't use omero-common handlers because systemd might be disabled.
+# This also avoids problems with ordering of handlers:
+# http://stackoverflow.com/a/35130254
+
+- name: omero-server rewrite omero-server configuration
+  become: yes
+  become_user: "{{ omero_server_system_user }}"
+  command: "{{ omeroserver_basedir }}/config/omero-server-config-update.sh"
+
+- name: omero-server restart omero-server
+  become: yes
+  service:
+    name: omero-server
+    state: restarted
+  when: omero_server_systemd_setup and omero_server_systemd_start
