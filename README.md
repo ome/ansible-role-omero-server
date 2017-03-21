@@ -1,19 +1,14 @@
 OMERO Server
 ============
 
-Installs and configures OMERO.server, OMERO.web and optionally PostgreSQL.
+Installs and configures OMERO.server.
 
 
 Dependencies
 ------------
 
-See `meta/main.yml`
+A PostgreSQL server is required.
 
-
-Requirements
-------------
-
-This role may install additional requirements required by Ansible on the remote node.
 
 
 Role Variables
@@ -21,17 +16,55 @@ Role Variables
 
 All variables are optional, see `defaults/main.yml` for the full list
 
-- `omero_release`: The OMERO release, e.g. `5.2.2`.
+OMERO.server version.
+- `omero_server_release`: The OMERO release, e.g. `5.2.2`.
 This defaults to `latest`, but due to the broken registry a proper upgrade check has not been implemented so this will not have the expected effect (it will always attempt to upgrade even if the current server is the latest).
 You are advised to change this to an actual release version.
-- `postgresql_users_databases`: Used by the `postgres` role, if the PostgreSQL server is on the same node as the OMERO.server define this variable to create the local databases and users.
-If a remote database server is used a user and empty database must already exist.
-- `ice_version`: This variable originates from the `ice` role, leave unset for the default.
+- `omero_server_upgrade`: Upgrade OMERO.server if the current version does not match `omero_server_release`.
+  This is a workaround for the inability to check for the latest version when `omero_server_release: latest`.
+  It may be removed in future.
+- `omero_server_ice_version`: The ice version.
+
+Database connection parameters and initialisation.
+- `omero_server_dbhost`: Database host
+- `omero_server_dbuser`: Database user
+- `omero_server_dbname`: Database name
+- `omero_server_dbpassword`: Database password
+- `omero_server_rootpassword`: OMERO root password, default `omero`.
+  This is only used when initialising a new database.
+
+OMERO.server configuration.
+- `omero_server_config_set`: A dictionary of `config-key: value` which will be used for the initial OMERO.server configuration, default empty.
+  `value` can be a string, or an object (list, dictionary) that will be automatically converted to quoted JSON.
+  Note configuration can also be done pre/post installation using the `server/config` conf.d style directory.
+
+OMERO system user, group, permissions, and data directory.
+You may need to change these for in-place imports.
+- `omero_server_system_user`: OMERO.server system user, default `omero`.
+- `omero_server_system_uid`: OMERO system user ID (default automatic)
+- `omero_server_system_umask`: OMERO system user umask, may need to be changed for in-place imports
+- `omero_server_system_managedrepo_group`: OMERO system group for the `ManagedRepository`
+- `omero_server_datadir_mode`: Permissions for OMERO data directories apart from `ManagedRepository`
+- `omero_server_datadir_managedrepo_mode`: Permissions for OMERO `ManagedRepository`
+- `omero_server_datadir`: OMERO data directory, default `/OMERO`
+- `omero_server_datadir_managedrepo`: OMERO ManagedRepository directory
+
+OMERO.server systemd configuration.
+- `omero_server_systemd_setup`: Create and start the `omero-server` systemd service, default `True`
+- `omero_server_systemd_limit_nofile`: Systemd limit for number of open files (default ignore)
+- `omero_server_systemd_require_network`: Should omero systemd services require a network before starting? Default `True`.
+
+- `omero_server_database_backupdir`: Dump the OMERO database to this directory before upgrading, default empty (disabled)
 
 
-Developmental variables (may break across minor releases):
+Unstable features
+-----------------
+
+Variables :
+- `omero_server_datadir_chown`: Recursively set the owner on the OMERO data directory, use if the directory has been copied with an incorrect owner, default `False`
 - `omero_server_systemd_start`: Automatically enable and start/restart systemd omero-server service, default `True`.
   This is intended for use in server images where installation may be separate from configuration and execution.
+- `omero_server_always_reset_config`: Clear the existing configuration before regenerating, default `True`.
 
 
 Warning
