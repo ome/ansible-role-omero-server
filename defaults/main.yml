@@ -95,6 +95,7 @@ omero_server_omego_options: >
   --sym {{ omero_server_symlink }}
   --ice {{ omero_server_ice_version }}
   --no-start
+  --ignoreconfig
   {{ omero_server_omego_verbosity }}
   {{ omero_server_omego_additional_args }}
 
