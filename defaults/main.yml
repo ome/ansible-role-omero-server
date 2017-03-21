@@ -29,7 +29,7 @@ omero_server_symlink: OMERO.server
 omero_server_release: latest
 
 # If non-empty dump the OMERO database to this directory before upgrading
-omero_server_database_backupdir: "{{ omero_server_basedir }}/backups"
+omero_server_database_backupdir: # "{{ omero_server_basedir }}/backups"
 
 # OMERO database connection parameters
 omero_server_dbhost: localhost
