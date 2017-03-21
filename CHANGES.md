@@ -2,15 +2,17 @@
 
 ## Summary of breaking changes
 - All variables are prefixed with `omero_server`.
-- OMERO.web has been moved to an independent role, it is no longer setup by this role.
+- OMERO.web has been moved to an independent role `omero-web`, it is no longer setup by this role.
 - The OMERO data directory creation logic is simplified.
 - Some configuration variables and handlers have been moved to a dependent role `omero-common`.
 - `omego` is in a dependent role.
 - The `omero` system user has a minimal home directory: `/opt/omero/server`.
-- The `omero` systemd service has is renamed to `omero-server`.
+- The `omero` systemd service is renamed to `omero-server`.
 - Systemd is setup by default.
 - If you disable systemd setup OMERO.server is not automatically started.
-- PostgreSQL server is not installed by this role.
+- PostgreSQL server is not installed by this role (the clients are still installed).
+- The database is not backed-up by default since you probably want the backup to go to a custom path (set `omero_server_database_backupdir`).
+- Manual configuration changes are not copied when the server is upgraded.
 
 ## Removed variables
 - `omero_datadir_create`: OMERO data directories are always created and the top-level owner/group/permissions reset
@@ -62,4 +64,4 @@
 
 
 ## Handlers
-- These have been moved to the `omero-common` role so they can be used in other playbooks and roles without depending on this role.
+- Handlers that are intended to be used outside this role have been moved to the `omero-common` role so they can be used in other playbooks and roles without depending on this role.
