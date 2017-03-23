@@ -13,9 +13,11 @@
 - PostgreSQL server is not installed by this role (the clients are still installed).
 - The database is not backed-up by default since you probably want the backup to go to a custom path (set `omero_server_database_backupdir`).
 - Manual configuration changes are not copied when the server is upgraded.
+- Configuration should be done using a conf.d style directory.
 
 ## Removed variables
 - `omero_datadir_create`: OMERO data directories are always created and the top-level owner/group/permissions reset
+- `omero_db_create`: A PostgreSQL database must be setup independently of this role
 - `omero_omego_venv`: Replaced by `omero_server_omego` which is the path to the executable
 - `omero_prestart_file`: Replaced by a config directory
 - `omero_reinstall_on_error`: Never implemented
@@ -34,8 +36,6 @@
 - `omero_datadir_chown`: `omero_server_datadir_chown`
 - `omero_datadir_managedrepo`: `omero_server_datadir_managedrepo`
 - `omero_datadir_mode`: `omero_server_datadir_mode`
-
-- `omero_db_create`: `omero_server_db_create`
 
 - `omero_dbhost`: `omero_server_dbhost`
 - `omero_dbuser`: `omero_server_dbuser`
