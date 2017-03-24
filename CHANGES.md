@@ -14,6 +14,7 @@
 - The database is not backed-up by default since you probably want the backup to go to a custom path (set `omero_server_database_backupdir`).
 - Manual configuration changes are not copied when the server is upgraded.
 - Configuration should be done using a conf.d style directory.
+- This role requires Ansible 2.2.
 
 ## Removed variables
 - `omero_datadir_create`: OMERO data directories are always created and the top-level owner/group/permissions reset
