@@ -40,7 +40,7 @@ OMERO.server configuration.
 
 OMERO system user, group, permissions, and data directory.
 You may need to change these for in-place imports.
-- `omero_server_system_user`: OMERO.server system user, default `omero`.
+- `omero_server_system_user`: OMERO.server system user, default `omero-server`.
 - `omero_server_system_uid`: OMERO system user ID (default automatic)
 - `omero_server_system_umask`: OMERO system user umask, may need to be changed for in-place imports
 - `omero_server_system_managedrepo_group`: OMERO system group for the `ManagedRepository`

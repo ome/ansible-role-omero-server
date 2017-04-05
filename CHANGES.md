@@ -6,7 +6,7 @@
 - The OMERO data directory creation logic is simplified.
 - Some configuration variables and handlers have been moved to a dependent role `omero-common`.
 - `omego` is in a dependent role.
-- The `omero` system user has a minimal home directory: `/opt/omero/server`.
+- The `omero` system user is renamed `omero-server` and has a minimal home directory `/opt/omero/server`.
 - The `omero` systemd service is renamed to `omero-server`.
 - Systemd is setup by default.
 - If you disable systemd setup OMERO.server is not automatically started.

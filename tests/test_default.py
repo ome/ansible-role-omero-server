@@ -26,7 +26,7 @@ def test_omero_root_login(Command, Sudo):
     ('omero.policy.binary_access', '-read,-write,-image,-plate'),
 ])
 def test_omero_server_config(Command, Sudo, key, value):
-    with Sudo('omero'):
+    with Sudo('omero-server'):
         cfg = Command.check_output("%s config get %s", OMERO, key)
     assert cfg == value
 
@@ -61,7 +61,7 @@ def test_inplace_import(Command, File, Sudo):
 def test_omero_datadir(File):
     d = File('/OMERO')
     assert d.is_directory
-    assert d.user == 'omero'
+    assert d.user == 'omero-server'
     assert d.group == 'root'
     assert d.mode == 0o755
 
@@ -69,6 +69,6 @@ def test_omero_datadir(File):
 def test_omero_managedrepo(File):
     d = File('/OMERO/ManagedRepository')
     assert d.is_directory
-    assert d.user == 'omero'
+    assert d.user == 'omero-server'
     assert d.group == 'importer'
     assert d.mode == 0o2775
