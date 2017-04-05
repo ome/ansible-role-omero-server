@@ -13,6 +13,6 @@ def test_omero_version(Command, Sudo):
     assert re.match('\d+\.\d+\.\d+-ice35-', ver)
 
 
-def test_postgres_version(Command, Sudo):
+def test_postgres_version(Command):
     ver = Command.check_output("psql --version")
     assert ver.startswith('psql (PostgreSQL) 9.4.')
