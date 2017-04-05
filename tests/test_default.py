@@ -37,10 +37,11 @@ def test_inplace_import(Command, File, Sudo):
             '%s %s import -- --transfer=ln_s /data/import/test.fake' %
             (OMERO, OMERO_LOGIN))
 
-    # TODO: When 5.3 is released this will need to be updated to parse
-    # the new output format Image:ID
-    # imageid = int(outimport.split(':', 1)[1])
-    imageid = int(outimport)
+    try:
+        # 5.3 uses a new output format Image:ID
+        imageid = int(outimport.split(':', 1)[1])
+    except IndexError:
+        imageid = int(outimport)
     assert imageid
 
     query = ('SELECT concat(ofile.path, ofile.name) '
