@@ -1,103 +1,106 @@
 ---
-# defaults file for omero-server
+# defaults for omero-server
+
+# WARNING: This will currently always attempt to update the server since the registry check is broken
+omero_server_release: latest
 
 # If True and server is already installed then upgrade to the version in
-# omero_release, otherwise don't upgrade an existing server.
-omero_upgrade: False
+# omero_server_release, otherwise don't upgrade an existing server.
+omero_server_upgrade: False
 
-# If true create the postgres database if it doesn't already exist
-omero_db_create: True
-
-# If all the OMERO configuration is handled using ansible it should be
-# possible to delete the entire server and re-install if the current
-# installation appears to be corrupt (the data dir will not be touched)
-# EXPERIMENTAL, may break your system
-omero_reinstall_on_error: False
-
-# OMERO system user
-omero_system_user: omero
-
-# OMERO system user umask
-omero_system_umask: "0002"
-
-# system group for the ManagedRepository
-omero_system_managedrepo_group: omero
-
-# OMERO system user ID (If not defined one is chosen automatically)
-#omero_system_uid:
-
-omero_basedir: /home/omero
-#omero_serverdir: "{{ omero_basedir }}/server"
-omero_serverdir: "{{ omero_basedir }}"
-omero_server_symlink: OMERO.server
-# WARNING: This will currently always attempt to update the server since the registry check is broken
-omero_release: latest
-
-# If non-empty dump the OMERO database to this directory before upgrading
-omero_database_backupdir: "{{ omero_basedir }}/backups"
+# Ice version
+omero_server_ice_version: "3.6"
 
 # OMERO database connection parameters
-omero_dbhost: localhost
-omero_dbuser: omero
-omero_dbname: omero
-omero_dbpassword: omero
+omero_server_dbhost: localhost
+omero_server_dbuser: omero
+omero_server_dbname: omero
+omero_server_dbpassword: omero
 
 # OMERO root password
-omero_rootpassword: omero
-
-# OMERO data directory
-omero_datadir: /OMERO
-
-# OMERO ManagedRepository directory
-omero_datadir_managedrepo: "{{ omero_datadir }}/ManagedRepository"
-
-# Create the OMERO data directory, set to False if storage is externally managed
-omero_datadir_create: True
-
-# Recursively set the owner on the OMERO data directory, use if the directory
-# has been copied with an incorrect owner
-omero_datadir_chown: False
-
-# Permissions for OMERO data directories apart from ManagedRepository
-omero_datadir_mode: "u=rwX,g=rX,o=rX"
-
-# Permissions for OMERO ManagedRepository
-omero_datadir_managedrepo_mode: "u=rwX,g=srwX,o=rX"
-
-# Path of the omego virtualenv
-omero_omego_venv: "{{ omero_basedir }}/omego"
-
-# Control verbosity of omego
-omero_omego_verbosity: "-qq"
-
-# Additional omego aguments passed to upgrade or install
-omero_omego_additional_args: ""
+omero_server_rootpassword: omero
 
 # Dictionary of additional OMERO configuration options
-omero_server_config: {}
+omero_server_config_set: {}
 
-# Optional path to an additional template-file to be passed to
-# `omero load ...` before starting the server
-omero_prestart_file:
+# OMERO system user
+omero_server_system_user: omero-server
 
-# Setup OMERO.web
-omero_web_install: True
+# OMERO system user ID (If not defined one is chosen automatically)
+#omero_server_system_uid:
 
-# Configure SELinux
-# EXPERIMENTAL
-omero_selinux_setup: False
+# OMERO system user umask
+omero_server_system_umask: "0002"
+
+# system group for the ManagedRepository
+omero_server_system_managedrepo_group: omero
+
+# OMERO data directory
+omero_server_datadir: /OMERO
+
+# OMERO ManagedRepository directory
+omero_server_datadir_managedrepo: "{{ omero_server_datadir }}/ManagedRepository"
+
+# Permissions for OMERO data directories apart from ManagedRepository
+omero_server_datadir_mode: "u=rwX,g=rX,o=rX"
+
+# Permissions for OMERO ManagedRepository
+omero_server_datadir_managedrepo_mode: "u=rwX,g=srwX,o=rX"
 
 # Setup systemd services
-# EXPERIMENTAL, may break your system
-omero_systemd_setup: False
-
-# Restart policy for systemd services
-# EXPERIMENTAL, may break your system
-# Quoted to prevent autoconversion to bool
-omero_systemd_restart: "no"
+omero_server_systemd_setup: True
 
 # Change the systemd limit for number of open files (default ignore)
-omero_server_limit_nofile:
+omero_server_systemd_limit_nofile:
 
 # Should omero systemd services require a network?
 omero_server_systemd_require_network: True
+
+# If non-empty dump the OMERO database to this directory before upgrading
+omero_server_database_backupdir: # "{{ omero_server_basedir }}/backups"
+
+
+######################################################################
+# Expert users only!
+######################################################################
+
+# Recursively set the owner on the OMERO data directory, use if the directory
+# has been copied with an incorrect owner
+omero_server_datadir_chown: False
+
+# DEVELOPMENT: If True clear the existing configuration before regenerating
+omero_server_always_reset_config: True
+
+# DEVELOPMENT: Automatically start systemd omero
+omero_server_systemd_start: True
+
+# Base directory for the server installation
+omero_server_basedir: "{{ omero_common_basedir }}/server"
+
+# Symlink to the currently installed OMERO.server
+omero_server_symlink: OMERO.server
+
+# Path of omego
+omero_server_omego: "{{ omero_common_basedir }}/omego/bin/omego"
+
+# Control verbosity of omego
+omero_server_omego_verbosity: "-qq"
+
+# Additional omego aguments passed to upgrade or install
+omero_server_omego_additional_args: ""
+
+
+omero_server_omego_options: >
+  --release {{ omero_server_release }}
+  --sym {{ omero_server_symlink }}
+  --ice {{ omero_server_ice_version }}
+  --no-start
+  --ignoreconfig
+  {{ omero_server_omego_verbosity }}
+  {{ omero_server_omego_additional_args }}
+
+omero_server_omego_db_options: >
+  --dbhost {{ omero_server_dbhost | quote }}
+  --dbuser {{ omero_server_dbuser | quote }}
+  --dbname {{ omero_server_dbname | quote }}
+  --dbpass {{ omero_server_dbpassword | quote  }}

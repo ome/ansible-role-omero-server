@@ -17,40 +17,43 @@ vagrant:
         memory: 2048
         cpus: 2
   instances:
-    - name: omero-server-ice35
+    - name: omero-server-olddep
       ansible_groups:
       - vagrant-hosts
-    - name: omero-server-ice36
+    - name: omero-server-newdep
       ansible_groups:
       - vagrant-hosts
 
 docker:
   containers:
-  - name: omero-server-ice35
+  - name: omero-server-olddep
     image: centos/systemd
     image_version: latest
     privileged: True
-  - name: omero-server-ice36
+    ansible_groups:
+    - docker-hosts
+  - name: omero-server-newdep
     image: centos/systemd
     image_version: latest
     privileged: True
+    ansible_groups:
+    - docker-hosts
 
 ansible:
   host_vars:
-    omero-server-ice35:
-      ice_version: "3.5"
-    omero-server-ice36:
-      ice_version: "3.6"
+    omero-server-olddep:
+      # Use the 5.2 line due to https://github.com/ome/omego/pull/101
+      omero_server_release: "5.2"
+      omero_server_ice_version: "3.5"
+      postgresql_version: "9.4"
+
+    omero-server-newdep:
+      omero_server_ice_version: "3.6"
+      postgresql_version: "9.6"
+
+  group_vars:
+    docker-hosts:
+      omero_server_systemd_require_network: False
 
 verifier:
   name: testinfra
-
-# If the idempotence test fails (typically due to pip incorrectly showing
-# changes) you can override the sequence to skip the idempotence test
-# molecule:
-#   test:
-#     sequence:
-#       - create
-#       - converge
-#       - verify
-#       - destroy

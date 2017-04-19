@@ -1,27 +1,32 @@
 ---
-- hosts: all
-  tasks:
-
-  - name: omero | print ansible version
-    debug:
-        msg: "Ansible version: {{ ansible_version }}"
-    always_run: True
-
-  - name: omero | venv is broken on ansible 2.2
-    fail: msg="This playbook does not work on Ansible 2.2 or greater."
-    when: ansible_version.major ==  2 and ansible_version.minor >= 2
-    always_run: True
 
 - hosts: all
   roles:
-    - role: ansible-role-omero-server
+
+    - role: openmicroscopy.postgresql
+      postgresql_install_server: True
       postgresql_users_databases:
       - user: omero
         password: omero
         databases: [omero]
-      omero_systemd_setup: True
-      omero_server_systemd_require_network: False
-      omero_system_managedrepo_group: importer
+
+    - role: ansible-role-omero-server
+      omero_server_system_managedrepo_group: importer
+      omero_server_config_set:
+        omero.client.ui.tree.type_order:
+          - screen
+          - plate
+          - project
+          - dataset
+
+  tasks:
+    - name: additional config file
+      copy:
+        content: >
+          config set omero.policy.binary_access -- "-read,-write,-image,-plate"
+        dest: /opt/omero/server/config/molecule-additional-config.omero
+      notify:
+      - restart omero-server
 
 
 # Additional tasks for setting up tests

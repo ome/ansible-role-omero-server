@@ -1,0 +1,106 @@
+---
+# install/upgrade OMERO.server
+
+- name: omero server | is server symlink present
+  become: yes
+  stat:
+    path: "{{ omero_server_basedir }}/{{ omero_server_symlink }}"
+  register: omero_server_symlink_st
+
+# This should be safe to always run including in check-mode
+- name: omero server | get server version
+  become: yes
+  become_user: "{{ omero_server_system_user }}"
+  command: "{{ omero_server_basedir }}/{{ omero_server_symlink }}/bin/omero version"
+  register: omero_server_version
+  when: omero_server_symlink_st.stat.exists
+  changed_when: False
+  check_mode: no
+  # Set a custom error message
+  ignore_errors: yes
+
+- name: omero server | check omero version could be obtained
+  assert:
+    msg: "OMERO.server found but unable to get version, you may have a corrupt installation"
+    that: "not (omero_server_symlink_st.stat.exists and omero_server_version is undefined)"
+
+# TODO: If server was started by systemd but stopped directly you may end up
+# with a hanging process
+
+- name: omero server | install omero
+  become: yes
+  become_user: "{{ omero_server_system_user }}"
+  command: >
+    {{ omero_server_omego }}
+    install
+    {{ omero_server_omego_options }}
+    {{ omero_server_omego_db_options }}
+    --rootpass {{ omero_server_rootpassword | quote }}
+    --initdb
+  args:
+    chdir: "{{ omero_server_basedir }}"
+    creates: "{{ omero_server_basedir }}/{{ omero_server_symlink }}"
+  notify:
+  - omero-server rewrite omero-server configuration
+  - omero-server restart omero-server
+
+# TODO: Check whether an upgrade is available since `omego upgrade` always
+# restarts the server. It should be possible to use `omero admin checkupgrade`
+# to check, but due to the incomplete registry work it doesn't currently work.
+# For now just compare the current and requested version
+
+- name: omero server | checkupgrade
+  set_fact:
+    omero_server_update_needed: True
+  when: omero_server_symlink_st.stat.exists and (omero_server_version.stdout | regex_replace('^([^-]+).*', '\\1')) != omero_server_release
+  ignore_errors: yes
+
+- name: omero server | checkupgrade
+  set_fact:
+    omero_server_update_needed: False
+  when: omero_server_update_needed is not defined
+
+- debug:
+    msg: "Upgrade needed: {{ omero_server_version.stdout | regex_replace('^([^-]+).*', '\\1') }} -> {{ omero_server_release }}"
+  when: omero_server_update_needed
+
+# Backup database
+
+- name: omero server | create omero backup directory
+  become: yes
+  file:
+    mode: 0700
+    owner: "{{ omero_server_system_user }}"
+    path: "{{ omero_server_database_backupdir }}"
+    state: directory
+  when: (omero_server_database_backupdir | default(None)) and omero_server_upgrade and omero_server_update_needed
+
+- name: omero server | backup database
+  become: yes
+  become_user: "{{ omero_server_system_user }}"
+  command: >
+    {{ omero_server_omego }}
+    db dump
+    {{ omero_server_omego_db_options }}
+    --serverdir {{ omero_server_basedir }}/{{ omero_server_symlink }}
+  args:
+    chdir: "{{ omero_server_database_backupdir }}"
+  when: (omero_server_database_backupdir | default(None)) and omero_server_upgrade and omero_server_update_needed
+
+# Upgrade
+
+- name: omero server | upgrade
+  become: yes
+  become_user: "{{ omero_server_system_user }}"
+  command: >
+    {{ omero_server_omego }}
+    upgrade
+    {{ omero_server_omego_options }}
+    {{ omero_server_omego_db_options }}
+    --upgradedb
+  args:
+    chdir: "{{ omero_server_basedir }}"
+  when: omero_server_upgrade and omero_server_update_needed
+  notify:
+  - omero-server rewrite omero-server configuration
+  - omero-server restart omero-server

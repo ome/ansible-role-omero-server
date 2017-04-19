@@ -1,24 +1,17 @@
 ---
-# Handlers
+# handlers for omero-server
+# Don't use omero-common handlers because systemd might be disabled.
+# This also avoids problems with ordering of handlers:
+# http://stackoverflow.com/a/35130254
 
-- name: reload systemd
+- name: omero-server rewrite omero-server configuration
   become: yes
-  command: systemctl daemon-reload
+  become_user: "{{ omero_server_system_user }}"
+  command: "{{ omero_server_basedir }}/config/omero-server-config-update.sh"
 
-- name: restart omero
-  become: yes
-  service:
-    name: omero
-    state: restarted
-
-- name: restart omero-web
+- name: omero-server restart omero-server
   become: yes
   service:
-    name: omero-web
+    name: omero-server
     state: restarted
-
-- name: restart nginx
-  become: yes
-  service:
-    name: nginx
-    state: restarted
+  when: omero_server_systemd_setup and omero_server_systemd_start

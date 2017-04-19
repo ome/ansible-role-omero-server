@@ -1,34 +1,34 @@
 import testinfra.utils.ansible_runner
 import pytest
-import re
 
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     '.molecule/ansible_inventory').get_hosts('all')
 
-OMERO = '/home/omero/OMERO.server/bin/omero'
+OMERO = '/opt/omero/server/OMERO.server/bin/omero'
 OMERO_LOGIN = '-C -s localhost -u root -w omero'
 
 
-@pytest.mark.parametrize("name", ["omero", "omero-web", "nginx"])
-def test_services_running_and_enabled(Service, name):
-    service = Service(name)
+def test_service_running_and_enabled(Service):
+    service = Service('omero-server')
     assert service.is_running
     assert service.is_enabled
-
-
-def test_omero_version(Command, Sudo, TestinfraBackend):
-    host = TestinfraBackend.get_hostname()
-    with Sudo('data-importer'):
-        ver = Command.check_output("%s version" % OMERO)
-    if host == 'omero-server-ice35':
-        assert re.match('\d+\.\d+\.\d+-ice35-', ver)
-    else:
-        assert re.match('\d+\.\d+\.\d+-ice36-', ver)
 
 
 def test_omero_root_login(Command, Sudo):
     with Sudo('data-importer'):
         Command.check_output('%s login %s' % (OMERO, OMERO_LOGIN))
+
+
+@pytest.mark.parametrize("key,value", [
+    ('omero.data.dir', '/OMERO'),
+    ('omero.client.ui.tree.type_order',
+     '["screen", "plate", "project", "dataset"]'),
+    ('omero.policy.binary_access', '-read,-write,-image,-plate'),
+])
+def test_omero_server_config(Command, Sudo, key, value):
+    with Sudo('omero-server'):
+        cfg = Command.check_output("%s config get %s", OMERO, key)
+    assert cfg == value
 
 
 def test_inplace_import(Command, File, Sudo):
@@ -37,7 +37,11 @@ def test_inplace_import(Command, File, Sudo):
             '%s %s import -- --transfer=ln_s /data/import/test.fake' %
             (OMERO, OMERO_LOGIN))
 
-    imageid = int(outimport)
+    try:
+        # 5.3 uses a new output format Image:ID
+        imageid = int(outimport.split(':', 1)[1])
+    except IndexError:
+        imageid = int(outimport)
     assert imageid
 
     query = ('SELECT concat(ofile.path, ofile.name) '
@@ -58,7 +62,7 @@ def test_inplace_import(Command, File, Sudo):
 def test_omero_datadir(File):
     d = File('/OMERO')
     assert d.is_directory
-    assert d.user == 'omero'
+    assert d.user == 'omero-server'
     assert d.group == 'root'
     assert d.mode == 0o755
 
@@ -66,6 +70,6 @@ def test_omero_datadir(File):
 def test_omero_managedrepo(File):
     d = File('/OMERO/ManagedRepository')
     assert d.is_directory
-    assert d.user == 'omero'
+    assert d.user == 'omero-server'
     assert d.group == 'importer'
     assert d.mode == 0o2775

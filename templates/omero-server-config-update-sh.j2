@@ -1,0 +1,10 @@
+#!/bin/sh
+# {{ ansible_managed }}
+# Regenerate the omero-server configuration:
+# {{ omero_server_basedir }}/{{ omero_server_symlink }}/etc/grid/config.xml
+
+set -e
+
+for f in {{ omero_server_basedir }}/config/*.omero; do
+    {{ omero_server_basedir }}/{{ omero_server_symlink }}/bin/omero load "$f"
+done
