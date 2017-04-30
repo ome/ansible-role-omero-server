@@ -71,10 +71,10 @@ Variables :
 Configuring OMERO.server
 ------------------------
 
-This role regenerates the OMERO.web configuration file using the configuration files and helper script in `/opt/omero/server/config`.
+This role regenerates the OMERO configuration file using the configuration files and helper script in `/opt/omero/server/config`.
 `omero_server_config_set` can be used for simple configurations, for anything more complex consider creating one or more configuration files under: `/opt/omero/server/config/` with the extension `.omero`.
 
-Manual configuration changes (`omero config ...`) will be lost following a restart of `omero-wserver` with systemd, you can disable this by setting `omero_server_always_reset_config: False`.
+Manual configuration changes (`omero config ...`) will be lost following a restart of `omero-server` with systemd, you can disable this by setting `omero_server_always_reset_config: False`.
 Manual configuration changes will never be copied during an upgrade.
 
 See https://github.com/openmicroscopy/design/issues/70 for a proposal to add support for a conf.d style directory directly into OMERO.
