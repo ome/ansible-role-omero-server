@@ -96,12 +96,12 @@ Example Playbooks
     - hosts: localhost
       roles:
       - openmicroscopy.omero-server
-        omero_upgrade: True
-        omero_release: 5.2.2
-        omero_dbhost: postgres.example.org
-        omero_dbuser: db_user
-        omero_dbname: db_name
-        omero_dbpassword: db_password
+        omero_server_upgrade: True
+        omero_server_release: 5.2.2
+        omero_server_dbhost: postgres.example.org
+        omero_server_dbuser: db_user
+        omero_server_dbname: db_name
+        omero_server_dbpassword: db_password
 
 
 Author Information
