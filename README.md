@@ -97,7 +97,7 @@ Example Playbooks
       roles:
       - openmicroscopy.omero-server
         omero_server_upgrade: True
-        omero_server_release: 5.2.2
+        omero_server_release: 5.3.1
         omero_server_dbhost: postgres.example.org
         omero_server_dbuser: db_user
         omero_server_dbname: db_name
