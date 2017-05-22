@@ -32,6 +32,7 @@ Database connection parameters and initialisation.
 - `omero_server_dbpassword`: Database password
 - `omero_server_rootpassword`: OMERO root password, default `omero`.
   This is only used when initialising a new database.
+- `omero_server_database_manage`: If `True` initialise or upgrade the OMERO database as required
 
 OMERO.server configuration.
 - `omero_server_config_set`: A dictionary of `config-key: value` which will be used for the initial OMERO.server configuration, default empty.
