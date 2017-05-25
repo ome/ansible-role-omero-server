@@ -51,18 +51,33 @@
 
 - name: omero server | checkupgrade
   set_fact:
-    omero_server_update_needed: True
-  when: omero_server_symlink_st.stat.exists and (omero_server_version.stdout | regex_replace('^([^-]+).*', '\\1')) != omero_server_release
-  ignore_errors: yes
-
-- name: omero server | checkupgrade
-  set_fact:
-    omero_server_update_needed: False
-  when: omero_server_update_needed is not defined
+    # Experimentation shows "5.3.2 | version_compare('latest', '<')" is False
+    # so this should work as expected
+    omero_server_update_needed: >
+      {{
+        omero_server_symlink_st.stat.exists and
+        (omero_server_version.stdout | version_compare(omero_server_release, '<'))
+      }}
+#  ignore_errors: yes
+#
+#- name: omero server | checkupgrade
+#  set_fact:
+#    omero_server_update_needed: False
+#  when: omero_server_update_needed is not defined
 
 - debug:
-    msg: "Upgrade needed: {{ omero_server_version.stdout | regex_replace('^([^-]+).*', '\\1') }} -> {{ omero_server_release }}"
+    msg: "Upgrade needed: {{ omero_server_version.stdout }} -> {{ omero_server_release }}"
   when: omero_server_update_needed
+
+# TODO: Ideally we'd just use
+# `when: omero_server_upgrade and omero_server_update_needed`
+# but there seems to be a problem with the `omero server | upgrade` task which
+# always runs when `omero_server_upgrade: True` regardless of the value of
+# `omero_server_update_needed`, so use this additional fact as a workaround
+# until it can be investigated further
+- name: omero server | set upgrade flag
+  set_fact:
+    _omero_server_execute_upgrade: "{{ omero_server_upgrade and omero_server_update_needed }}"
 
 # Backup database
 
@@ -100,7 +115,9 @@
     {{ omero_server_database_manage | ternary('--upgradedb', '') }}
   args:
     chdir: "{{ omero_server_basedir }}"
-  when: omero_server_upgrade and omero_server_update_needed
+  # I have no idea why testing the variables directly doesn't work:
+  #when: omero_server_upgrade and omero_server_update_needed
+  when: _omero_server_execute_upgrade
   notify:
   - omero-server rewrite omero-server configuration
   - omero-server restart omero-server
