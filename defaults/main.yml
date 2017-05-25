@@ -20,9 +20,6 @@ omero_server_dbpassword: omero
 # OMERO root password
 omero_server_rootpassword: omero
 
-# Manage the OMERO database?
-omero_server_database_manage: True
-
 # Dictionary of additional OMERO configuration options
 omero_server_config_set: {}
 
@@ -76,6 +73,9 @@ omero_server_always_reset_config: True
 
 # DEVELOPMENT: Automatically start systemd omero
 omero_server_systemd_start: True
+
+# DEVELOPMENT: Automatically init/upgrade the OMERO database
+omero_server_database_manage: True
 
 # Base directory for the server installation
 omero_server_basedir: "{{ omero_common_basedir }}/server"

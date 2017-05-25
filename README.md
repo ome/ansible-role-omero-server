@@ -32,7 +32,6 @@ Database connection parameters and initialisation.
 - `omero_server_dbpassword`: Database password
 - `omero_server_rootpassword`: OMERO root password, default `omero`.
   This is only used when initialising a new database.
-- `omero_server_database_manage`: If `True` initialise or upgrade the OMERO database as required
 
 OMERO.server configuration.
 - `omero_server_config_set`: A dictionary of `config-key: value` which will be used for the initial OMERO.server configuration, default empty.
@@ -63,6 +62,7 @@ Unstable features
 
 Variables :
 - `omero_server_datadir_chown`: Recursively set the owner on the OMERO data directory, use if the directory has been copied with an incorrect owner, default `False`
+- `omero_server_database_manage`: Initialise or upgrade the OMERO database if required, default `True`, if `False` the database will not be modified and all `omero_server_db*` will be ignored (`omero.db.*` OMERO configuration parameters will not be updated with the corresponding `omero_server_db*` values)
 - `omero_server_systemd_start`: Automatically enable and start/restart systemd omero-server service, default `True`.
   This is intended for use in server images where installation may be separate from configuration and execution.
 - `omero_server_always_reset_config`: Clear the existing configuration before regenerating, default `True`.
