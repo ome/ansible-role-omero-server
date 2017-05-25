@@ -42,14 +42,13 @@ docker:
 ansible:
   host_vars:
     omero-server-olddep:
-      # Use the 5.2 line due to https://github.com/ome/omego/pull/101
-      omero_server_release: "5.2"
       omero_server_ice_version: "3.5"
       postgresql_version: "9.4"
 
     omero-server-newdep:
       omero_server_ice_version: "3.6"
       postgresql_version: "9.6"
+      omero_server_upgrade: True
 
   group_vars:
     docker-hosts:

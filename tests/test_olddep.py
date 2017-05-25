@@ -10,7 +10,7 @@ OMERO = '/opt/omero/server/OMERO.server/bin/omero'
 def test_omero_version(Command, Sudo):
     with Sudo('data-importer'):
         ver = Command.check_output("%s version" % OMERO)
-    assert re.match('\d+\.\d+\.\d+-ice35-', ver)
+    assert re.match('5\.2\.\d+-ice35-', ver)
 
 
 def test_postgres_version(Command):
