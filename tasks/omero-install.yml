@@ -97,7 +97,7 @@
     upgrade
     {{ omero_server_omego_options }}
     {{ omero_server_omego_db_options }}
-    --upgradedb
+    {{ omero_server_database_manage | ternary('--upgradedb', '') }}
   args:
     chdir: "{{ omero_server_basedir }}"
   when: omero_server_upgrade and omero_server_update_needed
