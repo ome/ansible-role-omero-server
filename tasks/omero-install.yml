@@ -56,7 +56,8 @@
     omero_server_update_needed: >
       {{
         omero_server_symlink_st.stat.exists and
-        (omero_server_version.stdout | version_compare(omero_server_release, '<'))
+        (omero_server_version.stdout | version_compare(
+           omero_server_release, omero_server_checkupgrade_comparator))
       }}
 #  ignore_errors: yes
 #

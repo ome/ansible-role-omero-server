@@ -92,6 +92,11 @@ omero_server_omego_verbosity: "-qq"
 # Additional omego aguments passed to upgrade or install
 omero_server_omego_additional_args: ""
 
+# DEVELOPMENT: Operator for comparing current-version against
+# omero_server_release, e.g. '!='. Default is to upgrade when
+# current-version < omero_server_release
+omero_server_checkupgrade_comparator: '<'
+
 
 omero_server_omego_options: >
   --release {{ omero_server_release }}
