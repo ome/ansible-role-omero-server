@@ -22,7 +22,7 @@ This defaults to `latest`, but due to the broken registry a proper upgrade check
 You are advised to change this to an actual release version.
 - `omero_server_upgrade`: Upgrade OMERO.server if the current version does not match `omero_server_release`.
   This is a workaround for the inability to check for the latest version when `omero_server_release: latest`.
-  It may be removed in future.
+  At present this will skip an available upgrade if `False` but in future this will be changed to fail if the currently installed version does not match `omero_server_release`.
 - `omero_server_ice_version`: The ice version.
 
 Database connection parameters and initialisation.

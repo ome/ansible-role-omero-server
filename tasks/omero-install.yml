@@ -103,7 +103,13 @@
   when: (omero_server_database_backupdir | default(None)) and omero_server_upgrade and omero_server_update_needed
 
 # Upgrade
-
+# TODO: Currently this silently skips the upgrade if
+# omero_server_update_needed: True and omero_server_upgrade: False
+# since there isn't an easy way to check whether the current version is
+# the same as latest.
+# Once this check is implemented this will change to failing immediately
+# since if you want to pin a particular version you can set
+# omero_server_release: X.Y.Z
 - name: omero server | upgrade
   become: yes
   become_user: "{{ omero_server_system_user }}"
