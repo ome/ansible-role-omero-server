@@ -74,7 +74,7 @@ omero_server_always_reset_config: True
 # DEVELOPMENT: Automatically start systemd omero
 omero_server_systemd_start: True
 
-# DEVELOPMENT: Automatically init/upgrade the OMERO database
+# DEVELOPMENT: Automatically init/upgrade and configure the OMERO database
 omero_server_database_manage: True
 
 # Base directory for the server installation
