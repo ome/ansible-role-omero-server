@@ -77,6 +77,9 @@ omero_server_systemd_start: True
 # DEVELOPMENT: Automatically init/upgrade and configure the OMERO database
 omero_server_database_manage: True
 
+# DEVELOPMENT: Automatically create and configure OMERO data directories
+omero_server_datadir_manage: True
+
 # Base directory for the server installation
 omero_server_basedir: "{{ omero_common_basedir }}/server"
 

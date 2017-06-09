@@ -11,7 +11,9 @@ config set omero.db.name {{ omero_server_dbname | quote }}
 config set omero.db.pass {{ omero_server_dbpassword | quote }}
 {% endif %}
 
+{% if omero_server_datadir_manage %}
 config set omero.data.dir {{ omero_server_datadir | quote }}
+{% endif %}
 
 # Additional custom options
 {% for key in omero_server_config_set %}

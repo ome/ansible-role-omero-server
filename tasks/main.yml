@@ -4,6 +4,7 @@
 - include: omero-user.yml
 
 - include: omero-datadir.yml
+  when: omero_server_datadir_manage
 
 - include: omero-configfiles.yml
 
