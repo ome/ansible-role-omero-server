@@ -36,7 +36,6 @@
     {{ omero_server_omego_options }}
     {{ omero_server_omego_db_options }}
     --rootpass {{ omero_server_rootpassword | quote }}
-    {{ omero_server_database_manage | ternary('--initdb', '') }}
   args:
     chdir: "{{ omero_server_basedir }}"
     creates: "{{ omero_server_basedir }}/{{ omero_server_symlink }}"
@@ -119,7 +118,6 @@
     upgrade
     {{ omero_server_omego_options }}
     {{ omero_server_omego_db_options }}
-    {{ omero_server_database_manage | ternary('--upgradedb', '') }}
   args:
     chdir: "{{ omero_server_basedir }}"
   # I have no idea why testing the variables directly doesn't work:
