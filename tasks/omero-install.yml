@@ -115,7 +115,7 @@
   become_user: "{{ omero_server_system_user }}"
   command: >
     {{ omero_server_omego }}
-    upgrade
+    install --upgrade
     {{ omero_server_omego_options }}
     {{ omero_server_omego_db_options }}
   args:
