@@ -36,7 +36,6 @@
     {{ omero_server_omego_options }}
     {{ omero_server_omego_db_options }}
     --rootpass {{ omero_server_rootpassword | quote }}
-    --initdb
   args:
     chdir: "{{ omero_server_basedir }}"
     creates: "{{ omero_server_basedir }}/{{ omero_server_symlink }}"
@@ -51,18 +50,34 @@
 
 - name: omero server | checkupgrade
   set_fact:
-    omero_server_update_needed: True
-  when: omero_server_symlink_st.stat.exists and (omero_server_version.stdout | regex_replace('^([^-]+).*', '\\1')) != omero_server_release
-  ignore_errors: yes
-
-- name: omero server | checkupgrade
-  set_fact:
-    omero_server_update_needed: False
-  when: omero_server_update_needed is not defined
+    # Experimentation shows "5.3.2 | version_compare('latest', '<')" is False
+    # so this should work as expected
+    omero_server_update_needed: >
+      {{
+        omero_server_symlink_st.stat.exists and
+        (omero_server_version.stdout | version_compare(
+           omero_server_release, omero_server_checkupgrade_comparator))
+      }}
+#  ignore_errors: yes
+#
+#- name: omero server | checkupgrade
+#  set_fact:
+#    omero_server_update_needed: False
+#  when: omero_server_update_needed is not defined
 
 - debug:
-    msg: "Upgrade needed: {{ omero_server_version.stdout | regex_replace('^([^-]+).*', '\\1') }} -> {{ omero_server_release }}"
+    msg: "Upgrade needed: {{ omero_server_version.stdout }} -> {{ omero_server_release }}"
   when: omero_server_update_needed
+
+# TODO: Ideally we'd just use
+# `when: omero_server_upgrade and omero_server_update_needed`
+# but there seems to be a problem with the `omero server | upgrade` task which
+# always runs when `omero_server_upgrade: True` regardless of the value of
+# `omero_server_update_needed`, so use this additional fact as a workaround
+# until it can be investigated further
+- name: omero server | set upgrade flag
+  set_fact:
+    _omero_server_execute_upgrade: "{{ omero_server_upgrade and omero_server_update_needed }}"
 
 # Backup database
 
@@ -88,19 +103,26 @@
   when: (omero_server_database_backupdir | default(None)) and omero_server_upgrade and omero_server_update_needed
 
 # Upgrade
-
+# TODO: Currently this silently skips the upgrade if
+# omero_server_update_needed: True and omero_server_upgrade: False
+# since there isn't an easy way to check whether the current version is
+# the same as latest.
+# Once this check is implemented this will change to failing immediately
+# since if you want to pin a particular version you can set
+# omero_server_release: X.Y.Z
 - name: omero server | upgrade
   become: yes
   become_user: "{{ omero_server_system_user }}"
   command: >
     {{ omero_server_omego }}
-    upgrade
+    install --upgrade
     {{ omero_server_omego_options }}
     {{ omero_server_omego_db_options }}
-    --upgradedb
   args:
     chdir: "{{ omero_server_basedir }}"
-  when: omero_server_upgrade and omero_server_update_needed
+  # I have no idea why testing the variables directly doesn't work:
+  #when: omero_server_upgrade and omero_server_update_needed
+  when: _omero_server_execute_upgrade
   notify:
   - omero-server rewrite omero-server configuration
   - omero-server restart omero-server

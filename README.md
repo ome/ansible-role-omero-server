@@ -22,7 +22,7 @@ This defaults to `latest`, but due to the broken registry a proper upgrade check
 You are advised to change this to an actual release version.
 - `omero_server_upgrade`: Upgrade OMERO.server if the current version does not match `omero_server_release`.
   This is a workaround for the inability to check for the latest version when `omero_server_release: latest`.
-  It may be removed in future.
+  At present this will skip an available upgrade if `False` but in future this will be changed to fail if the currently installed version does not match `omero_server_release`.
 - `omero_server_ice_version`: The ice version.
 
 Database connection parameters and initialisation.
@@ -62,6 +62,8 @@ Unstable features
 
 Variables :
 - `omero_server_datadir_chown`: Recursively set the owner on the OMERO data directory, use if the directory has been copied with an incorrect owner, default `False`
+- `omero_server_database_manage`: Initialise or upgrade the OMERO database if required, default `True`, if `False` the database will not be modified and all `omero_server_db*` will be ignored (`omero.db.*` OMERO configuration parameters will not be updated with the corresponding `omero_server_db*` values)
+- `omero_server_datadir_manage`: Initialise of modify the top level of OMERO data directories, deafult `True`, if `False` no data directories will be created or modified, and the `omero.data.dir` configuration parameter will not be set
 - `omero_server_systemd_start`: Automatically enable and start/restart systemd omero-server service, default `True`.
   This is intended for use in server images where installation may be separate from configuration and execution.
 - `omero_server_always_reset_config`: Clear the existing configuration before regenerating, default `True`.

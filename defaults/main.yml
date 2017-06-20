@@ -74,6 +74,12 @@ omero_server_always_reset_config: True
 # DEVELOPMENT: Automatically start systemd omero
 omero_server_systemd_start: True
 
+# DEVELOPMENT: Automatically init/upgrade and configure the OMERO database
+omero_server_database_manage: True
+
+# DEVELOPMENT: Automatically create and configure OMERO data directories
+omero_server_datadir_manage: True
+
 # Base directory for the server installation
 omero_server_basedir: "{{ omero_common_basedir }}/server"
 
@@ -88,6 +94,11 @@ omero_server_omego_verbosity: "-qq"
 
 # Additional omego aguments passed to upgrade or install
 omero_server_omego_additional_args: ""
+
+# DEVELOPMENT: Operator for comparing current-version against
+# omero_server_release, e.g. '!='. Default is to upgrade when
+# current-version < omero_server_release
+omero_server_checkupgrade_comparator: '<'
 
 
 omero_server_omego_options: >
@@ -104,3 +115,4 @@ omero_server_omego_db_options: >
   --dbuser {{ omero_server_dbuser | quote }}
   --dbname {{ omero_server_dbname | quote }}
   --dbpass {{ omero_server_dbpassword | quote  }}
+  {{ omero_server_database_manage | ternary('--managedb', '') }}

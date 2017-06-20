@@ -1,6 +1,5 @@
 - src: openmicroscopy.omero-common
-- name: openmicroscopy.omego
-  src:  https://github.com/openmicroscopy/ansible-role-omego.git
+- src: openmicroscopy.omego
 - src: openmicroscopy.basedeps
 - src: openmicroscopy.java
 - src: openmicroscopy.omero-python-deps
