@@ -41,6 +41,9 @@ omero_server_datadir: /OMERO
 # OMERO ManagedRepository directory
 omero_server_datadir_managedrepo: "{{ omero_server_datadir }}/ManagedRepository"
 
+# OMERO BioFormatsCache directory
+omero_server_datadir_bioformatscache: "{{ omero_server_datadir }}/BioFormatsCache"
+
 # Permissions for OMERO data directories apart from ManagedRepository
 omero_server_datadir_mode: "u=rwX,g=rX,o=rX"
 

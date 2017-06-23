@@ -48,6 +48,7 @@ You may need to change these for in-place imports.
 - `omero_server_datadir_managedrepo_mode`: Permissions for OMERO `ManagedRepository`
 - `omero_server_datadir`: OMERO data directory, default `/OMERO`
 - `omero_server_datadir_managedrepo`: OMERO ManagedRepository directory
+- `omero_server_datadir_bioformatscache`: OMERO BioFormatsCache directory, a symlink `{omero_server_datadir}/BioFormatsCache` will be created if not the default
 
 OMERO.server systemd configuration.
 - `omero_server_systemd_setup`: Create and start the `omero-server` systemd service, default `True`
