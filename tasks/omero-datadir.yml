@@ -41,7 +41,7 @@
     path: "{{ omero_server_datadir }}/BioFormatsCache"
     state: link
     force: yes
-  when: '"omero_server_datadir_bioformatscache" != (omero_server_datadir + "/BioFormatsCache")'
+  when: 'omero_server_datadir_bioformatscache != (omero_server_datadir + "/BioFormatsCache")'
 
 - name: omero server | create omero ManagedRepository
   become: yes
