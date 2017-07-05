@@ -40,7 +40,6 @@ OMERO.server configuration.
 
 OMERO system user, group, permissions, and data directory.
 You may need to change these for in-place imports.
-Directory paths must not have a trailing `/`
 - `omero_server_system_user`: OMERO.server system user, default `omero-server`.
 - `omero_server_system_uid`: OMERO system user ID (default automatic)
 - `omero_server_system_umask`: OMERO system user umask, may need to be changed for in-place imports
@@ -49,7 +48,6 @@ Directory paths must not have a trailing `/`
 - `omero_server_datadir_managedrepo_mode`: Permissions for OMERO `ManagedRepository`
 - `omero_server_datadir`: OMERO data directory, default `/OMERO`
 - `omero_server_datadir_managedrepo`: OMERO ManagedRepository directory
-- `omero_server_datadir_bioformatscache`: OMERO BioFormatsCache directory, a symlink `{omero_server_datadir}/BioFormatsCache` will be created if not the default
 
 OMERO.server systemd configuration.
 - `omero_server_systemd_setup`: Create and start the `omero-server` systemd service, default `True`
@@ -64,6 +62,8 @@ Unstable features
 
 Variables :
 - `omero_server_datadir_chown`: Recursively set the owner on the OMERO data directory, use if the directory has been copied with an incorrect owner, default `False`
+- `omero_server_datadir_bioformatscache`: OMERO BioFormatsCache directory, a symlink `{omero_server_datadir}/BioFormatsCache` will be created if not the default.
+  Directory paths must not have a trailing `/`.
 - `omero_server_database_manage`: Initialise or upgrade the OMERO database if required, default `True`, if `False` the database will not be modified and all `omero_server_db*` will be ignored (`omero.db.*` OMERO configuration parameters will not be updated with the corresponding `omero_server_db*` values)
 - `omero_server_datadir_manage`: Initialise of modify the top level of OMERO data directories, deafult `True`, if `False` no data directories will be created or modified, and the `omero.data.dir` configuration parameter will not be set
 - `omero_server_systemd_start`: Automatically enable and start/restart systemd omero-server service, default `True`.

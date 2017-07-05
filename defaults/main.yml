@@ -41,9 +41,6 @@ omero_server_datadir: /OMERO
 # OMERO ManagedRepository directory
 omero_server_datadir_managedrepo: "{{ omero_server_datadir }}/ManagedRepository"
 
-# OMERO BioFormatsCache directory
-omero_server_datadir_bioformatscache: "{{ omero_server_datadir }}/BioFormatsCache"
-
 # Permissions for OMERO data directories apart from ManagedRepository
 omero_server_datadir_mode: "u=rwX,g=rX,o=rX"
 
@@ -70,6 +67,9 @@ omero_server_database_backupdir: # "{{ omero_server_basedir }}/backups"
 # Recursively set the owner on the OMERO data directory, use if the directory
 # has been copied with an incorrect owner
 omero_server_datadir_chown: False
+
+# OMERO BioFormatsCache directory
+omero_server_datadir_bioformatscache: "{{ omero_server_datadir }}/BioFormatsCache"
 
 # DEVELOPMENT: If True clear the existing configuration before regenerating
 omero_server_always_reset_config: True
