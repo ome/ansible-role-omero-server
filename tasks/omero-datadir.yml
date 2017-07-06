@@ -19,12 +19,29 @@
     recurse: "{{ omero_server_datadir_chown }}"
     state: directory
   with_items:
-  - BioFormatsCache
   - Files
   - Thumbnails
   - DropBox
   - FullText
   - Pixels
+
+- name: omero server | create omero BioFormatsCache
+  become: yes
+  file:
+    owner: "{{ omero_server_system_user }}"
+    mode: "{{ omero_server_datadir_mode }}"
+    path: "{{ omero_server_datadir_bioformatscache }}"
+    recurse: "{{ omero_server_datadir_chown }}"
+    state: directory
+
+- name: omero server | create omero BioFormatsCache symlink
+  become: yes
+  file:
+    src: "{{ omero_server_datadir_bioformatscache }}"
+    path: "{{ omero_server_datadir }}/BioFormatsCache"
+    state: link
+    force: yes
+  when: 'omero_server_datadir_bioformatscache != (omero_server_datadir + "/BioFormatsCache")'
 
 - name: omero server | create omero ManagedRepository
   become: yes

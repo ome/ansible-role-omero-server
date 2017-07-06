@@ -68,6 +68,9 @@ omero_server_database_backupdir: # "{{ omero_server_basedir }}/backups"
 # has been copied with an incorrect owner
 omero_server_datadir_chown: False
 
+# OMERO BioFormatsCache directory
+omero_server_datadir_bioformatscache: "{{ omero_server_datadir }}/BioFormatsCache"
+
 # DEVELOPMENT: If True clear the existing configuration before regenerating
 omero_server_always_reset_config: True
 
