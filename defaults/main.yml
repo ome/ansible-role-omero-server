@@ -4,10 +4,6 @@
 # WARNING: This will currently always attempt to update the server since the registry check is broken
 omero_server_release: latest
 
-# If True and server is already installed then upgrade to the version in
-# omero_server_release, otherwise don't upgrade an existing server.
-omero_server_upgrade: False
-
 # Ice version
 omero_server_ice_version: "3.6"
 
@@ -97,6 +93,11 @@ omero_server_omego_verbosity: "-qq"
 
 # Additional omego aguments passed to upgrade or install
 omero_server_omego_additional_args: ""
+
+# If True and server is already installed then upgrade to the version in
+# omero_server_release, otherwise don't upgrade an existing server.
+# This should not be needed if version are correctly compared.
+omero_server_upgrade: True
 
 # DEVELOPMENT: Operator for comparing current-version against
 # omero_server_release, e.g. '!='. Default is to upgrade when

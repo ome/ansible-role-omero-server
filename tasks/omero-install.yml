@@ -48,6 +48,22 @@
 # to check, but due to the incomplete registry work it doesn't currently work.
 # For now just compare the current and requested version
 
+- name: omero server | get latest downloads url
+  uri:
+    url: https://downloads.openmicroscopy.org/latest/omero
+    method: HEAD
+  register: _omero_server_downloads_latest
+
+- name: omero server | get latest version
+  set_fact:
+    _omero_server_new_version: >
+      {{
+        (omero_server_release == 'latest') | ternary(
+           _omero_server_downloads_latest.url.strip('/').split('/')[-1],
+           omero_server_release
+        )
+      }}
+
 - name: omero server | checkupgrade
   set_fact:
     # Experimentation shows "5.3.2 | version_compare('latest', '<')" is False
@@ -56,14 +72,9 @@
       {{
         omero_server_symlink_st.stat.exists and
         (omero_server_version.stdout | version_compare(
-           omero_server_release, omero_server_checkupgrade_comparator))
+           _omero_server_new_version,
+           omero_server_checkupgrade_comparator))
       }}
-#  ignore_errors: yes
-#
-#- name: omero server | checkupgrade
-#  set_fact:
-#    omero_server_update_needed: False
-#  when: omero_server_update_needed is not defined
 
 - debug:
     msg: "Upgrade needed: {{ omero_server_version.stdout }} -> {{ omero_server_release }}"
