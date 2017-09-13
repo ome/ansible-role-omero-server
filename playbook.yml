@@ -32,7 +32,7 @@
       - restart omero-server
 
 
-# Attempt to upgrade to 5.3
+# Attempt to upgrade to latest
 # omero_server_upgrade is defined in molecule.yml host_vars so:
 # - omero-server-newdep: upgraded
 # - omero-server-olddep: unchanged
@@ -47,10 +47,7 @@
           - plate
           - project
           - dataset
-      # Ideally this would be set to the default `latest`, but we don't
-      # have an easy way to check whether the currently installed version
-      # is the latest
-      omero_server_release: "5.3"
+      omero_server_release: latest
 
 
 # Additional tasks for setting up tests
