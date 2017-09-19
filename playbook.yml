@@ -5,10 +5,12 @@
 
     - role: openmicroscopy.postgresql
       postgresql_install_server: True
-      postgresql_users_databases:
-      - user: omero
-        password: omero
-        databases: [omero]
+      postgresql_databases:
+        - name: omero
+      postgresql_users:
+        - user: omero
+          password: omero
+          databases: [omero]
 
     - role: ansible-role-omero-server
       omero_server_system_managedrepo_group: importer
