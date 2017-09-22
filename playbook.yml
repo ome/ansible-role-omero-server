@@ -1,6 +1,18 @@
 ---
 # Install 5.2 on both omero-server-olddep and omero-server-newdep
 - hosts: all
+
+  pre_tasks:
+    # To test the upgrade process without breaking the idempotence check
+    # we need to add a flag so the first omero-server installation is
+    # only run once, otherwise during the second run ansible will attempt
+    # to downgrade a server to 5.2 which will fail due to the lack of a
+    # database downgrade script
+    - name: check whether omero-server has been installed at least once
+      stat:
+        path: /opt/omero/server/OMERO.server
+      register: molecule_test_omero_server_installed_1
+
   roles:
 
     - role: openmicroscopy.postgresql
@@ -20,7 +32,9 @@
           - plate
           - project
           - dataset
+      # This should override host_vars
       omero_server_release: "5.2"
+      when: not molecule_test_omero_server_installed_1.stat.exists
 
   tasks:
     - name: additional config file
@@ -32,10 +46,10 @@
       - restart omero-server
 
 
-# Attempt to upgrade to latest
-# omero_server_upgrade is defined in molecule.yml host_vars so:
-# - omero-server-newdep: upgraded
-# - omero-server-olddep: unchanged
+# Attempt to upgrade
+# omero_server_release is defined in molecule.yml host_vars so:
+# - omero-server-newdep: latest: upgraded
+# - omero-server-olddep: present: unchanged at 5.2
 - hosts: all
   roles:
 
@@ -47,7 +61,6 @@
           - plate
           - project
           - dataset
-      omero_server_release: latest
 
 
 # Additional tasks for setting up tests
