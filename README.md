@@ -17,8 +17,9 @@ Role Variables
 All variables are optional, see `defaults/main.yml` for the full list
 
 OMERO.server version.
-- `omero_server_release`: The OMERO release, e.g. `5.2.2`, default `latest`.
-  You are advised to change this to a release version for production systems, otherwise your server will be automatically upgraded when a new release is made.
+- `omero_server_release`: The OMERO release, e.g. `5.2.2`.
+  The default is `present` which will install the latest server if no server is installed, but will not modify an existing server.
+  Use `latest` to automatically upgrade when a new version is released.
 - `omero_server_ice_version`: The ice version.
 
 Database connection parameters and initialisation.

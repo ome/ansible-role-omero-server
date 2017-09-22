@@ -27,6 +27,49 @@
 # TODO: If server was started by systemd but stopped directly you may end up
 # with a hanging process
 
+# Check whether an upgrade is available since `omego upgrade` always
+# restarts the server
+- name: omero server | get latest downloads url
+  uri:
+    url: https://downloads.openmicroscopy.org/latest/omero
+    method: HEAD
+  register: _omero_server_downloads_latest
+
+# omego supports --release "latest" but not "present"
+# It's easiest to lookup a concrete version and use this for all omego
+# operations instead
+- name: omero server | get latest version
+  set_fact:
+    _omero_server_new_version: "{{
+      (omero_server_release in ('latest', 'present')) | ternary(
+         _omero_server_downloads_latest.url.strip('/').split('/')[-1],
+         omero_server_release
+      )
+  }}"
+
+- name: omero server | checkupgrade
+  set_fact:
+    # Experimentation shows "5.3.2 | version_compare('latest', '<')" is False
+    # so this should work as expected
+    _omero_server_update_needed: "{{
+      omero_server_symlink_st.stat.exists and
+      (omero_server_version.stdout | version_compare(
+         _omero_server_new_version,
+         omero_server_checkupgrade_comparator))
+    }}"
+
+- debug:
+    msg: "Upgrade needed: {{ omero_server_version.stdout }} -> {{ omero_server_release }}"
+  when: _omero_server_update_needed
+
+- name: omero server | set upgrade flag
+  set_fact:
+    _omero_server_execute_upgrade: "{{
+      omero_server_upgrade and
+      _omero_server_update_needed and
+      (omero_server_release != 'present')
+    }}"
+
 - name: omero server | install omero
   become: yes
   become_user: "{{ omero_server_system_user }}"
@@ -43,53 +86,6 @@
   - omero-server rewrite omero-server configuration
   - omero-server restart omero-server
 
-# TODO: Check whether an upgrade is available since `omego upgrade` always
-# restarts the server. It should be possible to use `omero admin checkupgrade`
-# to check, but due to the incomplete registry work it doesn't currently work.
-# For now just compare the current and requested version
-
-- name: omero server | get latest downloads url
-  uri:
-    url: https://downloads.openmicroscopy.org/latest/omero
-    method: HEAD
-  register: _omero_server_downloads_latest
-
-- name: omero server | get latest version
-  set_fact:
-    _omero_server_new_version: >
-      {{
-        (omero_server_release == 'latest') | ternary(
-           _omero_server_downloads_latest.url.strip('/').split('/')[-1],
-           omero_server_release
-        )
-      }}
-
-- name: omero server | checkupgrade
-  set_fact:
-    # Experimentation shows "5.3.2 | version_compare('latest', '<')" is False
-    # so this should work as expected
-    omero_server_update_needed: >
-      {{
-        omero_server_symlink_st.stat.exists and
-        (omero_server_version.stdout | version_compare(
-           _omero_server_new_version,
-           omero_server_checkupgrade_comparator))
-      }}
-
-- debug:
-    msg: "Upgrade needed: {{ omero_server_version.stdout }} -> {{ omero_server_release }}"
-  when: omero_server_update_needed
-
-# TODO: Ideally we'd just use
-# `when: omero_server_upgrade and omero_server_update_needed`
-# but there seems to be a problem with the `omero server | upgrade` task which
-# always runs when `omero_server_upgrade: True` regardless of the value of
-# `omero_server_update_needed`, so use this additional fact as a workaround
-# until it can be investigated further
-- name: omero server | set upgrade flag
-  set_fact:
-    _omero_server_execute_upgrade: "{{ omero_server_upgrade and omero_server_update_needed }}"
-
 # Backup database
 
 - name: omero server | create omero backup directory
@@ -99,7 +95,7 @@
     owner: "{{ omero_server_system_user }}"
     path: "{{ omero_server_database_backupdir }}"
     state: directory
-  when: (omero_server_database_backupdir | default(None)) and omero_server_upgrade and omero_server_update_needed
+  when: (omero_server_database_backupdir | length > 0) and _omero_server_execute_upgrade
 
 - name: omero server | backup database
   become: yes
@@ -111,16 +107,9 @@
     --serverdir {{ omero_server_basedir }}/{{ omero_server_symlink }}
   args:
     chdir: "{{ omero_server_database_backupdir }}"
-  when: (omero_server_database_backupdir | default(None)) and omero_server_upgrade and omero_server_update_needed
+  when: (omero_server_database_backupdir | length > 0) and _omero_server_execute_upgrade
 
 # Upgrade
-# TODO: Currently this silently skips the upgrade if
-# omero_server_update_needed: True and omero_server_upgrade: False
-# since there isn't an easy way to check whether the current version is
-# the same as latest.
-# Once this check is implemented this will change to failing immediately
-# since if you want to pin a particular version you can set
-# omero_server_release: X.Y.Z
 - name: omero server | upgrade
   become: yes
   become_user: "{{ omero_server_system_user }}"
@@ -131,8 +120,6 @@
     {{ omero_server_omego_db_options }}
   args:
     chdir: "{{ omero_server_basedir }}"
-  # I have no idea why testing the variables directly doesn't work:
-  #when: omero_server_upgrade and omero_server_update_needed
   when: _omero_server_execute_upgrade
   notify:
   - omero-server rewrite omero-server configuration

@@ -1,8 +1,7 @@
 ---
 # defaults for omero-server
 
-# WARNING: This will currently always attempt to update the server since the registry check is broken
-omero_server_release: latest
+omero_server_release: present
 
 # Ice version
 omero_server_ice_version: "3.6"
@@ -53,7 +52,7 @@ omero_server_systemd_limit_nofile:
 omero_server_systemd_require_network: True
 
 # If non-empty dump the OMERO database to this directory before upgrading
-omero_server_database_backupdir: # "{{ omero_server_basedir }}/backups"
+omero_server_database_backupdir: ""
 
 
 ######################################################################
@@ -105,8 +104,11 @@ omero_server_upgrade: True
 omero_server_checkupgrade_comparator: '<'
 
 
+# _omero_server_new_version is set in tasks/omero-install.yml
+# We can't just use omero_server_release because if it is "present"
+# it needs to be substituted with a value that omego will accept
 omero_server_omego_options: >
-  --release {{ omero_server_release }}
+  --release {{ _omero_server_new_version }}
   --sym {{ omero_server_symlink }}
   --ice {{ omero_server_ice_version }}
   --no-start
