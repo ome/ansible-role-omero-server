@@ -43,12 +43,13 @@ ansible:
   host_vars:
     omero-server-olddep:
       omero_server_ice_version: "3.5"
+      omero_server_release: present
       postgresql_version: "9.4"
 
     omero-server-newdep:
       omero_server_ice_version: "3.6"
+      omero_server_release: latest
       postgresql_version: "9.6"
-      omero_server_upgrade: True
 
   group_vars:
     docker-hosts:

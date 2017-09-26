@@ -18,11 +18,8 @@ All variables are optional, see `defaults/main.yml` for the full list
 
 OMERO.server version.
 - `omero_server_release`: The OMERO release, e.g. `5.2.2`.
-This defaults to `latest`, but due to the broken registry a proper upgrade check has not been implemented so this will not have the expected effect (it will always attempt to upgrade even if the current server is the latest).
-You are advised to change this to an actual release version.
-- `omero_server_upgrade`: Upgrade OMERO.server if the current version does not match `omero_server_release`.
-  This is a workaround for the inability to check for the latest version when `omero_server_release: latest`.
-  At present this will skip an available upgrade if `False` but in future this will be changed to fail if the currently installed version does not match `omero_server_release`.
+  The default is `present` which will install the latest server if no server is installed, but will not modify an existing server.
+  Use `latest` to automatically upgrade when a new version is released.
 - `omero_server_ice_version`: The ice version.
 
 Database connection parameters and initialisation.
@@ -100,7 +97,6 @@ Example Playbooks
     - hosts: localhost
       roles:
       - openmicroscopy.omero-server
-        omero_server_upgrade: True
         omero_server_release: 5.3.1
         omero_server_dbhost: postgres.example.org
         omero_server_dbuser: db_user
