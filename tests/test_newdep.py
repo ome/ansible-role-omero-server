@@ -5,15 +5,16 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     '.molecule/ansible_inventory').get_hosts('omero-server-newdep')
 
 OMERO = '/opt/omero/server/OMERO.server/bin/omero'
+VERSION_PATTERN = re.compile('(\d+)\.(\d+)\.(\d+)-ice36-')
 
 
 def test_omero_version(Command, Sudo):
     with Sudo('data-importer'):
         ver = Command.check_output("%s version" % OMERO)
-    # TODO: This will have to be updated with each major release
-    # These happen infrequently so hard code the version to reduce the
-    # chance of errors being missed elsewhere
-    assert re.match('5\.3\.\d+-ice36-', ver)
+    m = VERSION_PATTERN.match(ver)
+    assert m is not None
+    assert int(m.group(1)) >= 5
+    assert int(m.group(2)) > 2
 
 
 def test_postgres_version(Command):
