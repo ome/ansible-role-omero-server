@@ -1,6 +1,9 @@
 OMERO Server
 ============
 
+[![Build Status](https://travis-ci.org/openmicroscopy/ansible-role-omero-server.svg)](https://travis-ci.org/openmicroscopy/ansible-role-omero-server)
+[![Ansible Role](https://img.shields.io/ansible/role/14772.svg)](https://galaxy.ansible.com/openmicroscopy/omero-server/)
+
 Installs and configures OMERO.server.
 
 
