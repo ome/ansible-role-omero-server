@@ -34,6 +34,7 @@
     url: https://downloads.openmicroscopy.org/latest/omero
     method: HEAD
   register: _omero_server_downloads_latest
+  check_mode: no
 
 # omego supports --release "latest" but not "present"
 # It's easiest to lookup a concrete version and use this for all omego
