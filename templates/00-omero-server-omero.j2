@@ -16,7 +16,7 @@ config set omero.data.dir {{ omero_server_datadir | quote }}
 {% endif %}
 
 # Additional custom options
-{% for key in omero_server_config_set %}
+{% for key in (omero_server_config_set | sort) %}
 config set -- {{ key | quote }} {{
   ((omero_server_config_set[key] | string) == omero_server_config_set[key]) |
   ternary(omero_server_config_set[key], omero_server_config_set[key] | to_json) |
