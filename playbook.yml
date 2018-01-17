@@ -26,6 +26,7 @@
 
     - role: ansible-role-omero-server
       omero_server_system_managedrepo_group: importer
+      omero_server_system_umask: "0002"
       omero_server_config_set:
         Ice.IPv6: "0"
         omero.client.ui.tree.type_order:
@@ -56,6 +57,7 @@
 
     - role: ansible-role-omero-server
       omero_server_system_managedrepo_group: importer
+      omero_server_system_umask: "0002"
       omero_server_config_set:
         Ice.IPv6: "0"
         omero.client.ui.tree.type_order:
