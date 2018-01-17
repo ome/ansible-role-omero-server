@@ -1,3 +1,8 @@
+# Changes in Version 3
+
+## Summary of breaking changes
+- `omero_server_system_umask` defaults to `0022`. To restore the old behaviour set it to `0002`.
+
 # Changes in Version 2
 
 ## Summary of breaking changes

@@ -25,7 +25,7 @@ omero_server_system_user: omero-server
 #omero_server_system_uid:
 
 # OMERO system user umask
-omero_server_system_umask: "0002"
+omero_server_system_umask: "0022"
 
 # system group for the ManagedRepository
 omero_server_system_managedrepo_group: omero
