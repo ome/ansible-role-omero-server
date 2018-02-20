@@ -20,6 +20,7 @@ omero_server_config_set: {}
 
 # OMERO system user
 omero_server_system_user: omero-server
+omero_server_system_user_manage: True
 
 # OMERO system user ID (If not defined one is chosen automatically)
 #omero_server_system_uid:
