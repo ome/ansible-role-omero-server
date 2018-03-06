@@ -10,6 +10,7 @@
     state: present
     system: yes
     uid: "{{ omero_server_system_uid | default(omit) }}"
+  when: omero_server_system_user_manage
 
 # TODO: Ideally everything should be read-only apart from the var directory
 - name: omero server | create omero directories
