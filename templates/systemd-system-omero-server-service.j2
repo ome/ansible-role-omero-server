@@ -10,6 +10,10 @@ After=postgresql-9.6.service
 Requires=network.service
 {% endif %}
 After=network.service
+{% for value in ((omero_server_systemd_after | default({})) | sort) %}After={{ value }}
+{% endfor %}
+{% for value in ((omero_server_systemd_requires | default({})) | sort) %}Requires={{ value }}
+{% endfor %}
 
 [Service]
 User={{ omero_server_system_user }}

@@ -54,6 +54,8 @@ OMERO.server systemd configuration.
 - `omero_server_systemd_setup`: Create and start the `omero-server` systemd service, default `True`
 - `omero_server_systemd_limit_nofile`: Systemd limit for number of open files (default ignore)
 - `omero_server_systemd_require_network`: Should omero systemd services require a network before starting? Default `True`.
+- `omero_server_systemd_after`: A list of strings with additional service names to appear in systemd unit file "After" statements. Default empty/none.
+- `omero_server_systemd_requires`: A list of strings with additional service names to appear in systemd unit file "Requires" statements. Default empty/none.
 
 - `omero_server_database_backupdir`: Dump the OMERO database to this directory before upgrading, default empty (disabled)
 
