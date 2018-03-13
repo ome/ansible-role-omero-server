@@ -52,6 +52,12 @@ omero_server_systemd_limit_nofile:
 # Should omero systemd services require a network?
 omero_server_systemd_require_network: True
 
+# Services which OMERO server needs to be running before it can start, such as remote storage. 
+omero_server_systemd_after: []
+
+# Services which OMERO server needs to be concurrently running.
+omero_server_systemd_requires: []
+
 # If non-empty dump the OMERO database to this directory before upgrading
 omero_server_database_backupdir: ""
 
