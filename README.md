@@ -93,11 +93,18 @@ Example Playbooks
     # Install the latest release, including PostgreSQL on the same server
     - hosts: localhost
       roles:
+
+      - role: openmicroscopy.postgresql
+        postgresql_install_server: True
+        postgresql_databases:
+          - name: omero
+        postgresql_users:
+          - user: omero
+            password: omero
+            databases: [omero]
+
       - role: openmicroscopy.omero-server
-        postgresql_users_databases:
-        - user: omero
-          password: omero
-          databases: [omero]
+
 
     # Install or upgrade to a particular version, use an external database
     - hosts: localhost
