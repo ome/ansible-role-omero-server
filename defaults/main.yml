@@ -41,7 +41,7 @@ omero_server_datadir_managedrepo: "{{ omero_server_datadir }}/ManagedRepository"
 omero_server_datadir_mode: "u=rwX,g=rX,o=rX"
 
 # Permissions for OMERO ManagedRepository
-omero_server_datadir_managedrepo_mode: "u=rwX,g=srwX,o=rX"
+omero_server_datadir_managedrepo_mode: "u=rwX,g=srwX,o=rX,+t"
 
 # Setup systemd services
 omero_server_systemd_setup: True
