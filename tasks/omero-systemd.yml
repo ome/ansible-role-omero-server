@@ -2,23 +2,23 @@
 # Setup systemd files
 
 - name: omero server | systemd service
-  become: yes
+  become: true
   template:
     dest: /etc/systemd/system/omero-server.service
-    force: yes
+    force: true
     src: systemd-system-omero-server-service.j2
   notify:
-  - reload systemd
-  - omero-server restart omero-server
+    - reload systemd
+    - omero-server restart omero-server
 
 # Flush handlers to ensure systemd is reloaded
 - name: omero server | flush systemd handlers
   meta: flush_handlers
 
 - name: omero server | enable and start server systemd
-  become: yes
+  become: true
   service:
-    enabled: yes
+    enabled: true
     name: omero-server.service
     state: started
   when: omero_server_systemd_start

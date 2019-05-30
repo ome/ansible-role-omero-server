@@ -2,27 +2,32 @@
 # install/upgrade OMERO.server
 
 - name: omero server | is server symlink present
-  become: yes
+  become: true
   stat:
     path: "{{ omero_server_basedir }}/{{ omero_server_symlink }}"
   register: omero_server_symlink_st
 
 # This should be safe to always run including in check-mode
 - name: omero server | get server version
-  become: yes
+  become: true
   become_user: "{{ omero_server_system_user }}"
-  command: "{{ omero_server_basedir }}/{{ omero_server_symlink }}/bin/omero version"
+  command: >-
+    {{ omero_server_basedir }}/{{ omero_server_symlink }}/bin/omero version
   register: omero_server_version
   when: omero_server_symlink_st.stat.exists
-  changed_when: False
-  check_mode: no
+  changed_when: false
+  check_mode: false
   # Set a custom error message
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: omero server | check omero version could be obtained
   assert:
-    msg: "OMERO.server found but unable to get version, you may have a corrupt installation"
-    that: "not (omero_server_symlink_st.stat.exists and omero_server_version is undefined)"
+    msg: >-
+      OMERO.server found but unable to get version,
+      you may have a corrupt installation
+    that: >-
+      not (omero_server_symlink_st.stat.exists and
+      omero_server_version is undefined)
 
 # TODO: If server was started by systemd but stopped directly you may end up
 # with a hanging process
@@ -34,7 +39,7 @@
     url: https://downloads.openmicroscopy.org/latest/omero
     method: HEAD
   register: _omero_server_downloads_latest
-  check_mode: no
+  check_mode: false
 
 # omego supports --release "latest" but not "present"
 # It's easiest to lookup a concrete version and use this for all omego
@@ -60,7 +65,9 @@
     }}"
 
 - debug:
-    msg: "Upgrade needed: {{ omero_server_version.stdout }} -> {{ omero_server_release }}"
+    msg: >-
+      Upgrade needed: {{ omero_server_version.stdout }} ->
+      {{ omero_server_release }}
   when: _omero_server_update_needed
 
 - name: omero server | set upgrade flag
@@ -72,7 +79,7 @@
     }}"
 
 - name: omero server | install omero
-  become: yes
+  become: true
   become_user: "{{ omero_server_system_user }}"
   command: >
     {{ omero_server_omego }}
@@ -84,22 +91,24 @@
     chdir: "{{ omero_server_basedir }}"
     creates: "{{ omero_server_basedir }}/{{ omero_server_symlink }}"
   notify:
-  - omero-server rewrite omero-server configuration
-  - omero-server restart omero-server
+    - omero-server rewrite omero-server configuration
+    - omero-server restart omero-server
 
 # Backup database
 
 - name: omero server | create omero backup directory
-  become: yes
+  become: true
   file:
     mode: 0700
     owner: "{{ omero_server_system_user }}"
     path: "{{ omero_server_database_backupdir }}"
     state: directory
-  when: (omero_server_database_backupdir | length > 0) and _omero_server_execute_upgrade
+  when: >-
+    (omero_server_database_backupdir | length > 0) and
+    _omero_server_execute_upgrade
 
 - name: omero server | backup database
-  become: yes
+  become: true
   become_user: "{{ omero_server_system_user }}"
   command: >
     {{ omero_server_omego }}
@@ -108,11 +117,13 @@
     --serverdir {{ omero_server_basedir }}/{{ omero_server_symlink }}
   args:
     chdir: "{{ omero_server_database_backupdir }}"
-  when: (omero_server_database_backupdir | length > 0) and _omero_server_execute_upgrade
+  when: >-
+    (omero_server_database_backupdir | length > 0) and
+    _omero_server_execute_upgrade
 
 # Upgrade
 - name: omero server | upgrade
-  become: yes
+  become: true
   become_user: "{{ omero_server_system_user }}"
   command: >
     {{ omero_server_omego }}
@@ -123,5 +134,5 @@
     chdir: "{{ omero_server_basedir }}"
   when: _omero_server_execute_upgrade
   notify:
-  - omero-server rewrite omero-server configuration
-  - omero-server restart omero-server
+    - omero-server rewrite omero-server configuration
+    - omero-server restart omero-server

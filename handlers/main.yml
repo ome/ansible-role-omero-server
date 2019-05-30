@@ -5,12 +5,12 @@
 # http://stackoverflow.com/a/35130254
 
 - name: omero-server rewrite omero-server configuration
-  become: yes
+  become: true
   become_user: "{{ omero_server_system_user }}"
   command: "{{ omero_server_basedir }}/config/omero-server-config-update.sh"
 
 - name: omero-server restart omero-server
-  become: yes
+  become: true
   service:
     name: omero-server
     state: restarted

@@ -1,3 +1,4 @@
+---
 - src: openmicroscopy.omero-common
 - src: openmicroscopy.omego
 - src: openmicroscopy.basedeps
