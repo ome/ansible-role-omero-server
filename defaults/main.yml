@@ -59,6 +59,9 @@ omero_server_systemd_after: []
 # Services which OMERO server needs to be concurrently running.
 omero_server_systemd_requires: []
 
+# List of additional Python packages to be installed into virtualenv
+omero_server_python_addons: []
+
 # If non-empty dump the OMERO database to this directory before upgrading
 omero_server_database_backupdir: ""
 

@@ -4,7 +4,8 @@ import testinfra.utils.ansible_runner
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('omero-server-newdep')
 
-OMERO = '/opt/omero/server/OMERO.server/bin/omero'
+OMERO = ('/opt/omero/server/venv/bin/python '
+         '/opt/omero/server/OMERO.server/bin/omero')
 OMERO_LOGIN = '-C -s localhost -u root -w omero'
 
 

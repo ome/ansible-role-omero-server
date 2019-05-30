@@ -12,7 +12,9 @@
   become: true
   become_user: "{{ omero_server_system_user }}"
   command: >-
-    {{ omero_server_basedir }}/{{ omero_server_symlink }}/bin/omero version
+    {{ omero_server_basedir }}/venv/bin/python
+    {{ omero_server_basedir }}/{{ omero_server_symlink }}/bin/omero
+    version
   register: omero_server_version
   when: omero_server_symlink_st.stat.exists
   changed_when: false
@@ -77,6 +79,17 @@
       _omero_server_update_needed and
       (omero_server_release != 'present')
     }}"
+
+- name: omero server | setup virtualenv
+  become: true
+  pip:
+    name: "{{ omero_server_python_addons }}"
+    state: present
+    virtualenv: "{{ omero_server_basedir }}/venv"
+    virtualenv_site_packages: true
+  notify:
+    - omero-server rewrite omero-server configuration
+    - omero-server restart omero-server
 
 - name: omero server | install omero
   become: true
