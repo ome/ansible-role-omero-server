@@ -22,3 +22,8 @@ def test_omero_version(host):
 def test_postgres_version(host):
     ver = host.check_output("psql --version")
     assert ver.startswith('psql (PostgreSQL) 9.6.')
+
+
+def test_additional_python(host):
+    piplist = host.check_output("/opt/omero/server/venv/bin/pip list")
+    assert "omero-upload" in piplist
