@@ -2,22 +2,22 @@
 # OMERO template configuration files
 
 - name: omero server | configuration script
-  become: yes
+  become: true
   template:
     dest: "{{ omero_server_basedir }}/config/omero-server-config-update.sh"
-    force: yes
+    force: true
     src: omero-server-config-update-sh.j2
     mode: 0555
   notify:
-  - omero-server rewrite omero-server configuration
-  - omero-server restart omero-server
+    - omero-server rewrite omero-server configuration
+    - omero-server restart omero-server
 
 - name: omero server | configuration 00-omero-server.omero
-  become: yes
+  become: true
   template:
     dest: "{{ omero_server_basedir }}/config/00-omero-server.omero"
-    force: yes
+    force: true
     src: 00-omero-server-omero.j2
   notify:
-  - omero-server rewrite omero-server configuration
-  - omero-server restart omero-server
+    - omero-server rewrite omero-server configuration
+    - omero-server restart omero-server

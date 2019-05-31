@@ -2,16 +2,16 @@
 # OMERO data directories
 
 - name: omero server | create omero datadir base directory
-  become: yes
+  become: true
   file:
     owner: "{{ omero_server_system_user }}"
     mode: "{{ omero_server_datadir_mode }}"
     path: "{{ omero_server_datadir }}"
-    recurse: no
+    recurse: false
     state: directory
 
 - name: omero server | create omero datadir subdirectories
-  become: yes
+  become: true
   file:
     owner: "{{ omero_server_system_user }}"
     mode: "{{ omero_server_datadir_mode }}"
@@ -19,14 +19,14 @@
     recurse: "{{ omero_server_datadir_chown }}"
     state: directory
   with_items:
-  - Files
-  - Thumbnails
-  - DropBox
-  - FullText
-  - Pixels
+    - Files
+    - Thumbnails
+    - DropBox
+    - FullText
+    - Pixels
 
 - name: omero server | create omero BioFormatsCache
-  become: yes
+  become: true
   file:
     owner: "{{ omero_server_system_user }}"
     mode: "{{ omero_server_datadir_mode }}"
@@ -35,16 +35,18 @@
     state: directory
 
 - name: omero server | create omero BioFormatsCache symlink
-  become: yes
+  become: true
   file:
     src: "{{ omero_server_datadir_bioformatscache }}"
     path: "{{ omero_server_datadir }}/BioFormatsCache"
     state: link
-    force: yes
-  when: 'omero_server_datadir_bioformatscache != (omero_server_datadir + "/BioFormatsCache")'
+    force: true
+  when: >-
+    omero_server_datadir_bioformatscache !=
+    (omero_server_datadir + "/BioFormatsCache")
 
 - name: omero server | create omero ManagedRepository
-  become: yes
+  become: true
   file:
     owner: "{{ omero_server_system_user }}"
     group: "{{ omero_server_system_managedrepo_group }}"

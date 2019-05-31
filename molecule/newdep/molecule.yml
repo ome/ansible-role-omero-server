@@ -1,0 +1,45 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: molecule/resources/requirements.yml
+driver:
+  name: docker
+lint:
+  name: yamllint
+platforms:
+  - name: omero-server-newdep
+    image: centos/systemd
+    image_version: latest
+    command: /sbin/init
+    privileged: true
+    groups:
+      - docker-hosts
+provisioner:
+  name: ansible
+  lint:
+    name: ansible-lint
+  # To test the upgrade process without breaking the idempotence check
+  # - install omero during the prepare step which is only run once
+  # - attempt to upgrade in the converge step
+  playbooks:
+    prepare: ../resources/install-oldomero.yml
+    converge: ../resources/upgrade-omero.yml
+  inventory:
+    host_vars:
+      omero-server-newdep:
+        omero_server_ice_version: "3.6"
+        omero_server_release: latest
+        postgresql_version: "9.6"
+        ice_python_wheel: >-
+          https://github.com/openmicroscopy/zeroc-ice-py-centos7/releases/download/0.1.0/zeroc_ice-3.6.4-cp27-cp27mu-linux_x86_64.whl
+    group_vars:
+      docker-hosts:
+        omero_server_systemd_require_network: false
+scenario:
+  name: newdep
+verifier:
+  name: testinfra
+  directory: ../resources/tests/
+  lint:
+    name: flake8

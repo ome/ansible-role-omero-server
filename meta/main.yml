@@ -1,3 +1,4 @@
+---
 galaxy_info:
   author: ome-devel@lists.openmicroscopy.org.uk
   description: Install and configure OMERO.server, and optionally PostgreSQL
@@ -5,20 +6,20 @@ galaxy_info:
   license: BSD
   min_ansible_version: 2.2
   platforms:
-  - name: EL
-    versions:
-    - 7
+    - name: EL
+      versions:
+        - 7
   galaxy_tags: []
 
 dependencies:
-- name: openmicroscopy.omero-common
-  src: openmicroscopy.omero-common
-- name: openmicroscopy.omego
-  src: openmicroscopy.omego
-- role: openmicroscopy.basedeps
-- role: openmicroscopy.java
-- role: openmicroscopy.omero-python-deps
-- role: openmicroscopy.ice
-  ice_version: "{{ omero_server_ice_version }}"
-- role: openmicroscopy.postgresql
-  postgresql_install_server: False
+  - name: openmicroscopy.omero-common
+    src: openmicroscopy.omero-common
+  - name: openmicroscopy.omego
+    src: openmicroscopy.omego
+  - role: openmicroscopy.basedeps
+  - role: openmicroscopy.java
+  - role: openmicroscopy.omero-python-deps
+  - role: openmicroscopy.ice
+    ice_version: "{{ omero_server_ice_version }}"
+  - role: openmicroscopy.postgresql
+    postgresql_install_server: false

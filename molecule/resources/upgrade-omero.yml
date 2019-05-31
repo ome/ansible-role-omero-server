@@ -1,0 +1,50 @@
+---
+# omero_server_release is defined in molecule.yml host_vars so:
+# - omero-server-newdep: latest: upgraded
+# - omero-server-olddep: present: unchanged at 5.2
+- name: Upgrade OMERO if required
+  hosts: all
+  roles:
+
+    - role: ansible-role-omero-server
+      omero_server_system_managedrepo_group: importer
+      omero_server_config_set:
+        Ice.IPv6: "0"
+        omero.client.ui.tree.type_order:
+          - screen
+          - plate
+          - project
+          - dataset
+
+
+- name: Additional tasks for setting up tests
+  hosts: all
+  tasks:
+
+    - name: create import user
+      user:
+        name: data-importer
+        group: importer
+
+    - name: create data directory
+      file:
+        path: /data/import
+        state: directory
+
+    - name: create fake image
+      copy:
+        content: ''
+        dest: /data/import/test.fake
+
+
+# testinfra Sudo doesn't use the `-i` flag, so the working directory needs
+# to be accessible
+- hosts: vagrant-hosts
+  tasks:
+    - name: make vagrant home accessible
+      file:
+        owner: vagrant
+        group: vagrant
+        mode: "0711"
+        path: /home/vagrant
+        state: directory

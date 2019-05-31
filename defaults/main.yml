@@ -20,10 +20,10 @@ omero_server_config_set: {}
 
 # OMERO system user
 omero_server_system_user: omero-server
-omero_server_system_user_manage: True
+omero_server_system_user_manage: true
 
 # OMERO system user ID (If not defined one is chosen automatically)
-#omero_server_system_uid:
+# omero_server_system_uid:
 
 # OMERO system user umask
 omero_server_system_umask: "0002"
@@ -44,15 +44,16 @@ omero_server_datadir_mode: "u=rwX,g=rX,o=rX"
 omero_server_datadir_managedrepo_mode: "u=rwX,g=srwX,o=rX"
 
 # Setup systemd services
-omero_server_systemd_setup: True
+omero_server_systemd_setup: true
 
 # Change the systemd limit for number of open files (default ignore)
 omero_server_systemd_limit_nofile:
 
 # Should omero systemd services require a network?
-omero_server_systemd_require_network: True
+omero_server_systemd_require_network: true
 
-# Services which OMERO server needs to be running before it can start, such as remote storage.
+# Services which OMERO server needs to be running before it can start,
+# such as remote storage.
 omero_server_systemd_after: []
 
 # Services which OMERO server needs to be concurrently running.
@@ -68,22 +69,23 @@ omero_server_database_backupdir: ""
 
 # Recursively set the owner on the OMERO data directory, use if the directory
 # has been copied with an incorrect owner
-omero_server_datadir_chown: False
+omero_server_datadir_chown: false
 
 # OMERO BioFormatsCache directory
-omero_server_datadir_bioformatscache: "{{ omero_server_datadir }}/BioFormatsCache"
+omero_server_datadir_bioformatscache: >-
+  {{ omero_server_datadir }}/BioFormatsCache
 
 # DEVELOPMENT: If True clear the existing configuration before regenerating
-omero_server_always_reset_config: True
+omero_server_always_reset_config: true
 
 # DEVELOPMENT: Automatically start systemd omero
-omero_server_systemd_start: True
+omero_server_systemd_start: true
 
 # DEVELOPMENT: Automatically init/upgrade and configure the OMERO database
-omero_server_database_manage: True
+omero_server_database_manage: true
 
 # DEVELOPMENT: Automatically create and configure OMERO data directories
-omero_server_datadir_manage: True
+omero_server_datadir_manage: true
 
 # Base directory for the server installation
 omero_server_basedir: "{{ omero_common_basedir }}/server"
@@ -103,7 +105,7 @@ omero_server_omego_additional_args: ""
 # If True and server is already installed then upgrade to the version in
 # omero_server_release, otherwise don't upgrade an existing server.
 # This should not be needed if version are correctly compared.
-omero_server_upgrade: True
+omero_server_upgrade: true
 
 # DEVELOPMENT: Operator for comparing current-version against
 # omero_server_release, e.g. '!='. Default is to upgrade when
