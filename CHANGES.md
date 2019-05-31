@@ -1,3 +1,9 @@
+# Changes in Version 3
+
+## Summary of breaking changes
+- OMERO.server is installed into a virtualenv (includes system packages).
+
+
 # Changes in Version 2
 
 ## Summary of breaking changes
