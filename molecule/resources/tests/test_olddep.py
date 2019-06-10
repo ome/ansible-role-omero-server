@@ -11,7 +11,7 @@ OMERO = '/opt/omero/server/OMERO.server/bin/omero'
 def test_omero_version(host):
     with host.sudo('data-importer'):
         ver = host.check_output("%s version" % OMERO)
-    assert re.match('5\.2\.\d+-ice35-', ver)
+    assert re.match('5\.2\.\d+-ice36-', ver)
 
 
 def test_postgres_version(host):
