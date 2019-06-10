@@ -9,17 +9,16 @@ galaxy_info:
     - name: EL
       versions:
         - 7
-  galaxy_tags: []
+  role_name: omero_server
+  galaxy_tags: ['omero', 'server']
 
 dependencies:
-  - name: openmicroscopy.omero-common
-    src: openmicroscopy.omero-common
-  - name: openmicroscopy.omego
-    src: openmicroscopy.omego
-  - role: openmicroscopy.basedeps
-  - role: openmicroscopy.java
-  - role: openmicroscopy.omero-python-deps
-  - role: openmicroscopy.ice
+  - role: ome.omero_common
+  - role: ome.omego
+  - role: ome.basedeps
+  - role: ome.java
+  - role: ome.omero_python_deps
+  - role: ome.ice
     ice_version: "{{ omero_server_ice_version }}"
-  - role: openmicroscopy.postgresql
+  - role: ome.postgresql
     postgresql_install_server: false

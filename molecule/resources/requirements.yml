@@ -1,8 +1,8 @@
 ---
-- src: openmicroscopy.omero-common
-- src: openmicroscopy.omego
-- src: openmicroscopy.basedeps
-- src: openmicroscopy.java
-- src: openmicroscopy.omero-python-deps
-- src: openmicroscopy.ice
-- src: openmicroscopy.postgresql
+- src: ome.omero_common
+- src: ome.omego
+- src: ome.basedeps
+- src: ome.java
+- src: ome.omero_python_deps
+- src: ome.ice
+- src: ome.postgresql

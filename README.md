@@ -1,8 +1,8 @@
 OMERO Server
 ============
 
-[![Build Status](https://travis-ci.org/openmicroscopy/ansible-role-omero-server.svg)](https://travis-ci.org/openmicroscopy/ansible-role-omero-server)
-[![Ansible Role](https://img.shields.io/ansible/role/14772.svg)](https://galaxy.ansible.com/openmicroscopy/omero-server/)
+[![Build Status](https://travis-ci.org/ome/ansible-role-omero-server.svg)](https://travis-ci.org/ome/ansible-role-omero-server)
+[![Ansible Role](https://img.shields.io/ansible/role/14772.svg)](https://galaxy.ansible.com/ome/omero_server/)
 
 Installs and configures OMERO.server.
 
@@ -69,7 +69,7 @@ This role regenerates the OMERO configuration file using the configuration files
 Manual configuration changes (`omero config ...`) will be lost following a restart of `omero-server` with systemd, you can disable this by setting `omero_server_always_reset_config: false`.
 Manual configuration changes will never be copied during an upgrade.
 
-See https://github.com/openmicroscopy/design/issues/70 for a proposal to add support for a conf.d style directory directly into OMERO.
+See https://github.com/ome/design/issues/70 for a proposal to add support for a conf.d style directory directly into OMERO.
 
 
 Example Playbooks
@@ -79,7 +79,7 @@ Example Playbooks
     - hosts: localhost
       roles:
 
-      - role: openmicroscopy.postgresql
+      - role: ome.postgresql
         postgresql_install_server: True
         postgresql_databases:
           - name: omero
@@ -88,13 +88,13 @@ Example Playbooks
             password: omero
             databases: [omero]
 
-      - role: openmicroscopy.omero-server
+      - role: ome.omero-server
 
 
     # Install or upgrade to a particular version, use an external database
     - hosts: localhost
       roles:
-      - openmicroscopy.omero-server
+      - ome.omero-server
         omero_server_release: 5.3.1
         omero_server_dbhost: postgres.example.org
         omero_server_dbuser: db_user
