@@ -2,7 +2,8 @@ import os
 import testinfra.utils.ansible_runner
 
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
-    os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('omero-server-newdep')
+    os.environ['MOLECULE_INVENTORY_FILE']).get_hosts(
+        'omero-server-newdep,omero-server-upgradetovenv')
 
 OMERO = ('/opt/omero/server/venv/bin/python '
          '/opt/omero/server/OMERO.server/bin/omero')

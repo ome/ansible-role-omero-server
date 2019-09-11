@@ -1,0 +1,57 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: molecule/resources/requirements.yml
+driver:
+  name: docker
+lint:
+  name: yamllint
+platforms:
+  - name: omero-server-upgradetovenv
+    image: centos/systemd
+    image_version: latest
+    command: /sbin/init
+    privileged: true
+    groups:
+      - docker-hosts
+provisioner:
+  name: ansible
+  lint:
+    name: ansible-lint
+  # - Install OMERO without a virtualenv in the prepare step
+  # - Swtich to a virtualenv in the converge step
+  options:
+    v: true
+    diff: true
+    # tags: [x]
+  playbooks:
+    prepare: ../resources/install-novenv.yml
+    converge: ../resources/upgrade-omero.yml
+  inventory:
+    host_vars:
+      omero-server-upgradetovenv:
+        omero_server_ice_version: "3.6"
+        omero_server_release: latest
+        omero_server_python_addons:
+          - omero-upload
+        omero_server_virtualenv: true
+        postgresql_version: "9.6"
+        ice_python_wheel: >-
+          https://github.com/openmicroscopy/zeroc-ice-py-centos7/releases/download/0.1.0/zeroc_ice-3.6.4-cp27-cp27mu-linux_x86_64.whl
+    group_vars:
+      docker-hosts:
+        omero_server_systemd_require_network: false
+scenario:
+  name: upgradetovenv
+  create_sequence:
+    - dependency
+    - create
+    - prepare
+  converge_sequence:
+    - converge
+verifier:
+  name: testinfra
+  directory: ../resources/tests/
+  lint:
+    name: flake8
