@@ -6,6 +6,9 @@ omero_server_release: present
 # Ice version
 omero_server_ice_version: "3.6"
 
+# Use a virtualenv
+omero_server_virtualenv: false
+
 # OMERO database connection parameters
 omero_server_dbhost: localhost
 omero_server_dbuser: omero
@@ -70,6 +73,14 @@ omero_server_database_backupdir: ""
 # Expert users only!
 ######################################################################
 
+# How to run omero
+omero_server_omero_command: >-
+  {{
+    omero_server_virtualenv | ternary(
+      omero_server_basedir + '/venv/bin/python ', '')
+  }}
+  {{ omero_server_basedir }}/{{ omero_server_symlink }}/bin/omero
+
 # Recursively set the owner on the OMERO data directory, use if the directory
 # has been copied with an incorrect owner
 omero_server_datadir_chown: false
@@ -124,6 +135,7 @@ omero_server_omego_options: >
   --sym {{ omero_server_symlink }}
   --ice {{ omero_server_ice_version }}
   --no-start
+  --no-web
   --ignoreconfig
   {{ omero_server_omego_verbosity }}
   {{ omero_server_omego_additional_args }}

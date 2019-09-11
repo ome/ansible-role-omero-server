@@ -24,10 +24,12 @@ Restart=no
 RestartSec=10
 # Allow up to 5 min for start/stop
 TimeoutSec=300
+{% if omero_server_virtualenv %}
 Environment="PATH={{ omero_server_basedir }}/venv/bin:/bin:/usr/bin"
+{% endif %}
 ExecStartPre={{ omero_server_basedir }}/config/omero-server-config-update.sh
-ExecStart={{ omero_server_basedir }}/venv/bin/python {{ omero_server_basedir }}/{{ omero_server_symlink }}/bin/omero admin start
-ExecStop={{ omero_server_basedir }}/venv/bin/python {{ omero_server_basedir }}/{{ omero_server_symlink }}/bin/omero admin stop
+ExecStart={{ omero_server_omero_command }} admin start
+ExecStop={{ omero_server_omero_command }} admin stop
 {% if omero_server_systemd_limit_nofile %}
 LimitNOFILE={{ omero_server_systemd_limit_nofile }}
 {% endif %}

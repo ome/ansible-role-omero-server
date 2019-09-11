@@ -7,16 +7,23 @@
     path: "{{ omero_server_basedir }}/{{ omero_server_symlink }}"
   register: omero_server_symlink_st
 
+- name: omero server | is virtualenv present
+  become: true
+  stat:
+    path: "{{ omero_server_basedir }}/venv"
+  register: omero_server_venv_st
+
 # This should be safe to always run including in check-mode
 - name: omero server | get server version
   become: true
   become_user: "{{ omero_server_system_user }}"
   command: >-
-    {{ omero_server_basedir }}/venv/bin/python
-    {{ omero_server_basedir }}/{{ omero_server_symlink }}/bin/omero
+    {{ omero_server_omero_command }}
     version
   register: omero_server_version
-  when: omero_server_symlink_st.stat.exists
+  when: >-
+    omero_server_symlink_st.stat.exists and
+    (omero_server_venv_st.stat.exists or not omero_server_virtualenv)
   changed_when: false
   check_mode: false
   # Set a custom error message
@@ -28,8 +35,14 @@
       OMERO.server found but unable to get version,
       you may have a corrupt installation
     that: >-
-      not (omero_server_symlink_st.stat.exists and
-      omero_server_version is undefined)
+      (not omero_server_virtualenv and
+        not (omero_server_symlink_st.stat.exists and
+        omero_server_version is undefined))
+      or
+      (omero_server_virtualenv and
+        not (omero_server_symlink_st.stat.exists and
+        omero_server_venv_st.stat.exists and
+        omero_server_version is undefined))
 
 # TODO: If server was started by systemd but stopped directly you may end up
 # with a hanging process
@@ -59,16 +72,22 @@
   set_fact:
     # Experimentation shows "5.3.2 | version_compare('latest', '<')" is False
     # so this should work as expected
+    # If we're switching from a non-venv to a venv treat it as an upgrade
     _omero_server_update_needed: "{{
-      omero_server_symlink_st.stat.exists and
-      (omero_server_version.stdout | version_compare(
-         _omero_server_new_version,
-         omero_server_checkupgrade_comparator))
+      (
+        (omero_server_version.stdout | default('') | length > 0) and
+        (omero_server_version.stdout | version_compare(
+          _omero_server_new_version,
+          omero_server_checkupgrade_comparator))
+      ) or (
+        omero_server_virtualenv and
+        not omero_server_venv_st.stat.exists
+      )
     }}"
 
 - debug:
     msg: >-
-      Upgrade needed: {{ omero_server_version.stdout }} ->
+      Upgrade needed: {{ omero_server_version.stdout | default('UNKNOWN') }} ->
       {{ omero_server_release }}
   when: _omero_server_update_needed
 
@@ -87,6 +106,7 @@
     state: present
     virtualenv: "{{ omero_server_basedir }}/venv"
     virtualenv_site_packages: true
+  when: omero_server_virtualenv
   notify:
     - omero-server rewrite omero-server configuration
     - omero-server restart omero-server

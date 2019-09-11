@@ -6,5 +6,5 @@
 set -e
 
 for f in {{ omero_server_basedir }}/config/*.omero; do
-    {{ omero_server_basedir }}/venv/bin/python {{ omero_server_basedir }}/{{ omero_server_symlink }}/bin/omero load "$f"
+    {{ omero_server_omero_command }} load "$f"
 done
