@@ -7,8 +7,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
     os.environ['MOLECULE_INVENTORY_FILE']).get_hosts(
         'omero-server-newdep,omero-server-upgradetovenv')
 
-OMERO = ('/opt/omero/server/venv/bin/python '
-         '/opt/omero/server/OMERO.server/bin/omero')
+OMERO = '/opt/omero/server/OMERO.server/bin/omero'
 OMERO_LOGIN = '-C -s localhost -u root -w omero'
 VERSION_PATTERN = re.compile('(\d+)\.(\d+)\.(\d+)-ice36-')
 
@@ -47,3 +46,10 @@ def test_omero_server_config(host, key, value):
 def test_additional_python(host):
     piplist = host.check_output("/opt/omero/server/venv/bin/pip list")
     assert "omero-upload" in piplist
+
+
+def test_running_in_venv(host):
+    python_procs = host.process.filter(user='omero-server', comm='python')
+    for p in python_procs:
+        f = host.file('/proc/%d/exe' % p.pid)
+        assert f.linked_to('/opt/omero/server/venv/bin/python')

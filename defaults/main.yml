@@ -75,10 +75,6 @@ omero_server_database_backupdir: ""
 
 # How to run omero
 omero_server_omero_command: >-
-  {{
-    omero_server_virtualenv | ternary(
-      omero_server_basedir + '/venv/bin/python ', '')
-  }}
   {{ omero_server_basedir }}/{{ omero_server_symlink }}/bin/omero
 
 # Recursively set the owner on the OMERO data directory, use if the directory

@@ -169,3 +169,15 @@
   notify:
     - omero-server rewrite omero-server configuration
     - omero-server restart omero-server
+
+- name: omero server | patch bin/omero to use virtualenv
+  become: true
+  replace:
+    mode: 0755
+    path: "{{ omero_server_basedir }}/{{ omero_server_symlink }}/bin/omero"
+    regexp: "^#!.+python$"
+    replace: "#!{{ omero_server_basedir }}/venv/bin/python"
+  when: omero_server_virtualenv
+  notify:
+    - omero-server rewrite omero-server configuration
+    - omero-server restart omero-server
