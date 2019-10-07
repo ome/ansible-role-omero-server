@@ -30,7 +30,13 @@ def test_additional_python(host):
 
 
 def test_running_in_venv(host):
-    python_procs = host.process.filter(user='omero-server', comm='python')
-    for p in python_procs:
-        f = host.file('/proc/%d/exe' % p.pid)
-        assert f.linked_to('/opt/omero/server/venv/bin/python')
+    # host.process may use `ps -Aww -o ...` which truncates some fields
+    # https://github.com/philpep/testinfra/blob/3.2.0/testinfra/modules/process.py#L127-L148
+    count = 0
+    for line in host.check_output('ps -Aww -o pid,comm,user').splitlines()[1:]:
+        pid, command, user = line.split()
+        if command == 'python' and user == 'omero-server':
+            count += 1
+            f = host.file('/proc/%s/exe' % pid)
+            assert f.linked_to == '/opt/omero/server/venv/bin/python'
+    assert count > 1
