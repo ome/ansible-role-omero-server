@@ -17,3 +17,7 @@ def test_omero_version(host):
 def test_postgres_version(host):
     ver = host.check_output("psql --version")
     assert ver.startswith('psql (PostgreSQL) 9.4.')
+
+
+def test_no_virtualenv(host):
+    assert not host.file('/opt/omero/server/venv').exists

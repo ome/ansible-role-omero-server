@@ -57,6 +57,13 @@ OMERO.server systemd configuration.
 - `omero_server_systemd_after`: A list of strings with additional service names to appear in systemd unit file "After" statements. Default empty/none.
 - `omero_server_systemd_requires`: A list of strings with additional service names to appear in systemd unit file "Requires" statements. Default empty/none.
 
+Python virtualenv
+- `omero_server_virtualenv`: Use a virtualenv for most OMERO.server dependencies, default `False` but this will change in future
+- `omero_server_python_addons`: List of additional Python packages to be installed into virtualenv.
+  Alternatively you can install packages into `/opt/omero/server/venv` independently from this role.
+  Requires `omero_server_virtualenv: True`.
+
+Backups
 - `omero_server_database_backupdir`: Dump the OMERO database to this directory before upgrading, default empty (disabled)
 
 

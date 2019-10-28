@@ -8,7 +8,7 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: omero-server-newdep
+  - name: omero-server-upgradetovenv
     image: centos/systemd
     image_version: latest
     command: /sbin/init
@@ -19,15 +19,18 @@ provisioner:
   name: ansible
   lint:
     name: ansible-lint
-  # To test the upgrade process without breaking the idempotence check
-  # - install omero during the prepare step which is only run once
-  # - attempt to upgrade in the converge step
+  # - Install OMERO without a virtualenv in the prepare step
+  # - Swtich to a virtualenv in the converge step
+  options:
+    v: true
+    diff: true
+    # tags: [x]
   playbooks:
-    prepare: ../resources/install-oldomero.yml
+    prepare: ../resources/install-novenv.yml
     converge: ../resources/upgrade-omero.yml
   inventory:
     host_vars:
-      omero-server-newdep:
+      omero-server-upgradetovenv:
         omero_server_ice_version: "3.6"
         omero_server_release: latest
         omero_server_python_addons:
@@ -40,7 +43,13 @@ provisioner:
       docker-hosts:
         omero_server_systemd_require_network: false
 scenario:
-  name: newdep
+  name: upgradetovenv
+  create_sequence:
+    - dependency
+    - create
+    - prepare
+  converge_sequence:
+    - converge
 verifier:
   name: testinfra
   directory: ../resources/tests/
