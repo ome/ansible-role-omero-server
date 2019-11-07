@@ -15,10 +15,14 @@ galaxy_info:
 dependencies:
   - role: ome.omero_common
   - role: ome.omego
+    when: not omero_server_python3
   - role: ome.basedeps
   - role: ome.java
   - role: ome.omero_python_deps
+    when: not omero_server_python3
   - role: ome.ice
     ice_version: "{{ omero_server_ice_version }}"
+    ice_install_devel: not omero_server_python3
+    ice_install_python: not omero_server_python3
   - role: ome.postgresql
     postgresql_install_server: false

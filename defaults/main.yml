@@ -9,6 +9,9 @@ omero_server_ice_version: "3.6"
 # Use a virtualenv
 omero_server_virtualenv: false
 
+# Python 3?
+omero_server_python3: false
+
 # OMERO database connection parameters
 omero_server_dbhost: localhost
 omero_server_dbuser: omero
@@ -73,9 +76,40 @@ omero_server_database_backupdir: ""
 # Expert users only!
 ######################################################################
 
+# List of Python3 packages to install
+omero_server_python_requirements:
+  - omego==0.7.0.dev1
+  - https://users.openmicroscopy.org.uk/~spli/centos-zeroc-ice-py/zeroc_ice-3.6.5-cp36-cp36m-linux_x86_64.whl
+  - omero-py==5.6.dev2
+  - omero-dropbox==5.5.dev1
+  - jinja2
+  - numpy
+  - pillow
+  - tables
+
+# Path to virtualenv
+omero_server_virtualenv_basedir: >-
+  {{
+    omero_server_python3 | ternary(
+      omero_server_basedir + '/venv3',
+      omero_server_basedir + '/venv'
+    )
+  }}
+
+# OMERODIR
+omero_server_omerodir: "{{ omero_server_basedir }}/{{ omero_server_symlink }}"
+
 # How to run omero
-omero_server_omero_command: >-
-  {{ omero_server_basedir }}/{{ omero_server_symlink }}/bin/omero
+omero_server_omero_command: "{{ omero_server_omerodir }}/bin/omero"
+
+# Need to set OMERODIR when omego runs omero
+omero_server_omego_environment: >-
+  {{
+    omero_server_python3 | ternary(
+      {'OMERODIR': omero_server_omerodir},
+      {}
+    )
+  }}
 
 # Recursively set the owner on the OMERO data directory, use if the directory
 # has been copied with an incorrect owner
@@ -104,7 +138,13 @@ omero_server_basedir: "{{ omero_common_basedir }}/server"
 omero_server_symlink: OMERO.server
 
 # Path of omego
-omero_server_omego: "{{ omero_common_basedir }}/omego/bin/omego"
+omero_server_omego: >-
+  {{
+    omero_server_python3 | ternary(
+      omero_server_virtualenv_basedir + '/bin/omego',
+      omero_common_basedir + '/omego/bin/omego'
+    )
+  }}
 
 # Control verbosity of omego
 omero_server_omego_verbosity: "-qq"
@@ -133,6 +173,10 @@ omero_server_omego_options: >
   --no-start
   --no-web
   --ignoreconfig
+  {{
+    omero_server_python3 | ternary(
+      '--omerocli ' + omero_server_virtualenv_basedir + '/bin/omero', '')
+  }}
   {{ omero_server_omego_verbosity }}
   {{ omero_server_omego_additional_args }}
 
