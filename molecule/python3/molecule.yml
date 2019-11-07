@@ -65,7 +65,7 @@ scenario:
     - converge
     # TODO: Since we're using a merge build the version can't be compared so
     # it will always be upgraded
-    #- idempotence
+    # - idempotence
     - verify
     - destroy
 
