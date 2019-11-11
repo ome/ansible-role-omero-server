@@ -4,6 +4,5 @@
 - src: ome.basedeps
 - src: ome.java
 - src: ome.omero_python_deps
-- name: ome.ice
-  src: https://github.com/manics/ansible-role-ice/archive/no-python.tar.gz
+- src: ome.ice
 - src: ome.postgresql
