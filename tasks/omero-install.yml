@@ -140,28 +140,6 @@
     - omero-server rewrite omero-server configuration
     - omero-server restart omero-server
 
-# TODO: Remove when https://github.com/ome/omego/pull/126 is released
-- name: omero server | patch omego/external.py
-  become: true
-  get_url:
-    dest: "{{ omero_server_virtualenv_basedir }}\
-      /lib64/python3.6/site-packages/omego/external.py"
-    force: true
-    url: "https://raw.githubusercontent.com/ome/omego/\
-      0d556e3a9b0f4b92deb5c51ef60878aac51d12be/omego/external.py"
-  when: omero_server_python3
-
-# TODO: Remove when https://github.com/ome/omego/pull/126 is released
-- name: omero server | patch omego/upgrade.py
-  become: true
-  get_url:
-    dest: "{{ omero_server_virtualenv_basedir }}\
-      /lib64/python3.6/site-packages/omego/upgrade.py"
-    force: true
-    url: "https://raw.githubusercontent.com/ome/omego/\
-      0d556e3a9b0f4b92deb5c51ef60878aac51d12be/omego/upgrade.py"
-  when: omero_server_python3
-
 # TODO: Remove when https://github.com/ome/omero-py/pull/110 is released
 - name: omero server | patch omero/plugins/db.py
   become: true
