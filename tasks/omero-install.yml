@@ -82,21 +82,37 @@
   }}"
 
 - name: omero server | checkupgrade
-  set_fact:
-    # If _omero_server_new_version does not begin with a number assume it's a
-    # custom build, always upgrade
-    # If we're switching from a non-venv to a venv treat it as an upgrade
-    _omero_server_update_needed: >-
-      {{
-        not _omero_server_matches_virtualenv or
-        not (_omero_server_new_version | regex_search('^[0-9]')) or
-        (
-          (omero_server_version.stdout | default('') | length > 0) and
-          (omero_server_version.stdout is version_compare(
-            _omero_server_new_version,
-            omero_server_checkupgrade_comparator))
-        )
-      }}
+  block:
+    - set_fact:
+        # If _omero_server_new_version does not begin with a number assume
+        # it's a custom build, always upgrade
+        # If we're switching from a non-venv to a venv treat it as an upgrade
+        _omero_server_update_needed: >-
+          {{
+            not _omero_server_matches_virtualenv or
+            not (_omero_server_new_version | regex_search('^[0-9]')) or
+            (
+              (omero_server_version.stdout | default('') | length > 0) and
+              (omero_server_version.stdout is version_compare(
+                _omero_server_new_version,
+                omero_server_checkupgrade_comparator))
+            )
+          }}
+  rescue:
+    # For example, comparing 5.6.dev2 with 5.6.0-m1 leads to
+    # '<' not supported between instances of 'str' and 'int'
+    # Assume this is a dev or pre-release and upgrade
+    # Ansible will exit 0 but show a failed task in the summary
+
+    - debug:
+        msg: >-
+          Error comparing current version
+          ({{ omero_server_version.stdout | default('') }})
+          and new version
+          ({{ _omero_server_new_version }}), upgrading
+
+    - set_fact:
+        _omero_server_update_needed: true
 
 - debug:
     msg: >-
