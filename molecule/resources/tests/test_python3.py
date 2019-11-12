@@ -38,8 +38,12 @@ def test_running_in_venv(host):
     for line in host.check_output('ps -Aww -o pid,comm,user').splitlines()[1:]:
         pid, command, user = line.split()
         if command == 'python' and user == 'omero-server':
-            count += 1
-            f = host.file('/proc/%s/environ' % pid)
-            assert b'VIRTUAL_ENV=/opt/omero/server/venv3' in f.content.split(
-                b'\0')
+            try:
+                f = host.file('/proc/%s/environ' % pid)
+                assert b'VIRTUAL_ENV=/opt/omero/server/venv3' in (
+                    f.content.split(b'\0'))
+                count += 1
+            except RuntimeError:
+                # Might be a transient unrelated process
+                pass
     assert count > 1
