@@ -5,7 +5,7 @@
 - name: omero server | install python3
   become: true
   yum:
-    name: python3
+    name: python36
     state: present
   when: omero_server_python3
 
