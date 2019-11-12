@@ -81,9 +81,9 @@
       )
   }}"
 
-- name: omero server | checkupgrade
-  block:
-    - set_fact:
+- block:
+    - name: omero server | checkupgrade
+      set_fact:
         # If _omero_server_new_version does not begin with a number assume
         # it's a custom build, always upgrade
         # If we're switching from a non-venv to a venv treat it as an upgrade
@@ -111,7 +111,8 @@
           and new version
           ({{ _omero_server_new_version }}), upgrading
 
-    - set_fact:
+    - name: omero server | checkupgrade failed
+      set_fact:
         _omero_server_update_needed: true
 
 - debug:
