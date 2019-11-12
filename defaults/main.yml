@@ -77,11 +77,12 @@ omero_server_database_backupdir: ""
 ######################################################################
 
 # List of Python3 packages to install
+# _omero_* are temporary overrides pending a final release
 omero_server_python_requirements:
   - omego==0.7.0
   - https://github.com/ome/zeroc-ice-py-centos7/releases/download/0.2.1/zeroc_ice-3.6.5-cp36-cp36m-linux_x86_64.whl
-  - omero-py==5.6.dev2
-  - omero-dropbox==5.5.dev1
+  - omero-py=={{ _omero_py_version | default('5.6.dev2') }}
+  - omero-dropbox=={{ _omero_dropbox_version | default('5.5.dev1') }}
   - ipython
   - jinja2
   - numpy
