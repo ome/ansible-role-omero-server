@@ -157,17 +157,6 @@
     - omero-server rewrite omero-server configuration
     - omero-server restart omero-server
 
-# TODO: Remove when https://github.com/ome/omero-py/pull/110 is released
-- name: omero server | patch omero/plugins/db.py
-  become: true
-  get_url:
-    dest: "{{ omero_server_virtualenv_basedir }}\
-      /lib64/python3.6/site-packages/omero/plugins/db.py"
-    force: true
-    url: "https://raw.githubusercontent.com/ome/omero-py/\
-      8c3afd42bc2dc061160bb430f32150c69839c832/src/omero/plugins/db.py"
-  when: omero_server_python3
-
 - name: omero server | install omero
   become: true
   become_user: "{{ omero_server_system_user }}"
