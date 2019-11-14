@@ -249,7 +249,7 @@
       exec {{ omero_server_virtualenv_basedir }}/bin/omero "$@"
     dest: "{{ omero_server_omero_command }}"
     mode: "0755"
-  when: omero_server_python3
+  when: omero_server_python3 and omero_server_python3_replace_omero
   notify:
     - omero-server rewrite omero-server configuration
     - omero-server restart omero-server
