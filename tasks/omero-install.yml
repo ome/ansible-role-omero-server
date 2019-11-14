@@ -230,10 +230,12 @@
   become: true
   replace:
     mode: 0755
-    path: "{{ omero_server_basedir }}/{{ omero_server_symlink }}/bin/omero"
+    path: "{{ omero_server_omero_command }}"
     regexp: "^#!.+python$"
-    replace: "#!{{ omero_server_basedir }}/venv/bin/python"
-  when: omero_server_virtualenv and not omero_server_python3
+    replace: "#!{{ omero_server_virtualenv_basedir }}/bin/python"
+  when: >-
+    (not omero_server_python3 and omero_server_virtualenv) or
+    (omero_server_python3 and not omero_server_python3_replace_omero)
   notify:
     - omero-server rewrite omero-server configuration
     - omero-server restart omero-server
