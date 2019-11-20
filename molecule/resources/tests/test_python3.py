@@ -40,8 +40,10 @@ def test_running_in_venv(host):
         if command == 'python' and user == 'omero-server':
             try:
                 f = host.file('/proc/%s/environ' % pid)
-                assert b'VIRTUAL_ENV=/opt/omero/server/venv3' in (
-                    f.content.split(b'\0'))
+                env = dict(item.split('=', 1) for item in
+                           f.content_string.split('\0') if item)
+                assert env.get('PATH').startswith(
+                    '/opt/omero/server/venv3/bin:')
                 count += 1
             except RuntimeError:
                 # Might be a transient unrelated process
