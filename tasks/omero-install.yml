@@ -243,14 +243,10 @@
 # Remembering to set OMERODIR everywhere is prone to error
 - name: omero server | create omero server wrapper
   become: true
-  copy:
-    content: |
-      #!/bin/sh
-      . {{ omero_server_virtualenv_basedir }}/bin/activate
-      export OMERODIR="{{ omero_server_omerodir }}"
-      exec {{ omero_server_virtualenv_basedir }}/bin/omero "$@"
+  template:
     dest: "{{ omero_server_omero_command }}"
-    mode: "0755"
+    src: bin-omero.j2
+    mode: 0555
   when: omero_server_python3 and omero_server_python3_replace_omero
   notify:
     - omero-server rewrite omero-server configuration

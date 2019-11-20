@@ -1,0 +1,10 @@
+#!{{ omero_server_virtualenv_basedir }}/bin/python
+
+import os
+from subprocess import run
+import sys
+
+if not os.getenv('OMERODIR'):
+    os.environ['OMERODIR'] = '{{ omero_server_omerodir }}'
+p = run(['{{ omero_server_virtualenv_basedir }}/bin/omero'] + sys.argv[1:])
+sys.exit(p.returncode)
