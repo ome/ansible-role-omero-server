@@ -37,9 +37,7 @@ provisioner:
           - omero-upload
         omero_server_python3: true
         postgresql_version: "10"
-        omero_server_omego_additional_args: >-
-          --ci merge-ci
-        omero_server_release: OMERO-build
+        omero_server_release: 5.6.0-m3
         # These used to be set in meta/main.yml but it doesn't work
         ice_install_devel: false
         ice_install_python: false
@@ -51,19 +49,6 @@ scenario:
   name: python3
   converge_sequence:
     - converge
-  test_sequence:
-    - destroy
-    - dependency
-    - lint
-    - syntax
-    - create
-    - prepare
-    - converge
-    # TODO: Since we're using a merge build the version can't be compared so
-    # it will always be upgraded
-    # - idempotence
-    - verify
-    - destroy
 
 verifier:
   name: testinfra

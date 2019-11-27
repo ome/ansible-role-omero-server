@@ -34,19 +34,16 @@
         )
       }}
 
-# This should be safe to always run including in check-mode
+# Previously this used the output of 'omero version'
+# Python modules are now decoupled so get the version from the folder name
 - name: omero server | get server version
-  become: true
-  become_user: "{{ omero_server_system_user }}"
-  command: >-
-    {{ omero_server_omero_command }}
-    version
-  register: omero_server_version
+  set_fact:
+    omero_server_version: >-
+      {{
+        omero_server_symlink_st.stat.lnk_target | basename |
+        regex_replace('OMERO.server-(.+)-ice3.+', '\1')
+      }}
   when: _omero_server_matches_virtualenv
-  changed_when: false
-  check_mode: false
-  # Set a custom error message
-  ignore_errors: true
 
 - name: omero server | check omero version could be obtained
   assert:
@@ -55,7 +52,7 @@
       you may have a corrupt installation
     that: >-
       not _omero_server_matches_virtualenv or
-      omero_server_version is not undefined
+      (omero_server_version | default('') | length > 0)
 
 # TODO: If server was started by systemd but stopped directly you may end up
 # with a hanging process
@@ -92,8 +89,9 @@
             not _omero_server_matches_virtualenv or
             not (_omero_server_new_version | regex_search('^[0-9]')) or
             (
-              (omero_server_version.stdout | default('') | length > 0) and
-              (omero_server_version.stdout is version_compare(
+              (omero_server_version | default('') | length > 0) and
+              (omero_server_version != _omero_server_new_version) and
+              (omero_server_version is version_compare(
                 _omero_server_new_version,
                 omero_server_checkupgrade_comparator))
             )
@@ -107,7 +105,7 @@
     - debug:
         msg: >-
           Error comparing current version
-          ({{ omero_server_version.stdout | default('') }})
+          ({{ omero_server_version | default('') }})
           and new version
           ({{ _omero_server_new_version }}), upgrading
 
@@ -117,7 +115,7 @@
 
 - debug:
     msg: >-
-      Upgrade needed: {{ omero_server_version.stdout | default('UNKNOWN') }} ->
+      Upgrade needed: {{ omero_server_version | default('UNKNOWN') }} ->
       {{ omero_server_release }}
   when: _omero_server_update_needed
 
