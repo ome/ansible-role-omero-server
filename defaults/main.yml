@@ -120,6 +120,16 @@ omero_server_omerodir: "{{ omero_server_basedir }}/{{ omero_server_symlink }}"
 # How to run omero
 omero_server_omero_command: "{{ omero_server_omerodir }}/bin/omero"
 
+# Config update command
+omero_server_config_update: >-
+  {{
+    omero_server_python3 | ternary(
+      omero_server_omero_command + ' load --glob ' + omero_server_basedir +
+      '/config/*.omero',
+      omero_server_basedir + '/config/omero-server-config-update.sh'
+    )
+  }}
+
 # Need to set OMERODIR when omego runs omero
 omero_server_omego_environment: >-
   {{

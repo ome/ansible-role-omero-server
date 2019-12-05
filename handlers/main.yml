@@ -7,7 +7,7 @@
 - name: omero-server rewrite omero-server configuration
   become: true
   become_user: "{{ omero_server_system_user }}"
-  command: "{{ omero_server_basedir }}/config/omero-server-config-update.sh"
+  command: "{{ omero_server_config_update }}"
 
 - name: omero-server restart omero-server
   become: true
