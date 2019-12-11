@@ -3,8 +3,7 @@ import re
 import testinfra.utils.ansible_runner
 
 testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
-    os.environ['MOLECULE_INVENTORY_FILE']).get_hosts(
-        'omero-server-python3')
+    os.environ['MOLECULE_INVENTORY_FILE']).get_hosts('omero-py3')
 
 OMERO = '/opt/omero/server/OMERO.server/bin/omero'
 # Need to match 5.6.dev2
