@@ -15,6 +15,7 @@ env:
   - SCENARIO=newdep
   - SCENARIO=olddep
   - SCENARIO=python3
+  - SCENARIO=upgrade-py2py3
   - SCENARIO=upgradetovenv
 
 notifications:
