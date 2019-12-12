@@ -91,7 +91,7 @@
             (
               (omero_server_version | default('') | length > 0) and
               (omero_server_version != _omero_server_new_version) and
-              (omero_server_version is version_compare(
+              (omero_server_version is version(
                 _omero_server_new_version,
                 omero_server_checkupgrade_comparator))
             )
