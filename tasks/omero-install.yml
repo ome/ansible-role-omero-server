@@ -1,6 +1,14 @@
 ---
 # install/upgrade OMERO.server
 
+# TODO: Move to a separate role?
+- name: omero server | install python3
+  become: true
+  yum:
+    name: python36
+    state: present
+  when: omero_server_python3
+
 - name: omero server | is server symlink present
   become: true
   stat:
@@ -10,24 +18,32 @@
 - name: omero server | is virtualenv present
   become: true
   stat:
-    path: "{{ omero_server_basedir }}/venv"
+    path: "{{ omero_server_virtualenv_basedir }}"
   register: omero_server_venv_st
 
-# This should be safe to always run including in check-mode
+# Is there an existing OMERO.server that uses the requested virtualenv?
+- name: omero server | does omero server match requested virtualenv
+  set_fact:
+    _omero_server_matches_virtualenv: >-
+      {{
+        omero_server_symlink_st.stat.exists and
+        (
+          (not omero_server_virtualenv and not omero_server_python3)
+          or
+          omero_server_venv_st.stat.exists
+        )
+      }}
+
+# Previously this used the output of 'omero version'
+# Python modules are now decoupled so get the version from the folder name
 - name: omero server | get server version
-  become: true
-  become_user: "{{ omero_server_system_user }}"
-  command: >-
-    {{ omero_server_omero_command }}
-    version
-  register: omero_server_version
-  when: >-
-    omero_server_symlink_st.stat.exists and
-    (omero_server_venv_st.stat.exists or not omero_server_virtualenv)
-  changed_when: false
-  check_mode: false
-  # Set a custom error message
-  ignore_errors: true
+  set_fact:
+    omero_server_version: >-
+      {{
+        omero_server_symlink_st.stat.lnk_target | basename |
+        regex_replace('OMERO.server-(.+)-ice3.+', '\1')
+      }}
+  when: _omero_server_matches_virtualenv
 
 - name: omero server | check omero version could be obtained
   assert:
@@ -35,14 +51,8 @@
       OMERO.server found but unable to get version,
       you may have a corrupt installation
     that: >-
-      (not omero_server_virtualenv and
-        not (omero_server_symlink_st.stat.exists and
-        omero_server_version is undefined))
-      or
-      (omero_server_virtualenv and
-        not (omero_server_symlink_st.stat.exists and
-        omero_server_venv_st.stat.exists and
-        omero_server_version is undefined))
+      not _omero_server_matches_virtualenv or
+      (omero_server_version | default('') | length > 0)
 
 # TODO: If server was started by systemd but stopped directly you may end up
 # with a hanging process
@@ -68,37 +78,56 @@
       )
   }}"
 
-- name: omero server | checkupgrade
-  set_fact:
-    # If _omero_server_new_version does not begin with a number assume it's a
-    # custom build, always upgrade
-    # If we're switching from a non-venv to a venv treat it as an upgrade
-    _omero_server_update_needed: "{{
-      (
-        not (_omero_server_new_version | regex_search('^[0-9]'))
-      ) or (
-        (omero_server_version.stdout | default('') | length > 0) and
-        (omero_server_version.stdout is version_compare(
-          _omero_server_new_version,
-          omero_server_checkupgrade_comparator))
-      ) or (
-        omero_server_virtualenv and
-        not omero_server_venv_st.stat.exists
-      )
-    }}"
+- block:
+    - name: omero server | checkupgrade
+      set_fact:
+        # If _omero_server_new_version does not begin with a number assume
+        # it's a custom build, always upgrade
+        # If we're switching from a non-venv to a venv treat it as an upgrade
+        _omero_server_update_needed: >-
+          {{
+            not _omero_server_matches_virtualenv or
+            not (_omero_server_new_version | regex_search('^[0-9]')) or
+            (
+              (omero_server_version | default('') | length > 0) and
+              (omero_server_version != _omero_server_new_version) and
+              (omero_server_version is version(
+                _omero_server_new_version,
+                omero_server_checkupgrade_comparator))
+            )
+          }}
+  rescue:
+    # For example, comparing 5.6.dev2 with 5.6.0-m1 leads to
+    # '<' not supported between instances of 'str' and 'int'
+    # Assume this is a dev or pre-release and upgrade
+    # Ansible will exit 0 but show a failed task in the summary
+
+    - debug:
+        msg: >-
+          Error comparing current version
+          ({{ omero_server_version | default('') }})
+          and new version
+          ({{ _omero_server_new_version }}), upgrading
+
+    - name: omero server | checkupgrade failed
+      set_fact:
+        _omero_server_update_needed: true
 
 - debug:
     msg: >-
-      Upgrade needed: {{ omero_server_version.stdout | default('UNKNOWN') }} ->
+      Upgrade needed: {{ omero_server_version | default('UNKNOWN') }} ->
       {{ omero_server_release }}
   when: _omero_server_update_needed
 
+# If the OMERO.server symlink doesn't exist don't upgrade, this is a new
+# installation
 - name: omero server | set upgrade flag
   set_fact:
     _omero_server_execute_upgrade: "{{
       omero_server_upgrade and
       _omero_server_update_needed and
-      (omero_server_release != 'present')
+      (omero_server_release != 'present') and
+      omero_server_symlink_st.stat.exists
     }}"
 
 - name: omero server | setup virtualenv
@@ -108,7 +137,20 @@
     state: present
     virtualenv: "{{ omero_server_basedir }}/venv"
     virtualenv_site_packages: true
-  when: omero_server_virtualenv
+  when: omero_server_virtualenv and not omero_server_python3
+  notify:
+    - omero-server rewrite omero-server configuration
+    - omero-server restart omero-server
+
+# TODO: figure out dependencies
+- name: omero server | setup virtualenv3
+  become: true
+  pip:
+    name: "{{ omero_server_python_requirements + omero_server_python_addons }}"
+    state: present
+    virtualenv: "{{ omero_server_virtualenv_basedir }}"
+    virtualenv_command: /usr/bin/python3 -mvenv
+  when: omero_server_python3
   notify:
     - omero-server rewrite omero-server configuration
     - omero-server restart omero-server
@@ -125,6 +167,7 @@
   args:
     chdir: "{{ omero_server_basedir }}"
     creates: "{{ omero_server_basedir }}/{{ omero_server_symlink }}"
+  environment: "{{ omero_server_omego_environment }}"
   notify:
     - omero-server rewrite omero-server configuration
     - omero-server restart omero-server
@@ -152,6 +195,7 @@
     --serverdir {{ omero_server_basedir }}/{{ omero_server_symlink }}
   args:
     chdir: "{{ omero_server_database_backupdir }}"
+  environment: "{{ omero_server_omego_environment }}"
   when: >-
     (omero_server_database_backupdir | length > 0) and
     _omero_server_execute_upgrade
@@ -167,19 +211,41 @@
     {{ omero_server_omego_db_options }}
   args:
     chdir: "{{ omero_server_basedir }}"
+  environment: "{{ omero_server_omego_environment }}"
   when: _omero_server_execute_upgrade
   notify:
     - omero-server rewrite omero-server configuration
     - omero-server restart omero-server
 
+- name: omero server | delete OMERO.server/lib/python
+  become: true
+  file:
+    path: "{{ omero_server_omerodir }}/lib/python"
+    state: absent
+  when: omero_server_python3
+
 - name: omero server | patch bin/omero to use virtualenv
   become: true
   replace:
     mode: 0755
-    path: "{{ omero_server_basedir }}/{{ omero_server_symlink }}/bin/omero"
+    path: "{{ omero_server_omero_command }}"
     regexp: "^#!.+python$"
-    replace: "#!{{ omero_server_basedir }}/venv/bin/python"
-  when: omero_server_virtualenv
+    replace: "#!{{ omero_server_virtualenv_basedir }}/bin/python"
+  when: >-
+    (not omero_server_python3 and omero_server_virtualenv) or
+    (omero_server_python3 and not omero_server_python3_replace_omero)
+  notify:
+    - omero-server rewrite omero-server configuration
+    - omero-server restart omero-server
+
+# Remembering to set OMERODIR everywhere is prone to error
+- name: omero server | create omero server wrapper
+  become: true
+  template:
+    dest: "{{ omero_server_omero_command }}"
+    src: bin-omero.j2
+    mode: 0555
+  when: omero_server_python3 and omero_server_python3_replace_omero
   notify:
     - omero-server rewrite omero-server configuration
     - omero-server restart omero-server

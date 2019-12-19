@@ -1,0 +1,59 @@
+---
+
+- name: Converge
+  hosts: all
+
+  roles:
+
+    - role: ome.postgresql
+      postgresql_install_server: true
+      postgresql_databases:
+        - name: omero
+      postgresql_users:
+        - user: omero
+          password: omero
+          databases: [omero]
+
+    - role: ansible-role-omero-server
+      omero_server_system_managedrepo_group: importer
+      omero_server_config_set:
+        Ice.IPv6: "0"
+        omero.client.ui.tree.type_order:
+          - screen
+          - plate
+          - project
+          - dataset
+      omero_server_python3: true
+      omero_server_release: 5.6.0-m4
+      omero_server_python_addons:
+        - omero-upload
+
+  tasks:
+
+    - name: additional config file
+      copy:
+        content: >
+          config set omero.policy.binary_access -- "-read,-write,-image,-plate"
+        dest: /opt/omero/server/config/molecule-additional-config.omero
+      notify:
+        - restart omero-server
+
+
+- name: Additional tasks for setting up tests
+  hosts: all
+  tasks:
+
+    - name: create import user
+      user:
+        name: data-importer
+        group: importer
+
+    - name: create data directory
+      file:
+        path: /data/import
+        state: directory
+
+    - name: create fake image
+      copy:
+        content: ''
+        dest: /data/import/test.fake

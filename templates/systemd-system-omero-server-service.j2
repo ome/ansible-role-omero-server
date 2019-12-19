@@ -6,6 +6,8 @@ Description=OMERO.server
 After=postgresql-9.4.service
 After=postgresql-9.5.service
 After=postgresql-9.6.service
+After=postgresql-10.service
+After=postgresql-11.service
 {% if omero_server_systemd_require_network %}
 Requires=network.service
 {% endif %}
@@ -19,15 +21,15 @@ After=network.service
 User={{ omero_server_system_user }}
 UMask={{ omero_server_system_umask }}
 Type=forking
-PIDFile={{ omero_server_basedir }}/{{ omero_server_symlink }}/var/master/master.pid
+PIDFile={{ omero_server_omerodir }}/var/master/master.pid
 Restart=no
 RestartSec=10
 # Allow up to 5 min for start/stop
 TimeoutSec=300
-{% if omero_server_virtualenv %}
+{% if omero_server_virtualenv and not omero_server_python3 %}
 Environment="PATH={{ omero_server_basedir }}/venv/bin:/bin:/usr/bin"
 {% endif %}
-ExecStartPre={{ omero_server_basedir }}/config/omero-server-config-update.sh
+ExecStartPre={{ omero_server_config_update }}
 ExecStart={{ omero_server_omero_command }} admin start
 ExecStop={{ omero_server_omero_command }} admin stop
 {% if omero_server_systemd_limit_nofile %}
