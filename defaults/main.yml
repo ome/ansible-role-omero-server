@@ -12,9 +12,6 @@ omero_server_virtualenv: false
 # Python 3?
 omero_server_python3: false
 
-# Make bin/omero a wrapper script for the virtualenv omero
-omero_server_python3_replace_omero: true
-
 # OMERO database connection parameters
 omero_server_dbhost: localhost
 omero_server_dbuser: omero
