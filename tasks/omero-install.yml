@@ -224,28 +224,22 @@
     state: absent
   when: omero_server_python3
 
-- name: omero server | patch bin/omero to use virtualenv
-  become: true
-  replace:
-    mode: 0755
-    path: "{{ omero_server_omero_command }}"
-    regexp: "^#!.+python$"
-    replace: "#!{{ omero_server_virtualenv_basedir }}/bin/python"
-  when: >-
-    (not omero_server_python3 and omero_server_virtualenv) or
-    (omero_server_python3 and not omero_server_python3_replace_omero)
-  notify:
-    - omero-server rewrite omero-server configuration
-    - omero-server restart omero-server
-
 # Remembering to set OMERODIR everywhere is prone to error
+- name: omero server | create bin directory for wrapper
+  become: true
+  file:
+    path: "{{ omero_server_omerodir }}/bin/"
+    state: directory
+    mode: 0555
+  when: omero_server_python3
+
 - name: omero server | create omero server wrapper
   become: true
   template:
     dest: "{{ omero_server_omero_command }}"
     src: bin-omero.j2
     mode: 0555
-  when: omero_server_python3 and omero_server_python3_replace_omero
+  when: omero_server_python3
   notify:
     - omero-server rewrite omero-server configuration
     - omero-server restart omero-server
