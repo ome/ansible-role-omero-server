@@ -6,6 +6,10 @@ OMERO Server
 
 Installs and configures OMERO.server.
 
+**Warning:** This defaults to Python 3.
+Upgrades from OMERO.server 5.5 Python 2.7 to OMERO.server 5.6+ Python 3.6 are handled.
+See [`CHANGES.md`](./CHANGES.md) for details.
+
 
 Dependencies
 ------------
@@ -20,10 +24,10 @@ Role Variables
 All variables are optional, see `defaults/main.yml` for the full list
 
 OMERO.server version.
-- `omero_server_release`: The OMERO release, e.g. `5.2.2`.
+- `omero_server_release`: The OMERO release, e.g. `5.6.0`.
   The default is `present` which will install the latest server if no server is installed, but will not modify an existing server.
   Use `latest` to automatically upgrade when a new version is released.
-- `omero_server_ice_version`: The ice version.
+- `omero_server_python3`: Use Python 3, default `true`
 
 Database connection parameters and initialisation.
 - `omero_server_dbhost`: Database host
@@ -58,7 +62,7 @@ OMERO.server systemd configuration.
 - `omero_server_systemd_requires`: A list of strings with additional service names to appear in systemd unit file "Requires" statements. Default empty/none.
 
 Python virtualenv
-- `omero_server_virtualenv`: Use a virtualenv for most OMERO.server dependencies, default `False` but this will change in future
+- `omero_server_virtualenv`: Use a virtualenv for most OMERO.server dependencies, ignored on Python 3 (a virtualenv is always used).
 - `omero_server_python_addons`: List of additional Python packages to be installed into virtualenv.
   Alternatively you can install packages into `/opt/omero/server/venv` independently from this role.
   Requires `omero_server_virtualenv: True`.
@@ -102,7 +106,7 @@ Example Playbooks
     - hosts: localhost
       roles:
       - ome.omero-server
-        omero_server_release: 5.3.1
+        omero_server_release: 5.6.0
         omero_server_dbhost: postgres.example.org
         omero_server_dbuser: db_user
         omero_server_dbname: db_name
