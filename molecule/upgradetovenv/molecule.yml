@@ -32,7 +32,7 @@ provisioner:
     host_vars:
       omero-server-upgradetovenv:
         omero_server_ice_version: "3.6"
-        omero_server_release: latest
+        omero_server_release: "5.5"
         omero_server_python_addons:
           - omero-upload
         omero_server_virtualenv: true

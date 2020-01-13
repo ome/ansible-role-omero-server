@@ -3,14 +3,11 @@
 
 omero_server_release: present
 
-# Ice version
-omero_server_ice_version: "3.6"
-
 # Use a virtualenv
 omero_server_virtualenv: false
 
 # Python 3?
-omero_server_python3: false
+omero_server_python3: true
 
 # OMERO database connection parameters
 omero_server_dbhost: localhost
@@ -76,6 +73,8 @@ omero_server_database_backupdir: ""
 # Expert users only!
 ######################################################################
 
+omero_server_ice_version: "3.6"
+
 # TODO: sort this out
 # ? pip install omero-server-dependencies=={{omero_server_release}}
 # ? get_url https://downloads.openmicroscopy.org/omero/
@@ -84,8 +83,8 @@ omero_server_database_backupdir: ""
 # List of Python3 packages to install
 # _omero_* are temporary overrides pending a final release
 # Can't leave this unset because pip won't install the Python 3 pre-releases
-_omero_py_version: '>=5.6.dev9'
-_omero_dropbox_version: '>=5.6.dev3'
+_omero_py_version: '==5.6.*'
+_omero_dropbox_version: '==5.6.*'
 omero_server_python_requirements:
   - omego==0.7.0
   # TODO: make the use of our non-standard wheel optional

@@ -24,6 +24,7 @@
           - dataset
       # This will override host_vars (this is checked by the later tasks)
       omero_server_release: "5.2"
+      omero_server_python3: false
 
   tasks:
 

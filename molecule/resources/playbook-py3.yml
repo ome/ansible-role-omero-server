@@ -23,7 +23,7 @@
           - plate
           - project
           - dataset
-      omero_server_python3: true
+      # TODO: Delete (default to latest)
       omero_server_release: 5.6.0-rc1
       omero_server_python_addons:
         - omero-upload

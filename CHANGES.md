@@ -1,19 +1,12 @@
-# Breaking changes when switching to Python 3
-When `omero_server_python3: true` the following breaking changes take place.
+# Changes in Version 3
 
-This will be the default in the next major release of this role.
-Note this role should handle upgrades.
-
-## Changes
+## Summary of breaking changes
+- Default to installing and running under Python 3.6.
+  Set `omero_server_python3: false` to use Python 2.7.
 - The server always uses a virtualenv `/opt/omero/server/venv3` and does not include system-site-packages.
-- Version comparison is currently broken as it's not possible to get the current OMERO.server version.
-  This means a Python 3 OMERO.server amy or may not be upgraded.
 
-There may be other breaking changes before release, including but not limited to:
-- Making `/opt/omero/server/` and some subdirectories owned by `root`.
-  This increases security by restricting the directories that are writeable by `omero_server_system_user`.
-  This also means the home directory of `omero_server_system_user` will be changed.
-- Defining versions of dependencies
+## Removed variables
+- `omero_server_ice_version`: This is now an internal variable and must always be `3.6`.
 
 
 # Changes in Version 2

@@ -15,6 +15,7 @@
           - plate
           - project
           - dataset
+      omero_server_python3: false
 
 
 - name: Additional tasks for setting up tests
