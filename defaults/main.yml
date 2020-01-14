@@ -83,8 +83,8 @@ omero_server_ice_version: "3.6"
 # List of Python3 packages to install
 # _omero_* are temporary overrides pending a final release
 # Can't leave this unset because pip won't install the Python 3 pre-releases
-_omero_py_version: '==5.6.*'
-_omero_dropbox_version: '==5.6.*'
+_omero_py_version: '>=5.6.0'
+_omero_dropbox_version: '>=5.6.1'
 omero_server_python_requirements:
   - omego==0.7.0
   # TODO: make the use of our non-standard wheel optional
