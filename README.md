@@ -60,6 +60,7 @@ OMERO.server systemd configuration.
 - `omero_server_systemd_require_network`: Should omero systemd services require a network before starting? Default `True`.
 - `omero_server_systemd_after`: A list of strings with additional service names to appear in systemd unit file "After" statements. Default empty/none.
 - `omero_server_systemd_requires`: A list of strings with additional service names to appear in systemd unit file "Requires" statements. Default empty/none.
+- `omero_server_systemd_environment`: Dictionary of additional environment variables.
 
 Python virtualenv
 - `omero_server_virtualenv`: Use a virtualenv for most OMERO.server dependencies, ignored on Python 3 (a virtualenv is always used).
