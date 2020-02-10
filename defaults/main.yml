@@ -62,6 +62,9 @@ omero_server_systemd_after: []
 # Services which OMERO server needs to be concurrently running.
 omero_server_systemd_requires: []
 
+# Dictionary of additional environment variables
+omero_server_systemd_environment: {}
+
 # List of additional Python packages to be installed into virtualenv
 omero_server_python_addons: []
 

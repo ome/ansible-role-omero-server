@@ -29,6 +29,9 @@ TimeoutSec=300
 {% if omero_server_virtualenv and not omero_server_python3 %}
 Environment="PATH={{ omero_server_basedir }}/venv/bin:/bin:/usr/bin"
 {% endif %}
+{% for name in (omero_server_systemd_environment | sort) %}
+Environment={{ name }}={{ omero_server_systemd_environment[name] | quote }}
+{% endfor %}
 ExecStartPre={{ omero_server_config_update }}
 ExecStart={{ omero_server_omero_command }} admin start
 ExecStop={{ omero_server_omero_command }} admin stop
