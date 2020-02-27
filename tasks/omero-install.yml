@@ -7,7 +7,17 @@
   yum:
     name: python36
     state: present
-  when: omero_server_python3
+  when: omero_server_python3 and ansible_os_family == 'RedHat'
+
+- name: omero server | install python3
+  become: true
+  apt:
+    name:
+      - python3.6
+      - python3.6-distutils
+      - python3.6-venv
+    state: present
+  when: omero_server_python3 and ansible_os_family == 'Debian'
 
 - name: omero server | is server symlink present
   become: true

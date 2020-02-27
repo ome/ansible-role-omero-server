@@ -9,6 +9,9 @@ galaxy_info:
     - name: EL
       versions:
         - 7
+    - name: Ubuntu
+      versions:
+        - bionic
   role_name: omero_server
   galaxy_tags: ['omero', 'server']
 
