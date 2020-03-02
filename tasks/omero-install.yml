@@ -1,26 +1,6 @@
 ---
 # install/upgrade OMERO.server
 
-# TODO: Move to a separate role?
-- name: omero server | install python3
-  become: true
-  yum:
-    name: python36
-    state: present
-  when: omero_server_python3 and ansible_os_family == 'RedHat'
-
-- name: omero server | install python3
-  become: true
-  apt:
-    name:
-      - python3.6
-      - python3.6-distutils
-      - python3.6-venv
-      - python3-pip
-      - python3-setuptools
-    state: present
-  when: omero_server_python3 and ansible_os_family == 'Debian'
-
 - name: omero server | is server symlink present
   become: true
   stat:
@@ -161,7 +141,7 @@
     name: "{{ omero_server_python_requirements + omero_server_python_addons }}"
     state: present
     virtualenv: "{{ omero_server_virtualenv_basedir }}"
-    virtualenv_command: /usr/bin/python3 -mvenv
+    virtualenv_command: /usr/local/bin/ome-python3-virtualenv.sh
   when: omero_server_python3
   notify:
     - omero-server rewrite omero-server configuration

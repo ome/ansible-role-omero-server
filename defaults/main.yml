@@ -78,6 +78,12 @@ omero_server_database_backupdir: ""
 
 omero_server_ice_version: "3.6"
 
+omero_server_python_requirements_ice_package:
+  RedHat: "https://github.com/ome/zeroc-ice-py-centos7/releases/download/\
+    0.2.1/zeroc_ice-3.6.5-cp36-cp36m-linux_x86_64.whl"
+  Debian: "https://github.com/ome/zeroc-ice-ubuntu1804/releases/download/\
+    0.2.0/zeroc_ice-3.6.5-cp36-cp36m-linux_x86_64.whl"
+
 # TODO: sort this out
 # ? pip install omero-server-dependencies=={{omero_server_release}}
 # ? get_url https://downloads.openmicroscopy.org/omero/
@@ -91,7 +97,8 @@ _omero_dropbox_version: '>=5.6.1'
 omero_server_python_requirements:
   - omego==0.7.0
   # TODO: make the use of our non-standard wheel optional
-  - https://github.com/ome/zeroc-ice-py-centos7/releases/download/0.2.1/zeroc_ice-3.6.5-cp36-cp36m-linux_x86_64.whl
+  - "{{ omero_server_python_requirements_ice_package[ansible_os_family] |
+        default('zeroc-ice')}}"
   - "omero-py{{ _omero_py_version | default('') }}"
   - "omero-dropbox{{ _omero_dropbox_version  | default('') }}"
   # TODO: keep or ditch ipython? It's a big dependency and mostly useful for

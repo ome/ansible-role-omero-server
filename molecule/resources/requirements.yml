@@ -4,6 +4,9 @@
 - src: ome.basedeps
 - src: ome.java
 - src: ome.omero_python_deps
+- name: ome.python3_virtualenv
+  src: >-
+    https://github.com/manics/ansible-role-python3-virtualenv/archive/11af8c8993c8f7e783d01deed9cbbf4095e9efb5.tar.gz
 - src: ome.ice
 - src: ome.postgresql
 - src: ome.postgresql_client
