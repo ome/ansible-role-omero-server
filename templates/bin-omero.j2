@@ -7,10 +7,16 @@ import sys
 if not os.getenv('OMERODIR'):
     os.environ['OMERODIR'] = '{{ omero_server_omerodir }}'
 
-current_path = os.getenv('PATH', '')
+paths = os.getenv('PATH', '').split(os.pathsep)
 venv_bin = '{{ omero_server_virtualenv_basedir }}/bin'
-if not current_path.startswith(venv_bin + os.pathsep):
-    os.environ['PATH'] = '{}{}{}'.format(venv_bin, os.pathsep, current_path)
+ice_bin = '/opt/ice/bin'
+
+if os.path.isdir(ice_bin) and ice_bin not in paths:
+    paths.insert(0, ice_bin)
+if venv_bin not in paths:
+    paths.insert(0, venv_bin)
+
+os.environ['PATH'] = os.pathsep.join(paths)
 
 p = run(['{{ omero_server_virtualenv_basedir }}/bin/omero'] + sys.argv[1:])
 sys.exit(p.returncode)
