@@ -36,6 +36,7 @@ provisioner:
       omero-server-python3:
         postgresql_version: "10"
         ansible_python_interpreter: /usr/bin/python3
+        omero_server_selfsigned_certificates: true
     group_vars:
       docker-hosts:
         omero_server_systemd_require_network: false

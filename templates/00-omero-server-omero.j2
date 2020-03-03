@@ -23,3 +23,7 @@ config set -- {{ key | quote }} {{
   quote
 }}
 {% endfor %}
+
+{% if omero_server_selfsigned_certificates %}
+certificates -v
+{% endif %}

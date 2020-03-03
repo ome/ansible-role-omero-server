@@ -71,6 +71,9 @@ omero_server_python_addons: []
 # If non-empty dump the OMERO database to this directory before upgrading
 omero_server_database_backupdir: ""
 
+# If true disable anonymous ciphers and use self-signed certificates
+omero_server_selfsigned_certificates: false
+
 
 ######################################################################
 # Expert users only!
@@ -108,6 +111,8 @@ omero_server_python_requirements:
   - numpy
   - pillow
   - tables
+  # Easier to always install this but not activate unless requested
+  - git+https://github.com/manics/omero-cli-certificates.git
 
 # Path to virtualenv
 omero_server_virtualenv_basedir: >-
