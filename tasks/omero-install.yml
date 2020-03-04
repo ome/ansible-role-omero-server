@@ -141,7 +141,7 @@
     name: "{{ omero_server_python_requirements + omero_server_python_addons }}"
     state: present
     virtualenv: "{{ omero_server_virtualenv_basedir }}"
-    virtualenv_command: /usr/local/bin/ome-python3-virtualenv.sh
+    virtualenv_command: /usr/local/bin/ome-python3-virtualenv
   when: omero_server_python3
   notify:
     - omero-server rewrite omero-server configuration
