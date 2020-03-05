@@ -93,6 +93,7 @@ Example Playbooks
 
       - role: ome.postgresql
         postgresql_install_server: True
+        postgresql_version: "10"
         postgresql_databases:
           - name: omero
         postgresql_users:
@@ -103,7 +104,7 @@ Example Playbooks
       - role: ome.omero-server
 
 
-    # Install or upgrade to a particular version, use an external database
+    # Install or upgrade to a particular version, with an external database
     - hosts: localhost
       roles:
       - ome.omero-server
@@ -112,6 +113,8 @@ Example Playbooks
         omero_server_dbuser: db_user
         omero_server_dbname: db_name
         omero_server_dbpassword: db_password
+        # Version required for the psql client
+        postgresql_version: "10"
 
 
 Author Information
