@@ -92,7 +92,6 @@ Example Playbooks
       roles:
 
       - role: ome.postgresql
-        postgresql_install_server: True
         postgresql_version: "10"
         postgresql_databases:
           - name: omero

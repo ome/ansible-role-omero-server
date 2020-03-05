@@ -6,7 +6,6 @@
   roles:
 
     - role: ome.postgresql
-      postgresql_install_server: true
       postgresql_databases:
         - name: omero
       postgresql_users:
