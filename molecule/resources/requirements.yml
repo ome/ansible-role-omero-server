@@ -6,3 +6,4 @@
 - src: ome.omero_python_deps
 - src: ome.ice
 - src: ome.postgresql
+- src: ome.postgresql_client

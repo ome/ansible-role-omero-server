@@ -25,6 +25,4 @@ dependencies:
       ice_version: "{{ omero_server_ice_version }}"
       ice_install_devel: "{{ not omero_server_python3 }}"
       ice_install_python: "{{ not omero_server_python3 }}"
-  - role: ome.postgresql
-    vars:
-      postgresql_install_server: false
+  - role: ome.postgresql_client
