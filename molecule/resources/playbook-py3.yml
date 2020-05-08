@@ -22,6 +22,7 @@
           - plate
           - project
           - dataset
+      omero_server_release: latest
       omero_server_python_addons:
         - omero-upload
 
