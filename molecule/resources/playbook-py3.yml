@@ -3,14 +3,6 @@
 - name: Converge
   hosts: all
 
-  # TODO: Remove this
-  pre_tasks:
-    - name: Temporarily install git (omero-cli-certificates isn't released)
-      become: true
-      package:
-        name: git
-        state: present
-
   roles:
 
     - role: ome.postgresql

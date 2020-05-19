@@ -111,8 +111,9 @@ omero_server_python_requirements:
   - numpy
   - pillow
   - tables
-  # Easier to always install this but not activate unless requested
-  - git+https://github.com/manics/omero-cli-certificates.git
+  # Includes optional dependencies: always installed but activation may be
+  # optional
+  - omero-server==0.1.0
 
 # Path to virtualenv
 omero_server_virtualenv_basedir: >-
