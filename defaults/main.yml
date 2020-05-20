@@ -108,12 +108,9 @@ omero_server_python_requirements:
   # clients
   # - ipython
   - jinja2
-  - numpy
-  - pillow
-  - tables
   # Includes optional dependencies: always installed but activation may be
   # optional
-  - omero-server==0.1.0
+  - 'omero-server[default]==0.1.0'
 
 # Path to virtualenv
 omero_server_virtualenv_basedir: >-
