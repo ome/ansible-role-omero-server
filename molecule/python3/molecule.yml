@@ -34,9 +34,6 @@ provisioner:
     host_vars:
       omero-server-python3:
         postgresql_version: "10"
-    group_vars:
-      docker-hosts:
-        omero_server_systemd_require_network: false
 scenario:
   name: python3
   converge_sequence:

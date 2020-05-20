@@ -32,9 +32,6 @@ provisioner:
     host_vars:
       omero-server-py2py3:
         postgresql_version: "10"
-    group_vars:
-      docker-hosts:
-        omero_server_systemd_require_network: false
 scenario:
   name: upgrade-py2py3
   converge_sequence:

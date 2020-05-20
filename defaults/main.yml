@@ -52,9 +52,6 @@ omero_server_systemd_setup: true
 # Change the systemd limit for number of open files (default ignore)
 omero_server_systemd_limit_nofile:
 
-# Should omero systemd services require a network?
-omero_server_systemd_require_network: true
-
 # Services which OMERO server needs to be running before it can start,
 # such as remote storage.
 omero_server_systemd_after: []
