@@ -93,7 +93,7 @@ Example Playbooks
       roles:
 
       - role: ome.postgresql
-        postgresql_version: "10"
+        postgresql_version: "11"
         postgresql_databases:
           - name: omero
         postgresql_users:
@@ -114,7 +114,7 @@ Example Playbooks
         omero_server_dbname: db_name
         omero_server_dbpassword: db_password
         # Version required for the psql client
-        postgresql_version: "10"
+        postgresql_version: "11"
 
 
 Author Information
