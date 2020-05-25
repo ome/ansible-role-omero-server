@@ -9,10 +9,11 @@ lint:
   name: yamllint
 platforms:
   - name: omero-server-python3
-    image: centos/systemd
-    image_version: latest
+    image: leandelivery/docker-systemd:ubuntu-18.04
     command: /sbin/init
     privileged: true
+    tmpfs:
+      - /sys/fs/cgroup
     groups:
       - docker-hosts
       - omero-py3
@@ -34,11 +35,13 @@ provisioner:
     host_vars:
       omero-server-python3:
         postgresql_version: "11"
+        ansible_python_interpreter: /usr/bin/python3
+        omero_server_selfsigned_certificates: true
     group_vars:
       docker-hosts:
         omero_server_systemd_require_network: false
 scenario:
-  name: python3
+  name: python3-ubuntu1804
   converge_sequence:
     - converge
 

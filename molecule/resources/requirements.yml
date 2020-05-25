@@ -4,6 +4,7 @@
 - src: ome.basedeps
 - src: ome.java
 - src: ome.omero_python_deps
+- src: ome.python3_virtualenv
 - src: ome.ice
 - src: ome.postgresql
 - src: ome.postgresql_client

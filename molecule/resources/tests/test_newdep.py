@@ -7,7 +7,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
         'omero-server-newdep,omero-server-upgradetovenv')
 
 OMERO = '/opt/omero/server/OMERO.server/bin/omero'
-VERSION_PATTERN = re.compile('(\d+)\.(\d+)\.(\d+)-ice36-')
+VERSION_PATTERN = re.compile(r'(\d+)\.(\d+)\.(\d+)-ice36-')
 
 
 def test_omero_version(host):

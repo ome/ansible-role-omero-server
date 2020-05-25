@@ -1,14 +1,6 @@
 ---
 # install/upgrade OMERO.server
 
-# TODO: Move to a separate role?
-- name: omero server | install python3
-  become: true
-  yum:
-    name: python36
-    state: present
-  when: omero_server_python3
-
 - name: omero server | is server symlink present
   become: true
   stat:
@@ -149,7 +141,7 @@
     name: "{{ omero_server_python_requirements + omero_server_python_addons }}"
     state: present
     virtualenv: "{{ omero_server_virtualenv_basedir }}"
-    virtualenv_command: /usr/bin/python3 -mvenv
+    virtualenv_command: /usr/local/bin/ome-python3-virtualenv
   when: omero_server_python3
   notify:
     - omero-server rewrite omero-server configuration

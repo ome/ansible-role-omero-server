@@ -8,7 +8,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 OMERO = '/opt/omero/server/OMERO.server/bin/omero'
 # Need to match 5.6.dev2
 # VERSION_PATTERN = re.compile('(\d+)\.(\d+)\.(\d+)-ice36-')
-VERSION_PATTERN = re.compile('(\d+)\.(\d+)\.(\w+)')
+VERSION_PATTERN = re.compile(r'(\d+)\.(\d+)\.(\w+)')
 
 
 def test_omero_version(host):
@@ -22,7 +22,7 @@ def test_omero_version(host):
 
 def test_postgres_version(host):
     ver = host.check_output("psql --version")
-    assert ver.startswith('psql (PostgreSQL) 10')
+    assert ver.startswith('psql (PostgreSQL) 11')
 
 
 def test_additional_python(host):

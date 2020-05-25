@@ -53,6 +53,7 @@ You may need to change these for in-place imports.
 - `omero_server_datadir_managedrepo_mode`: Permissions for OMERO `ManagedRepository`
 - `omero_server_datadir`: OMERO data directory, default `/OMERO`
 - `omero_server_datadir_managedrepo`: OMERO ManagedRepository directory
+- `omero_server_selfsigned_certificates`: Generate self-signed certificates instead of using anonymous ciphers, default `False`, use this if your system does not support insecure ciphers
 
 OMERO.server systemd configuration.
 - `omero_server_systemd_setup`: Create and start the `omero-server` systemd service, default `True`
@@ -92,7 +93,7 @@ Example Playbooks
       roles:
 
       - role: ome.postgresql
-        postgresql_version: "10"
+        postgresql_version: "11"
         postgresql_databases:
           - name: omero
         postgresql_users:
@@ -113,7 +114,7 @@ Example Playbooks
         omero_server_dbname: db_name
         omero_server_dbpassword: db_password
         # Version required for the psql client
-        postgresql_version: "10"
+        postgresql_version: "11"
 
 
 Author Information

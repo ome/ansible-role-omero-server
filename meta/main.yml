@@ -9,6 +9,9 @@ galaxy_info:
     - name: EL
       versions:
         - 7
+    - name: Ubuntu
+      versions:
+        - bionic
   role_name: omero_server
   galaxy_tags: ['omero', 'server']
 
@@ -20,6 +23,8 @@ dependencies:
   - role: ome.java
   - role: ome.omero_python_deps
     when: not omero_server_python3
+  - role: ome.python3_virtualenv
+    when: omero_server_python3
   - role: ome.ice
     vars:
       ice_version: "{{ omero_server_ice_version }}"
