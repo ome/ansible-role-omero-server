@@ -8,9 +8,7 @@ After=postgresql-9.5.service
 After=postgresql-9.6.service
 After=postgresql-10.service
 After=postgresql-11.service
-{% if omero_server_systemd_require_network %}
-Requires=network.service
-{% endif %}
+
 After=network.service
 {% for value in omero_server_systemd_after %}After={{ value }}
 {% endfor %}
