@@ -80,32 +80,18 @@ omero_server_selfsigned_certificates: false
 omero_server_ice_version: "3.6"
 
 omero_server_python_requirements_ice_package:
- "https://github.com/ome/zeroc-ice-py-centos7/releases/download/\
-    0.2.1/zeroc_ice-3.6.5-cp36-cp36m-linux_x86_64.whl"
-when:
-  - ansible_os_family | lower == 'redhat'
-  - ansible_distirbution_major_version == 7
-    
-omero_server_python_requirements_ice_package:        
- "https://github.com/ome/zeroc-ice-centos8/releases/download/\
-    0.0.1/zeroc_ice-3.6.5-cp36-cp36m-linux_x86_64.whl"
-when:
-  - ansible_os_family | lower == 'redhat'
-  - ansible_distirbution_major_version == 8
-    
-omero_server_python_requirements_ice_package:    
- "https://github.com/ome/zeroc-ice-ubuntu1804/releases/download/\
-    0.2.0/zeroc_ice-3.6.5-cp36-cp36m-linux_x86_64.whl"
-when:
-  - ansible_os_family | lower == 'debian'
-  - ansible_distirbution_major_version == 18
-    
-omero_server_python_requirements_ice_package:
-   "https://github.com/ome/zeroc-ice-ubuntu2004/releases/download/\
-    0.2.0/zeroc_ice-3.6.5-cp38-cp38-linux_x86_64.whl"
-when:
-  - ansible_os_family | lower == 'debian'
-  - ansible_distirbution_major_version == 20
+  RedHat:
+    7: "https://github.com/ome/zeroc-ice-py-centos7/releases/download/\
+      0.2.1/zeroc_ice-3.6.5-cp36-cp36m-linux_x86_64.whl"
+      
+    8: "https://github.com/ome/zeroc-ice-centos8/releases/download/\
+      0.0.1/zeroc_ice-3.6.5-cp36-cp36m-linux_x86_64.whl"
+  Debian:
+    18: "https://github.com/ome/zeroc-ice-ubuntu1804/releases/download/\
+      0.2.0/zeroc_ice-3.6.5-cp36-cp36m-linux_x86_64.whl"
+    20: "https://github.com/ome/zeroc-ice-ubuntu2004/releases/download/\
+      0.2.0/zeroc_ice-3.6.5-cp38-cp38-linux_x86_64.whl"         
+
 
 # TODO: sort this out
 # ? pip install omero-server-dependencies=={{omero_server_release}}
@@ -120,7 +106,7 @@ _omero_dropbox_version: '>=5.6.1'
 omero_server_python_requirements:
   - omego==0.7.0
   # TODO: make the use of our non-standard wheel optional
-  - "{{ omero_server_python_requirements_ice_package |
+  - "{{ omero_server_python_requirements_ice_package[ansible_os_family][ansible_distribution_major_version | int ] |
         default('zeroc-ice')}}"
   - "omero-py{{ _omero_py_version | default('') }}"
   - "omero-dropbox{{ _omero_dropbox_version  | default('') }}"
