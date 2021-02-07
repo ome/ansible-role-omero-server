@@ -26,6 +26,7 @@
     dest: "{{ omero_server_basedir }}/config/00-omero-server.omero"
     force: true
     src: 00-omero-server-omero.j2
+    mode: 0644
   notify:
     - omero-server rewrite omero-server configuration
     - omero-server restart omero-server

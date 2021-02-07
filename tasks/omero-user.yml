@@ -19,6 +19,7 @@
     path: "{{ item }}"
     state: directory
     owner: "{{ omero_server_system_user }}"
+    mode: 0755
   with_items:
     - "{{ omero_server_basedir }}"
     - "{{ omero_server_basedir }}/config"

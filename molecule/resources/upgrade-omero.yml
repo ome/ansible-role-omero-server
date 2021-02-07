@@ -31,11 +31,13 @@
       file:
         path: /data/import
         state: directory
+        mode: 0755
 
     - name: create fake image
       copy:
         content: ''
         dest: /data/import/test.fake
+        mode: 0644
 
 
 # testinfra Sudo doesn't use the `-i` flag, so the working directory needs

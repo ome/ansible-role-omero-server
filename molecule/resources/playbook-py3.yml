@@ -33,6 +33,7 @@
         content: >
           config set omero.policy.binary_access -- "-read,-write,-image,-plate"
         dest: /opt/omero/server/config/molecule-additional-config.omero
+        mode: 0644
       notify:
         - restart omero-server
 
@@ -50,8 +51,10 @@
       file:
         path: /data/import
         state: directory
+        mode: 0755
 
     - name: create fake image
       copy:
         content: ''
         dest: /data/import/test.fake
+        mode: 0644

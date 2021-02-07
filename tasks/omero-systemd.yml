@@ -7,6 +7,7 @@
     dest: /etc/systemd/system/omero-server.service
     force: true
     src: systemd-system-omero-server-service.j2
+    mode: 0644
   notify:
     - reload systemd
     - omero-server restart omero-server
