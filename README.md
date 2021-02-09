@@ -1,7 +1,7 @@
 OMERO Server
 ============
 
-[![Build Status](https://travis-ci.org/ome/ansible-role-omero-server.svg)](https://travis-ci.org/ome/ansible-role-omero-server)
+[![Actions Status](https://github.com/ome/ansible-role-omero-server/workflows/Molecule/badge.svg)](https://github.com/ome/ansible-role-omero-server/actions)
 [![Ansible Role](https://img.shields.io/ansible/role/41085.svg)](https://galaxy.ansible.com/ome/omero_server/)
 
 Installs and configures OMERO.server.
