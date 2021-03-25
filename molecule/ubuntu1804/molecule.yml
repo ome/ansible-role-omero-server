@@ -8,7 +8,7 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: omero-server-python3
+  - name: omero-server-ubuntu1804
     image: leandelivery/docker-systemd:ubuntu-18.04
     command: /sbin/init
     privileged: true
@@ -30,10 +30,10 @@ provisioner:
     # tags: [x]
   playbooks:
     # TODO: Use shared test playbooks
-    converge: ../resources/playbook-py3.yml
+    converge: ../resources/playbook.yml
   inventory:
     host_vars:
-      omero-server-python3:
+      omero-server-ubuntu1804:
         postgresql_version: "11"
         ansible_python_interpreter: /usr/bin/python3
         omero_server_selfsigned_certificates: true
@@ -41,7 +41,7 @@ provisioner:
       docker-hosts:
         omero_server_systemd_require_network: false
 scenario:
-  name: python3-ubuntu1804
+  name: ubuntu1804
   converge_sequence:
     - converge
 
