@@ -7,7 +7,6 @@ OMERO Server
 Installs and configures OMERO.server.
 
 **Warning:** This defaults to Python 3.
-Upgrades from OMERO.server 5.5 Python 2.7 to OMERO.server 5.6+ Python 3.6 are handled.
 See [`CHANGES.md`](./CHANGES.md) for details.
 
 
@@ -27,7 +26,6 @@ OMERO.server version.
 - `omero_server_release`: The OMERO release, e.g. `5.6.0`.
   The default is `present` which will install the latest server if no server is installed, but will not modify an existing server.
   Use `latest` to automatically upgrade when a new version is released.
-- `omero_server_python3`: Use Python 3, default `true`
 
 Database connection parameters and initialisation.
 - `omero_server_dbhost`: Database host

@@ -1,24 +1,11 @@
 ---
 # OMERO template configuration files
 
-- name: omero server | configuration script
-  become: true
-  template:
-    dest: "{{ omero_server_basedir }}/config/omero-server-config-update.sh"
-    force: true
-    src: omero-server-config-update-sh.j2
-    mode: 0555
-  when: not omero_server_python3
-  notify:
-    - omero-server rewrite omero-server configuration
-    - omero-server restart omero-server
-
 - name: omero server | remove old configuration script
   become: true
   file:
     path: "{{ omero_server_basedir }}/config/omero-server-config-update.sh"
     state: absent
-  when: omero_server_python3
 
 - name: omero server | configuration 00-omero-server.omero
   become: true

@@ -26,9 +26,6 @@ Restart=no
 RestartSec=10
 # Allow up to 5 min for start/stop
 TimeoutSec=300
-{% if omero_server_virtualenv and not omero_server_python3 %}
-Environment="PATH={{ omero_server_basedir }}/venv/bin:/bin:/usr/bin"
-{% endif %}
 {% for name in (omero_server_systemd_environment | sort) %}
 Environment={{ name }}={{ omero_server_systemd_environment[name] | quote }}
 {% endfor %}
