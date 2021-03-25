@@ -3,9 +3,6 @@
 
 omero_server_release: present
 
-# Use a virtualenv
-omero_server_virtualenv: false
-
 # OMERO database connection parameters
 omero_server_dbhost: localhost
 omero_server_dbuser: omero
