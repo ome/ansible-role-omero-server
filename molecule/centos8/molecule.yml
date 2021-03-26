@@ -8,12 +8,11 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: omero-server-python3
-    image: jrei/systemd-ubuntu:20.04
+  - name: omero-server-centos8
+    image: jrei/systemd-centos:8
+    image_version: latest
     command: /sbin/init
     privileged: true
-    tmpfs:
-      - /sys/fs/cgroup
     groups:
       - docker-hosts
       - omero-py3
@@ -30,18 +29,17 @@ provisioner:
     # tags: [x]
   playbooks:
     # TODO: Use shared test playbooks
-    converge: ../resources/playbook-py3.yml
+    converge: ../resources/playbook.yml
   inventory:
     host_vars:
-      omero-server-python3:
+      omero-server-centos8:
         postgresql_version: "11"
-        ansible_python_interpreter: /usr/bin/python3
         omero_server_selfsigned_certificates: true
     group_vars:
       docker-hosts:
         omero_server_systemd_require_network: false
 scenario:
-  name: python3-ubuntu2004
+  name: centos8
   converge_sequence:
     - converge
 
