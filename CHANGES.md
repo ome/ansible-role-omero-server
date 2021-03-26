@@ -1,3 +1,14 @@
+# Changes in Version 4
+
+## Summary of breaking changes
+
+- Python 2 support is now dropped
+
+## Removed variables
+
+-  `omero_server_python3` and `omero_server_virtualenv`: a Python3 virtual
+    environment is created unconditionally
+
 # Changes in Version 3
 
 ## Summary of breaking changes

@@ -19,11 +19,7 @@
     _omero_server_matches_virtualenv: >-
       {{
         omero_server_symlink_st.stat.exists and
-        (
-          (not omero_server_virtualenv and not omero_server_python3)
-          or
-          omero_server_venv_st.stat.exists
-        )
+        omero_server_venv_st.stat.exists
       }}
 
 # Previously this used the output of 'omero version'
@@ -122,17 +118,6 @@
       omero_server_symlink_st.stat.exists
     }}"
 
-- name: omero server | setup virtualenv
-  become: true
-  pip:
-    name: "{{ omero_server_python_addons }}"
-    state: present
-    virtualenv: "{{ omero_server_basedir }}/venv"
-    virtualenv_site_packages: true
-  when: omero_server_virtualenv and not omero_server_python3
-  notify:
-    - omero-server rewrite omero-server configuration
-    - omero-server restart omero-server
 
 # TODO: figure out dependencies
 - name: omero server | setup virtualenv3
@@ -142,7 +127,6 @@
     state: present
     virtualenv: "{{ omero_server_virtualenv_basedir }}"
     virtualenv_command: /usr/local/bin/ome-python3-virtualenv
-  when: omero_server_python3
   notify:
     - omero-server rewrite omero-server configuration
     - omero-server restart omero-server
@@ -214,7 +198,6 @@
   file:
     path: "{{ omero_server_omerodir }}/lib/python"
     state: absent
-  when: omero_server_python3
 
 # Remembering to set OMERODIR everywhere is prone to error
 - name: omero server | create bin directory for wrapper
@@ -223,7 +206,6 @@
     path: "{{ omero_server_omerodir }}/bin/"
     state: directory
     mode: 0555
-  when: omero_server_python3
 
 - name: omero server | create omero server wrapper
   become: true
@@ -231,7 +213,6 @@
     dest: "{{ omero_server_omero_command }}"
     src: bin-omero.j2
     mode: 0555
-  when: omero_server_python3
   notify:
     - omero-server rewrite omero-server configuration
     - omero-server restart omero-server

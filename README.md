@@ -6,8 +6,7 @@ OMERO Server
 
 Installs and configures OMERO.server.
 
-**Warning:** This defaults to Python 3.
-Upgrades from OMERO.server 5.5 Python 2.7 to OMERO.server 5.6+ Python 3.6 are handled.
+**Warning:** Only supports Python 3.
 See [`CHANGES.md`](./CHANGES.md) for details.
 
 
@@ -27,7 +26,6 @@ OMERO.server version.
 - `omero_server_release`: The OMERO release, e.g. `5.6.0`.
   The default is `present` which will install the latest server if no server is installed, but will not modify an existing server.
   Use `latest` to automatically upgrade when a new version is released.
-- `omero_server_python3`: Use Python 3, default `true`
 
 Database connection parameters and initialisation.
 - `omero_server_dbhost`: Database host
@@ -64,10 +62,8 @@ OMERO.server systemd configuration.
 - `omero_server_systemd_environment`: Dictionary of additional environment variables.
 
 Python virtualenv
-- `omero_server_virtualenv`: Use a virtualenv for most OMERO.server dependencies, ignored on Python 3 (a virtualenv is always used).
 - `omero_server_python_addons`: List of additional Python packages to be installed into virtualenv.
-  Alternatively you can install packages into `/opt/omero/server/venv` independently from this role.
-  Requires `omero_server_virtualenv: True`.
+  Alternatively you can install packages into `/opt/omero/server/venv3` independently from this role.
 
 Backups
 - `omero_server_database_backupdir`: Dump the OMERO database to this directory before upgrading, default empty (disabled)
