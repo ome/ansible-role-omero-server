@@ -38,11 +38,7 @@ provisioner:
       docker-hosts:
         omero_server_systemd_require_network: false
 scenario:
-<<<<<<< HEAD:molecule/python3-centos7/molecule.yml
-  name: python3-cnetos7
-=======
   name: centos7
->>>>>>> origin/master:molecule/centos7/molecule.yml
   converge_sequence:
     - converge
 
