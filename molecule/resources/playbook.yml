@@ -1,5 +1,6 @@
 ---
-- name: Install OMERO 5.2 on both old and new servers
+
+- name: Converge
   hosts: all
 
   roles:
@@ -21,27 +22,39 @@
           - plate
           - project
           - dataset
-      # This will override host_vars (this is checked by the later tasks)
-      omero_server_release: "5.2"
-      omero_server_python3: false
+      omero_server_release: latest
+      omero_server_python_addons:
+        - omero-upload
 
   tasks:
-
-    - name: get OMERO version
-      become: true
-      become_user: omero-server
-      command: /opt/omero/server/OMERO.server/bin/omero version
-      register: oldomero_version
-
-    - name: check that OMERO 5.2 was installed
-      assert:
-        that:
-          - oldomero_version.stdout.startswith('5.2.8-')
 
     - name: additional config file
       copy:
         content: >
           config set omero.policy.binary_access -- "-read,-write,-image,-plate"
         dest: /opt/omero/server/config/molecule-additional-config.omero
+        mode: 0644
       notify:
         - restart omero-server
+
+
+- name: Additional tasks for setting up tests
+  hosts: all
+  tasks:
+
+    - name: create import user
+      user:
+        name: data-importer
+        group: importer
+
+    - name: create data directory
+      file:
+        path: /data/import
+        state: directory
+        mode: 0755
+
+    - name: create fake image
+      copy:
+        content: ''
+        dest: /data/import/test.fake
+        mode: 0644
