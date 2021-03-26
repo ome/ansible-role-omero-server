@@ -6,7 +6,7 @@ OMERO Server
 
 Installs and configures OMERO.server.
 
-**Warning:** This defaults to Python 3.
+**Warning:** Only supports Python 3.
 See [`CHANGES.md`](./CHANGES.md) for details.
 
 
