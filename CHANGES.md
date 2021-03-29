@@ -2,7 +2,9 @@
 
 ## Summary of breaking changes
 
-- Python 2 support is now dropped
+-   Python 2 support is now dropped
+-   `omero_server_python_requirements_ice_package` is now a nested dictionary
+    to support multiple versions per distribution
 
 ## Removed variables
 
