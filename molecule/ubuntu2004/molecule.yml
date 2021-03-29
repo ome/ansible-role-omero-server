@@ -1,0 +1,52 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: molecule/resources/requirements.yml
+driver:
+  name: docker
+lint:
+  name: yamllint
+platforms:
+  - name: omero-server-ubuntu2004
+    image: jrei/systemd-ubuntu:20.04
+    command: /sbin/init
+    privileged: true
+    tmpfs:
+      - /sys/fs/cgroup
+    groups:
+      - docker-hosts
+      - omero-py3
+provisioner:
+  name: ansible
+  lint:
+    name: ansible-lint
+  # To test the upgrade process without breaking the idempotence check
+  # - install omero during the prepare step which is only run once
+  # - attempt to upgrade in the converge step
+  options:
+    v: true
+    diff: true
+    # tags: [x]
+  playbooks:
+    # TODO: Use shared test playbooks
+    converge: ../resources/playbook.yml
+  inventory:
+    host_vars:
+      omero-server-ubuntu2004:
+        postgresql_version: "11"
+        ansible_python_interpreter: /usr/bin/python3
+        omero_server_selfsigned_certificates: true
+    group_vars:
+      docker-hosts:
+        omero_server_systemd_require_network: false
+scenario:
+  name: ubuntu2004
+  converge_sequence:
+    - converge
+
+verifier:
+  name: testinfra
+  directory: ../resources/tests/
+  lint:
+    name: flake8
