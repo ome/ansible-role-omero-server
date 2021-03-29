@@ -37,9 +37,6 @@ provisioner:
         postgresql_version: "11"
         ansible_python_interpreter: /usr/bin/python3
         omero_server_selfsigned_certificates: true
-    group_vars:
-      docker-hosts:
-        omero_server_systemd_require_network: false
 scenario:
   name: ubuntu2004
   converge_sequence:

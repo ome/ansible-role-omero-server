@@ -6,8 +6,9 @@
 
 ## Removed variables
 
--  `omero_server_python3` and `omero_server_virtualenv`: a Python3 virtual
-    environment is created unconditionally
+- `omero_server_python3`: the role only installs the server with Python 3
+- `omero_server_virtualenv`: a virtual environment is created unconditionally
+- `omero_server_systemd_require_network`
 
 # Changes in Version 3
 

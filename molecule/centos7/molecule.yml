@@ -34,9 +34,6 @@ provisioner:
     host_vars:
       omero-server-centos7:
         postgresql_version: "11"
-    group_vars:
-      docker-hosts:
-        omero_server_systemd_require_network: false
 scenario:
   name: centos7
   converge_sequence:
