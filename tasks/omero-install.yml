@@ -216,3 +216,9 @@
   notify:
     - omero-server rewrite omero-server configuration
     - omero-server restart omero-server
+
+- name: system packages | install openssl
+  become: true
+  package:
+    name: openssl
+    state: present

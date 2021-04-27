@@ -34,6 +34,7 @@ provisioner:
     host_vars:
       omero-server-centos7:
         postgresql_version: "11"
+        omero_server_selfsigned_certificates: true
 scenario:
   name: centos7
   converge_sequence:
