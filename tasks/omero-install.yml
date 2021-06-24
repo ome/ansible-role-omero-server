@@ -217,6 +217,13 @@
     - omero-server rewrite omero-server configuration
     - omero-server restart omero-server
 
+- name: omero server | create /usr/local/bin symlink
+  become: true
+  file:
+    src: "{{ omero_server_omero_command }}"
+    dest: /usr/local/bin/omero
+    state: link
+
 - name: system packages | install openssl
   become: true
   package:
