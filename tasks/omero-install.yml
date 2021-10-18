@@ -123,6 +123,14 @@
 - name: omero server | setup virtualenv3
   become: true
   pip:
+    name: "pip>=21"
+    state: present
+    virtualenv: "{{ omero_server_virtualenv_basedir }}"
+    virtualenv_command: /usr/local/bin/ome-python3-virtualenv
+
+- name: omero server | install requirements
+  become: true
+  pip:
     name: "{{ omero_server_python_requirements + omero_server_python_addons }}"
     state: present
     virtualenv: "{{ omero_server_virtualenv_basedir }}"
