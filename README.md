@@ -96,13 +96,13 @@ Example Playbooks
             password: omero
             databases: [omero]
 
-      - role: ome.omero-server
+      - role: ome.omero_server
 
 
     # Install or upgrade to a particular version, with an external database
     - hosts: localhost
       roles:
-      - ome.omero-server
+      - ome.omero_server
         omero_server_release: 5.6.0
         omero_server_dbhost: postgres.example.org
         omero_server_dbuser: db_user
