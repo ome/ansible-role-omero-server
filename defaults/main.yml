@@ -110,7 +110,7 @@ omero_server_python_requirements:
   - jinja2
   # Includes optional dependencies: always installed but activation may be
   # optional
-  - 'omero-server[default]==0.1.0'
+  - omero-server
 
 # Path to virtualenv
 omero_server_virtualenv_basedir: "{{ omero_server_basedir + '/venv3' }}"
