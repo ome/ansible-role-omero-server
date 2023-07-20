@@ -10,11 +10,16 @@ lint: |
     ansible-lint
     flake8
 platforms:
-  - name: omero-server-centos7
-    image: centos/systemd
+  - name: omero-server-rockylinux9
+    image: eniocarboni/docker-rockylinux-systemd:9
+    tmpfs:
+      - /tmp
     image_version: latest
     command: /sbin/init
     privileged: true
+    cgroupns_mode: host
+    tmpfs:
+      - /sys/fs/cgroup
     groups:
       - docker-hosts
       - omero-py3
@@ -34,11 +39,11 @@ provisioner:
     converge: ../resources/playbook.yml
   inventory:
     host_vars:
-      omero-server-centos7:
+      omero-server-rockylinux9:
         postgresql_version: "11"
         omero_server_selfsigned_certificates: true
 scenario:
-  name: centos7
+  name: rockylinux9
   converge_sequence:
     - converge
 
