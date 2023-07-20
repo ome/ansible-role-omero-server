@@ -1,8 +1,20 @@
 ---
-- src: ome.omero_common
-- src: ome.basedeps
-- src: ome.java
-- src: ome.python3_virtualenv
+- name: omero_common
+  src: https://github.com/glyg/ansible-role-omero-common/
+  version: glyg
+- name: basedeps
+  src: https://github.com/glyg/ansible-role-basedeps/
+  version: glyg
+- name: java
+  src: https://github.com/glyg/ansible-role-java/
+  version: glyg
+- name: python3_virtualenv
+  src: https://github.com/pwalczysko/ansible-role-python3-virtualenv/
+  version: rocky9
 - src: ome.ice
-- src: ome.postgresql
-- src: ome.postgresql_client
+- name: postgresql
+  src: https://github.com/khaledk2/ansible-role-postgresql/
+  version: update_to_use_rockylinux9_and_ubuntu2204
+- name: postgresql_client
+  src: https://github.com/khaledk2/ansible-role-postgresql-client/
+  version: update_to_rockylinux9_and_ubuntu2204

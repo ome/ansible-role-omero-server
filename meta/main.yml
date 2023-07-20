@@ -8,23 +8,22 @@ galaxy_info:
   platforms:
     - name: EL
       versions:
-        - 7
-        - 8
+        - 9
     - name: Ubuntu
       versions:
-        - bionic
-        - focal
+        - jammy
+  namespace: ome      
   role_name: omero_server
   galaxy_tags: ['omero', 'server']
 
 dependencies:
-  - role: ome.omero_common
-  - role: ome.basedeps
-  - role: ome.java
-  - role: ome.python3_virtualenv
+  - role: omero_common
+  - role: basedeps
+  - role: java
+  - role: python3_virtualenv
   - role: ome.ice
     vars:
       ice_version: "{{ omero_server_ice_version }}"
       ice_install_devel: false
       ice_install_python: false
-  - role: ome.postgresql_client
+  - role: postgresql_client
