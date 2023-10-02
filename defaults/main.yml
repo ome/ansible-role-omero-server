@@ -78,7 +78,7 @@ omero_server_python_requirements_ice_package:
     9: "https://github.com/glencoesoftware/zeroc-ice-py-rhel9-x86_64/releases/download/\
       20230830/zeroc_ice-3.6.5-cp39-cp39-linux_x86_64.whl"
   Debian:
-    22: "https://github.com/glencoesoftware/zeroc-ice-py-ubuntu2204-x86_64/releases/download\
+    22: "https://github.com/glencoesoftware/zeroc-ice-py-ubuntu2204-x86_64/releases/download/\
       20221004/zeroc_ice-3.6.5-cp310-cp310-linux_x86_64.whl"
 
 
