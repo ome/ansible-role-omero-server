@@ -18,6 +18,7 @@ galaxy_info:
 
 dependencies:
   - role: omero_common
+  - role: deploy_archive
   - role: basedeps
   - role: java
   - role: python3_virtualenv
