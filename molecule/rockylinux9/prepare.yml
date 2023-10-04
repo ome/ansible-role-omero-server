@@ -8,4 +8,5 @@
         update_cache: true
         pkg:
           - ca-certificates
+          - procps
         state: latest
