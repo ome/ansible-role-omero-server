@@ -11,7 +11,9 @@
 - name: python3_virtualenv
   src: https://github.com/pwalczysko/ansible-role-python3-virtualenv/
   version: rocky9
-- src: ome.ice
+- name: ice
+  src: https://github.com/khaledk2/ansible-role-ice
+  version: update_to_use_rockylinux9_and_ubuntu2204
 - name: postgresql
   src: https://github.com/khaledk2/ansible-role-postgresql/
   version: update_to_use_rockylinux9_and_ubuntu2204
