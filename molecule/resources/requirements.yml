@@ -21,5 +21,5 @@
   src: https://github.com/khaledk2/ansible-role-postgresql-client/
   version: update_to_rockylinux9_and_ubuntu2204
 - name: deploy_archive
-  src: https://github.com/khaledk2/ansible-role-deploy-archive/
-  version: update_to_use_rockylinux9_and_ubuntu2204
+  src: https://github.com/ome/ansible-role-deploy-archive/
+  version: master
