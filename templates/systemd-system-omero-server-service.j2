@@ -7,6 +7,7 @@ After=postgresql-11.service
 After=postgresql-12.service
 After=postgresql-13.service
 After=postgresql-14.service
+After=postgresql-15.service
 After=network.service
 {% for value in omero_server_systemd_after %}After={{ value }}
 {% endfor %}
