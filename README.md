@@ -51,7 +51,7 @@ You may need to change these for in-place imports.
 - `omero_server_datadir_managedrepo_mode`: Permissions for OMERO `ManagedRepository`
 - `omero_server_datadir`: OMERO data directory, default `/OMERO`
 - `omero_server_datadir_managedrepo`: OMERO ManagedRepository directory
-- `omero_server_selfsigned_certificates`: Generate self-signed certificates instead of using anonymous ciphers, default `False`, use this if your system does not support insecure ciphers
+- `omero_server_selfsigned_certificates`: Generate self-signed certificates instead of using anonymous ciphers, default `True`, use this if your system does not support insecure ciphers
 
 OMERO.server systemd configuration.
 - `omero_server_systemd_setup`: Create and start the `omero-server` systemd service, default `True`
