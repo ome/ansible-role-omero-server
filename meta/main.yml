@@ -17,14 +17,14 @@ galaxy_info:
   galaxy_tags: ['omero', 'server']
 
 dependencies:
-  - role: omero_common
+  - role: ome.omero_common
 #   - role: deploy_archive
-  - role: basedeps
-  - role: java
-  - role: python3_virtualenv
-  - role: ice
+  - role: ome.basedeps
+  - role: ome.java
+  - role: ome.python3_virtualenv
+  - role: ome.ice
     vars:
       ice_version: "{{ omero_server_ice_version }}"
       ice_install_devel: false
       ice_install_python: false
-  - role: postgresql_client
+  - role: ome.postgresql_client
