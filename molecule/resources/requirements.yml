@@ -1,9 +1,9 @@
 ---
-- role: ome.omero_common
-- role: ome.basedeps
-- role: ome.java
-- role: ome.python3_virtualenv
-- role: ome.ice
-- role: ome.postgresql
-- role: ome.postgresql_client
-- role: ome.deploy_archive
+- src: ome.omero_common
+- src: ome.basedeps
+- src: ome.java
+- src: ome.python3_virtualenv
+- src: ome.ice
+- src: ome.postgresql
+- src: ome.postgresql_client
+- src: ome.deploy_archive
