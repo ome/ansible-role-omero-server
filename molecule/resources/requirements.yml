@@ -4,8 +4,6 @@
 - src: ome.java
 - src: ome.python3_virtualenv
 - src: khaledk2.ice
-- name: postgresql
-  src: https://github.com/ome/ansible-role-postgresql/
-  version: master
+- src: khaledk2.postgresql
 - src: ome.postgresql_client
 - src: ome.deploy_archive
