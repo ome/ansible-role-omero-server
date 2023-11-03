@@ -1,0 +1,45 @@
+- name: omero server | Include ome.omero_common role
+  include_role:
+    name: ome.omero_common
+  when: >-
+    (ansible_os_family | lower == 'redhat') and
+    (ansible_distribution_major_version == '9')
+
+- name: omero server | Include ome.basedeps role
+  include_role:
+    name: ome.basedeps
+  when: >-
+    (ansible_os_family | lower == 'redhat') and
+    (ansible_distribution_major_version == '9')
+
+- name: omero server | Include ome.java
+  include_role:
+    name: ome.java
+  when: >-
+    (ansible_os_family | lower == 'redhat') and
+    (ansible_distribution_major_version == '9')
+
+- name: omero server | Include ome.python3_virtualenv
+  include_role:
+    name: ome.python3_virtualenv
+  when: >-
+    (ansible_os_family | lower == 'redhat') and
+    (ansible_distribution_major_version == '9')
+
+- name: omero server | Include ome.ice role
+  include_role:
+    name: ome.ice
+  vars:
+    ice_version: "{{ omero_server_ice_version }}"
+    ice_install_devel: false
+    ice_install_python: false
+  when: >-
+    (ansible_os_family | lower == 'redhat') and
+    (ansible_distribution_major_version == '9')
+
+- name: omero server | Include ome.postgresql_client
+  include_role:
+    name: ome.postgresql_client
+  when: >-
+    (ansible_os_family | lower == 'redhat') and
+    (ansible_distribution_major_version == '9')
