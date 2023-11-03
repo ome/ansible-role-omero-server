@@ -25,3 +25,7 @@
 - name: omero server | Include ome.postgresql_client
   include_role:
     name: ome.postgresql_client
+
+- name: omero server | Include ome.postgresql
+  include_role:
+    name: ome.postgresql
