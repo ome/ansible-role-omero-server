@@ -22,7 +22,7 @@ dependencies:
   - role: ome.basedeps
   - role: ome.java
   - role: ome.python3_virtualenv
-  - role: ome.ice
+  - role: khaledk2.ice
     vars:
       ice_version: "{{ omero_server_ice_version }}"
       ice_install_devel: false
