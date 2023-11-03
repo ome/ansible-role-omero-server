@@ -3,7 +3,7 @@
 - src: ome.basedeps
 - src: ome.java
 - src: ome.python3_virtualenv
-- src: khaledk2.ice
+- src: ome.ice
 - src: khaledk2.postgresql
 - src: ome.postgresql_client
 - src: ome.deploy_archive
