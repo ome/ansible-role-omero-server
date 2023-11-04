@@ -150,8 +150,6 @@ omero_server_datadir_manage: true
 # Base directory for the server installation
 omero_server_basedir: "{{ omero_common_basedir }}/server"
 
-omero_common_basedir: "/opt/omero"
-
 # Symlink to the currently installed OMERO.server
 omero_server_symlink: OMERO.server
 
