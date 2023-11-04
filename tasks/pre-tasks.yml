@@ -1,5 +1,8 @@
-- name: omero server | Include ome.omero_common role
-  include_role:
+---
+# omero_common must be imported to prevent
+# undeclared variable failure
+- name: omero server | Import ome.omero_common role
+  import_role:
     name: ome.omero_common
 
 - name: omero server | Include ome.basedeps role
