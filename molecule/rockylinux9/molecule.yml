@@ -12,8 +12,6 @@ lint: |
 platforms:
   - name: omero-server-rockylinux9
     image: eniocarboni/docker-rockylinux-systemd:9
-    tmpfs:
-      - /tmp
     image_version: latest
     command: /sbin/init
     privileged: true
