@@ -3,11 +3,10 @@ Description=OMERO.server
 # Requires: forces the dependency to be started
 # After: ensures this service starts after the dependency, but only if the
 # dependency is also started (PostgreSQL may be on a different server)
-After=postgresql-9.4.service
-After=postgresql-9.5.service
-After=postgresql-9.6.service
-After=postgresql-10.service
 After=postgresql-11.service
+After=postgresql-12.service
+After=postgresql-13.service
+After=postgresql-14.service
 After=network.service
 {% for value in omero_server_systemd_after %}After={{ value }}
 {% endfor %}
