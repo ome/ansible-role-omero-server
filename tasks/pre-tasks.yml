@@ -28,5 +28,3 @@
 - name: omero server | Include ome.postgresql_client
   include_role:
     name: ome.postgresql_client
-  vars:
-    postgresql_version: "{{ postgresql_version }}"
