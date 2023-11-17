@@ -25,10 +25,8 @@
     ice_install_devel: false
     ice_install_python: false
 
-# - name: omero server | Include ome.postgresql_client
-#   include_role:
-#     name: ome.postgresql_client
-
-# - name: omero server | Include ome.postgresql
-#  include_role:
-#    name: ome.postgresql
+- name: omero server | Include ome.postgresql_client
+  include_role:
+    name: ome.postgresql_client
+  vars:
+    postgresql_version: "{{ postgresql_version }}"
