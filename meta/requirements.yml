@@ -4,5 +4,5 @@
 - src: ome.java
 - src: ome.python3_virtualenv
 - src: ome.ice
-- src: ome.postgresql
+# - src: ome.postgresql
 - src: ome.postgresql_client
