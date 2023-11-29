@@ -1,0 +1,12 @@
+---
+
+- name: Prepare all
+  hosts: all
+  tasks:
+    - name: Upgrade ca-certificates
+      ansible.builtin.dnf:
+        update_cache: true
+        pkg:
+          - ca-certificates
+          - procps
+        state: latest

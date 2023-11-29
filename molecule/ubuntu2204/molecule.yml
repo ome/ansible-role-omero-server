@@ -5,14 +5,18 @@ dependency:
     role-file: molecule/resources/requirements.yml
 driver:
   name: docker
-lint:
-  name: yamllint
+lint: |
+    yamllint .
+    ansible-lint
+    flake8
 platforms:
-  - name: omero-server-centos7
-    image: centos/systemd
-    image_version: latest
+  - name: omero-server-ubuntu2204
+    image: eniocarboni/docker-ubuntu-systemd:22.04
     command: /sbin/init
     privileged: true
+    cgroupns_mode: host
+    tmpfs:
+      - /sys/fs/cgroup
     groups:
       - docker-hosts
       - omero-py3
@@ -32,16 +36,15 @@ provisioner:
     converge: ../resources/playbook.yml
   inventory:
     host_vars:
-      omero-server-centos7:
-        postgresql_version: "11"
+      omero-server-ubuntu2204:
+        postgresql_version: "13"
+        ansible_python_interpreter: /usr/bin/python3
         omero_server_selfsigned_certificates: true
 scenario:
-  name: centos7
+  name: ubuntu2204
   converge_sequence:
     - converge
 
 verifier:
   name: testinfra
   directory: ../resources/tests/
-  lint:
-    name: flake8

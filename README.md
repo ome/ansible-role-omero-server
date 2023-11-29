@@ -2,7 +2,7 @@ OMERO Server
 ============
 
 [![Actions Status](https://github.com/ome/ansible-role-omero-server/workflows/Molecule/badge.svg)](https://github.com/ome/ansible-role-omero-server/actions)
-[![Ansible Role](https://img.shields.io/ansible/role/41085.svg)](https://galaxy.ansible.com/ome/omero_server/)
+[![Ansible Role](https://img.shields.io/badge/ansible--galaxy-omero_server-blue.svg)](https://galaxy.ansible.com/ui/standalone/roles/ome/omero_server/)
 
 Installs and configures OMERO.server.
 
@@ -88,7 +88,7 @@ Example Playbooks
       roles:
 
       - role: ome.postgresql
-        postgresql_version: "11"
+        postgresql_version: "13"
         postgresql_databases:
           - name: omero
         postgresql_users:
@@ -109,7 +109,7 @@ Example Playbooks
         omero_server_dbname: db_name
         omero_server_dbpassword: db_password
         # Version required for the psql client
-        postgresql_version: "11"
+        postgresql_version: "13"
 
 
 Author Information

@@ -1,6 +1,8 @@
 ---
 # tasks for omero-server
 
+- include: pre-tasks.yml
+
 - include: omero-user.yml
 
 - include: omero-datadir.yml

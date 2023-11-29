@@ -1,0 +1,30 @@
+---
+# omero_common must be imported to prevent
+# undeclared variable failure
+- name: omero server | Import ome.omero_common role
+  import_role:
+    name: ome.omero_common
+
+- name: omero server | Include ome.basedeps role
+  include_role:
+    name: ome.basedeps
+
+- name: omero server | Include ome.java
+  include_role:
+    name: ome.java
+
+- name: omero server | Include ome.python3_virtualenv
+  include_role:
+    name: ome.python3_virtualenv
+
+- name: omero server | Include ome.ice role
+  include_role:
+    name: ome.ice
+  vars:
+    ice_version: "{{ omero_server_ice_version }}"
+    ice_install_devel: false
+    ice_install_python: false
+
+- name: omero server | Include ome.postgresql_client
+  include_role:
+    name: ome.postgresql_client

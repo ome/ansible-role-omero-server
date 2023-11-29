@@ -22,7 +22,7 @@ def test_omero_version(host):
 
 def test_postgres_version(host):
     ver = host.check_output("psql --version")
-    assert ver.startswith('psql (PostgreSQL) 11')
+    assert ver.startswith('psql (PostgreSQL) 13')
 
 
 def test_additional_python(host):
