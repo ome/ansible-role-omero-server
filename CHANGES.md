@@ -1,3 +1,16 @@
+# Changes in Version 6
+
+## Summary of breaking changes
+
+-  Install self-signed certificates by default
+
+# Changes in Version 5
+
+## Summary of breaking changes
+
+-  Remove support for CentOS 7 and Ubuntu 20.04
+-  Add support for RHEL/RockyLinux 9 and Ubuntu 202.04
+
 # Changes in Version 4
 
 ## Summary of breaking changes
