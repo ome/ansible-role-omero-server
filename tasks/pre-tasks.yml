@@ -19,9 +19,9 @@
 
 - name: omero server | Include ome.ice role
   include_role:
-    - name: ome.ice
-      src: https://github.com/khaledk2/ansible-role-ice
-      version: arch64
+    name: ome.ice
+    src: https://github.com/khaledk2/ansible-role-ice
+    version: arch64
   vars:
     ice_version: "{{ omero_server_ice_version }}"
     ice_install_devel: false
@@ -29,6 +29,6 @@
 
 - name: omero server | Include ome.postgresql_client
   include_role:
-    - name: ome.postgresql_client
-      src: https://github.com/khaledk2/ansible-role-postgresql-client
-      version: supporr_aarch64_x86_64_architecture
+    name: ome.postgresql_client
+    src: https://github.com/khaledk2/ansible-role-postgresql-client
+    version: supporr_aarch64_x86_64_architecture
