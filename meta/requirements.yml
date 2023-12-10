@@ -3,5 +3,9 @@
 - src: ome.basedeps
 - src: ome.java
 - src: ome.python3_virtualenv
-- src: ome.ice
-- src: ome.postgresql_client
+- name: ome.ice
+  src: https://github.com/khaledk2/ansible-role-ice
+  version: arch64
+- name: ome.postgresql_client
+  src: https://github.com/khaledk2/ansible-role-postgresql-client
+  version: supporr_aarch64_x86_64_architecture
