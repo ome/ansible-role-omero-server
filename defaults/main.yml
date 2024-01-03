@@ -78,7 +78,8 @@ omero_server_python_requirements_ice_package:
   RedHat:
     aarch64:
       9:
-        "https://downloads.openmicroscopy.org/ice/zeroc_ice-3.6.5-cp39-cp39-linux_aarch64.whl"
+        "https://github.com/khaledk2/ice-archh-64/releases/download/wheel/\
+            zeroc_ice-3.6.5-cp37-cp37m-linux_aarch64.whl"
     x86_64:
       9:
         "https://github.com/glencoesoftware/zeroc-ice-py-rhel9-x86_64/releases/download/\
