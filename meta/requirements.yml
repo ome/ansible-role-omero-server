@@ -8,4 +8,4 @@
   version: arch64
 - name: ome.postgresql_client
   src: https://github.com/khaledk2/ansible-role-postgresql-client
-  version: supporr_aarch64_x86_64_architecture
+  version: test_arch_import_key
