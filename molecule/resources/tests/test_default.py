@@ -8,7 +8,7 @@ testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
 
 # Ubuntu sudo doesn't set HOME so it tries to write to /root
 ENV = 'OMERO_USERDIR=/home/data-importer/omero-{}'.format(time())
-OMERO = '/opt/omero/server/OMERO.server/bin/omero'
+OMERO = '/usr/local/bin/omero'
 OMERO_LOGIN = '-C -s localhost -u root -w omero'
 
 
