@@ -239,11 +239,10 @@
     state: present
   when: ansible_os_family | lower == 'redhat'
 
-
-- name: server package | install debin blosc
+- name: server package | install debian blosc
   become: true
   ansible.builtin.apt:
     update_cache: true
-    name: blosc
+    name: libblosc1
     state: present
-  when: ansible_os_family | lower == 'debin'
+  when: ansible_os_family | lower == 'debian'
