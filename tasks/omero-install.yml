@@ -230,3 +230,20 @@
   package:
     name: openssl
     state: present
+
+- name: server package | install redhat blosc
+  become: true
+  ansible.builtin.dnf:
+    update_cache: true
+    name: blosc
+    state: present
+  when: ansible_os_family | lower == 'redhat'
+
+
+- name: server package | install debin blosc
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    name: blosc
+    state: present
+  when: ansible_os_family | lower == 'debin'
