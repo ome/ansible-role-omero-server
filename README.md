@@ -91,6 +91,7 @@ Example Playbooks
         postgresql_version: "13"
         postgresql_databases:
           - name: omero
+            owner: omero
         postgresql_users:
           - user: omero
             password: omero

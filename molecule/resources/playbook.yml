@@ -8,6 +8,7 @@
     - role: ome.postgresql
       postgresql_databases:
         - name: omero
+          owner: omero
       postgresql_users:
         - user: omero
           password: omero
