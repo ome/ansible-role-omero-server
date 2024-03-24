@@ -64,7 +64,7 @@ omero_server_python_addons: []
 omero_server_database_backupdir: ""
 
 # If true disable anonymous ciphers and use self-signed certificates
-omero_server_selfsigned_certificates: false
+omero_server_selfsigned_certificates: true
 
 
 ######################################################################
