@@ -3,7 +3,7 @@
 
 - name: omero server | systemd service
   become: true
-  template:
+  ansible.builtin.template:
     dest: /etc/systemd/system/omero-server.service
     force: true
     src: systemd-system-omero-server-service.j2
@@ -18,7 +18,7 @@
 
 - name: omero server | enable and start server systemd
   become: true
-  service:
+  ansible.builtin.service:
     enabled: true
     name: omero-server.service
     state: started

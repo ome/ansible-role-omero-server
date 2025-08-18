@@ -3,7 +3,7 @@
 
 - name: omero server | create omero datadir base directory
   become: true
-  file:
+  ansible.builtin.file:
     owner: "{{ omero_server_system_user }}"
     mode: "{{ omero_server_datadir_mode }}"
     path: "{{ omero_server_datadir }}"
@@ -12,7 +12,7 @@
 
 - name: omero server | create omero datadir subdirectories
   become: true
-  file:
+  ansible.builtin.file:
     owner: "{{ omero_server_system_user }}"
     mode: "{{ omero_server_datadir_mode }}"
     path: "{{ omero_server_datadir }}/{{ item }}"
@@ -27,7 +27,7 @@
 
 - name: omero server | create omero BioFormatsCache
   become: true
-  file:
+  ansible.builtin.file:
     owner: "{{ omero_server_system_user }}"
     mode: "{{ omero_server_datadir_mode }}"
     path: "{{ omero_server_datadir_bioformatscache }}"
@@ -36,7 +36,7 @@
 
 - name: omero server | create omero BioFormatsCache symlink
   become: true
-  file:
+  ansible.builtin.file:
     src: "{{ omero_server_datadir_bioformatscache }}"
     path: "{{ omero_server_datadir }}/BioFormatsCache"
     state: link
@@ -47,7 +47,7 @@
 
 - name: omero server | create omero ManagedRepository
   become: true
-  file:
+  ansible.builtin.file:
     owner: "{{ omero_server_system_user }}"
     group: "{{ omero_server_system_managedrepo_group }}"
     mode: "{{ omero_server_datadir_managedrepo_mode }}"

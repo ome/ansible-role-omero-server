@@ -3,7 +3,7 @@
 
 - name: omero server | is server symlink present
   become: true
-  stat:
+  ansible.builtin.stat:
     path: "{{ omero_server_basedir }}/{{ omero_server_symlink }}"
   register: omero_server_symlink_st
 
@@ -15,7 +15,7 @@
 
 # Is there an existing OMERO.server that uses the requested virtualenv?
 - name: omero server | does omero server match requested virtualenv
-  set_fact:
+  ansible.builtin.set_fact:
     _omero_server_matches_virtualenv: >-
       {{
         omero_server_symlink_st.stat.exists and
@@ -25,7 +25,7 @@
 # Previously this used the output of 'omero version'
 # Python modules are now decoupled so get the version from the folder name
 - name: omero server | get server version
-  set_fact:
+  ansible.builtin.set_fact:
     omero_server_version: >-
       {{
         omero_server_symlink_st.stat.lnk_target | basename |
@@ -48,7 +48,7 @@
 # Check whether an upgrade is available since `omego upgrade` always
 # restarts the server
 - name: omero server | get latest downloads url
-  uri:
+  ansible.builtin.uri:
     url: https://downloads.openmicroscopy.org/latest/omero
     method: HEAD
   register: _omero_server_downloads_latest
@@ -58,7 +58,7 @@
 # It's easiest to lookup a concrete version and use this for all omego
 # operations instead
 - name: omero server | get latest version
-  set_fact:
+  ansible.builtin.set_fact:
     _omero_server_new_version: "{{
       (omero_server_release in ('latest', 'present')) | ternary(
          _omero_server_downloads_latest.url.strip('/').split('/')[-1],
@@ -68,7 +68,7 @@
 
 - block:
     - name: omero server | checkupgrade
-      set_fact:
+      ansible.builtin.set_fact:
         # If _omero_server_new_version does not begin with a number assume
         # it's a custom build, always upgrade
         # If we're switching from a non-venv to a venv treat it as an upgrade
@@ -110,7 +110,7 @@
 # If the OMERO.server symlink doesn't exist don't upgrade, this is a new
 # installation
 - name: omero server | set upgrade flag
-  set_fact:
+  ansible.builtin.set_fact:
     _omero_server_execute_upgrade: "{{
       omero_server_upgrade and
       _omero_server_update_needed and
@@ -122,7 +122,7 @@
 # TODO: figure out dependencies
 - name: omero server | setup virtualenv3
   become: true
-  pip:
+  ansible.builtin.pip:
     name: "pip>=21"
     state: present
     virtualenv: "{{ omero_server_virtualenv_basedir }}"
@@ -130,7 +130,7 @@
 
 - name: omero server | install requirements
   become: true
-  pip:
+  ansible.builtin.pip:
     name: "{{ omero_server_python_requirements + omero_server_python_addons }}"
     state: present
     virtualenv: "{{ omero_server_virtualenv_basedir }}"
@@ -142,7 +142,7 @@
 - name: omero server | install omero
   become: true
   become_user: "{{ omero_server_system_user }}"
-  command: >
+  ansible.builtin.command: >
     {{ omero_server_omego }}
     install
     {{ omero_server_omego_options }}
@@ -160,7 +160,7 @@
 
 - name: omero server | create omero backup directory
   become: true
-  file:
+  ansible.builtin.file:
     mode: 0700
     owner: "{{ omero_server_system_user }}"
     path: "{{ omero_server_database_backupdir }}"
@@ -172,7 +172,7 @@
 - name: omero server | backup database
   become: true
   become_user: "{{ omero_server_system_user }}"
-  command: >
+  ansible.builtin.command: >
     {{ omero_server_omego }}
     db dump
     {{ omero_server_omego_db_options }}
@@ -188,7 +188,7 @@
 - name: omero server | upgrade
   become: true
   become_user: "{{ omero_server_system_user }}"
-  command: >
+  ansible.builtin.command: >
     {{ omero_server_omego }}
     install --upgrade
     {{ omero_server_omego_options }}
@@ -203,21 +203,21 @@
 
 - name: omero server | delete OMERO.server/lib/python
   become: true
-  file:
+  ansible.builtin.file:
     path: "{{ omero_server_omerodir }}/lib/python"
     state: absent
 
 # Remembering to set OMERODIR everywhere is prone to error
 - name: omero server | create bin directory for wrapper
   become: true
-  file:
+  ansible.builtin.file:
     path: "{{ omero_server_omerodir }}/bin/"
     state: directory
     mode: 0555
 
 - name: omero server | create omero server wrapper
   become: true
-  template:
+  ansible.builtin.template:
     dest: "{{ omero_server_omero_command }}"
     src: bin-omero.j2
     mode: 0555
@@ -227,7 +227,7 @@
 
 - name: system packages | install openssl
   become: true
-  package:
+  ansible.builtin.package:
     name: openssl
     state: present
 
