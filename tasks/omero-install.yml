@@ -234,7 +234,6 @@
 - name: server package | install redhat blosc
   become: true
   ansible.builtin.dnf:
-    update_cache: true
     name: blosc
     state: present
   when: ansible_os_family | lower == 'redhat'
@@ -242,7 +241,6 @@
 - name: server package | install debian blosc
   become: true
   ansible.builtin.apt:
-    update_cache: true
     name: libblosc1
     state: present
   when: ansible_os_family | lower == 'debian'
