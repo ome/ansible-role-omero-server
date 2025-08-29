@@ -3,13 +3,13 @@
 
 - name: omero server | remove old configuration script
   become: true
-  file:
+  ansible.builtin.file:
     path: "{{ omero_server_basedir }}/config/omero-server-config-update.sh"
     state: absent
 
 - name: omero server | configuration 00-omero-server.omero
   become: true
-  template:
+  ansible.builtin.template:
     dest: "{{ omero_server_basedir }}/config/00-omero-server.omero"
     force: true
     src: 00-omero-server-omero.j2
