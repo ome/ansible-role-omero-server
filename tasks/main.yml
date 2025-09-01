@@ -1,16 +1,16 @@
 ---
 # tasks for omero-server
 
-- include: pre-tasks.yml
+- ansible.builtin.import_tasks: pre-tasks.yml
 
-- include: omero-user.yml
+- ansible.builtin.import_tasks: omero-user.yml
 
-- include: omero-datadir.yml
+- ansible.builtin.include_tasks: omero-datadir.yml
   when: omero_server_datadir_manage
 
-- include: omero-configfiles.yml
+- ansible.builtin.import_tasks: omero-configfiles.yml
 
-- include: omero-install.yml
+- ansible.builtin.import_tasks: omero-install.yml
 
-- include: omero-systemd.yml
+- ansible.builtin.include_tasks: omero-systemd.yml
   when: omero_server_systemd_setup
