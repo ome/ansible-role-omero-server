@@ -60,7 +60,7 @@ omero_server_systemd_environment: {}
 # List of additional Python packages to be installed into virtualenv
 omero_server_python_addons: []
 
-omero_server_python_version: "311"
+omero_server_python_version: "310"
 
 # If non-empty dump the OMERO database to this directory before upgrading
 omero_server_database_backupdir: ""
