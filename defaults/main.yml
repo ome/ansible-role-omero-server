@@ -60,6 +60,8 @@ omero_server_systemd_environment: {}
 # List of additional Python packages to be installed into virtualenv
 omero_server_python_addons: []
 
+omero_server_python_version: "312"
+
 # If non-empty dump the OMERO database to this directory before upgrading
 omero_server_database_backupdir: ""
 
@@ -74,12 +76,14 @@ omero_server_selfsigned_certificates: true
 omero_server_ice_version: "3.6"
 
 omero_server_python_requirements_ice_package:
+
   RedHat:
-    9: "https://github.com/glencoesoftware/zeroc-ice-py-rhel9-x86_64/releases/download/\
-      20230830/zeroc_ice-3.6.5-cp39-cp39-linux_x86_64.whl"
+    9: "https://github.com/glencoesoftware/zeroc-ice-py-linux-x86_64/releases/download/20240202/zeroc_ice-3.6.5-cp{{ omero_server_python_version }}-cp{{ omero_server_python_version }}-manylinux_2_28_x86_64.whl"
+
   Debian:
-    22: "https://github.com/glencoesoftware/zeroc-ice-py-ubuntu2204-x86_64/releases/download/\
-      20221004/zeroc_ice-3.6.5-cp310-cp310-linux_x86_64.whl"
+    22: "https://github.com/glencoesoftware/zeroc-ice-py-linux-x86_64/releases/download/20240202/zeroc_ice-3.6.5-cp{{ omero_server_python_version }}-cp{{ omero_server_python_version }}-manylinux_2_28_x86_64.whl"
+
+    24: "https://github.com/glencoesoftware/zeroc-ice-py-linux-x86_64/releases/download/20240202/zeroc_ice-3.6.5-cp{{ omero_server_python_version }}-cp{{ omero_server_python_version }}-manylinux_2_28_x86_64.whl"
 
 
 # TODO: sort this out
