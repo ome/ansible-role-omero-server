@@ -13,9 +13,9 @@
   ansible.builtin.include_role:
     name: ome.java
 
-- name: omero server | Include ome.python3_virtualenv
+- name: omero server | Include python3_virtualenv
   ansible.builtin.include_role:
-    name: ome.python3_virtualenv
+    name: python3_virtualenv
 
 - name: omero server | Include ome.ice role
   ansible.builtin.include_role:
