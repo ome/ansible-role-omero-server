@@ -128,6 +128,14 @@
     virtualenv: "{{ omero_server_virtualenv_basedir }}"
     virtualenv_command: /usr/local/bin/ome-python3-virtualenv
 
+- name: omero server | install  setuptools
+  become: true
+  ansible.builtin.pip:
+    name: setuptools
+    state: present
+    virtualenv: "{{ omero_server_virtualenv_basedir }}"
+    virtualenv_command: /usr/local/bin/ome-python3-virtualenv
+
 - name: omero server | install requirements
   become: true
   ansible.builtin.pip:
