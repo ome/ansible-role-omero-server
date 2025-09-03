@@ -37,7 +37,7 @@ provisioner:
   inventory:
     host_vars:
       omero-server-ubuntu2204:
-        postgresql_version: "16"
+        postgresql_version: "13"
         ansible_python_interpreter: /usr/bin/python3
         omero_server_selfsigned_certificates: true
 scenario:
