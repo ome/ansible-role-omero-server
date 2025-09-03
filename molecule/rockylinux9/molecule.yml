@@ -39,6 +39,7 @@ provisioner:
     host_vars:
       omero-server-rockylinux9:
         postgresql_version: "13"
+        ansible_python_interpreter: /usr/bin/python3
         omero_server_selfsigned_certificates: true
 scenario:
   name: rockylinux9
