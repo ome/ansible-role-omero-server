@@ -16,6 +16,8 @@
 - name: omero server | Include python3_virtualenv
   ansible.builtin.include_role:
     name: python3_virtualenv
+    vars:
+      python_version: "{{ python3_virtualenv_version }}"
 
 - name: omero server | Include ome.ice role
   ansible.builtin.include_role:
