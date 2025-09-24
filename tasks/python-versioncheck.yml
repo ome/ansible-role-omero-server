@@ -1,0 +1,60 @@
+---
+
+- name: omero server | check if the venv3 dir exists
+  stat:
+    path: "{{ omero_server_virtualenv_basedir }}"
+  register: venv_dir
+
+- name: omero server | get output of the version cmd in present venv3
+  become: true
+  ansible.builtin.command: | 
+    {{ omero_server_virtualenv_basedir }}/bin/python --version
+  register: omero_server_venv_vers
+  when: venv_dir.stat.exists
+- debug: msg="{{ omero_server_venv_vers.stdout | split (' ') | last | split ('.')}}"
+  when: venv_dir.stat.exists
+- debug: msg="{{omero_server_venv_vers.stdout_lines }}"
+  when: venv_dir.stat.exists
+
+- name: omero server | parse the output
+  ansible.builtin.set_fact: 
+    extracted_list: "{{ omero_server_venv_vers.stdout | split (' ') | last | split ('.')}}"
+  when: venv_dir.stat.exists
+
+- name: omero server | get the Python version in present venv3
+  ansible.builtin.set_fact: 
+    extracted_python_version: "{{ extracted_list[0] }}.{{ extracted_list[1] }}"
+  when: venv_dir.stat.exists
+
+- debug: msg="extracted_python_version"
+  when: venv_dir.stat.exists
+- debug: msg="{{ extracted_python_version_string  | type_debug }}"
+  when: venv_dir.stat.exists
+- debug: msg="python3_virtualenv_version_string"
+  when: venv_dir.stat.exists
+- debug: msg="{{ python3_virtualenv_version_string  | type_debug }}"
+  when: venv_dir.stat.exists
+
+- name: omero server | stop the server
+  vars:
+    python3_virtualenv_version_string: "{{ python3_virtualenv_version | string }}"
+    extracted_python_version_string: "{{ extracted_python_version | string }}"
+  become: true
+  service:
+    name: omero-server
+    state: stopped
+  when:
+    - venv_dir.stat.exists
+    - extracted_python_version_string != python3_virtualenv_version_string
+
+
+- name: omero server | delete the content of the /opt/omero/server
+  vars:
+    python3_virtualenv_version_string: "{{ python3_virtualenv_version | string }}"
+    extracted_python_version_string: "{{ extracted_python_version | string }}"
+  become: true
+  ansible.builtin.command: |
+    rm -rf {{ omero_server_basedir }}/*
+  when:
+    - venv_dir.stat.exists
+    - extracted_python_version_string != python3_virtualenv_version_string

@@ -3,6 +3,8 @@
 
 - ansible.builtin.import_tasks: pre-tasks.yml
 
+- ansible.builtin.import_tasks: python-versioncheck.yml
+
 - ansible.builtin.import_tasks: omero-user.yml
 
 - ansible.builtin.include_tasks: omero-datadir.yml
