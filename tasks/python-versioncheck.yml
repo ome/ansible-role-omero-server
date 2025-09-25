@@ -11,7 +11,8 @@
     {{ omero_server_virtualenv_basedir }}/bin/python --version
   register: omero_server_venv_vers
   when: venv_dir.stat.exists
-  changed_when: not venv_dir.stat.exists
+  changed_when: "'Python' not in omero_server_venv_vers.stdout"
+  failed_when: "'Python' not in omero_server_venv_vers.stdout"
 
 - debug: msg="{{ omero_server_venv_vers.stdout | split (' ') | last | split ('.')}}"
   when: venv_dir.stat.exists
