@@ -48,13 +48,13 @@
     - extracted_python_version_string != python3_virtualenv_version_string
 
 
-- name: omero server | delete the omero_server_basedir
+- name: omero server | delete the omero_server_virtualenv_basedir
   vars:
     python3_virtualenv_version_string: "{{ python3_virtualenv_version | string }}"
     extracted_python_version_string: "{{ extracted_python_version | string }}"
   become: true
   ansible.builtin.command: |
-    rm -rf {{ omero_server_basedir }}
+    rm -rf {{ omero_server_virtualenv_basedir }}
   when:
     - venv_dir.stat.exists
     - extracted_python_version_string != python3_virtualenv_version_string
