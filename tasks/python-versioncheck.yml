@@ -11,32 +11,7 @@
     {{ omero_server_virtualenv_basedir }}/bin/python --version
   register: omero_server_venv_vers
   when: venv_dir.stat.exists
-  changed_when:  false
-
-
-- debug: msg="{{ omero_server_venv_vers.stdout | split (' ') | last | split ('.')}}"
-  when: venv_dir.stat.exists
-- debug: msg="{{omero_server_venv_vers.stdout_lines }}"
-  when: venv_dir.stat.exists
-
-- name: omero server | parse the output
-  ansible.builtin.set_fact: 
-    extracted_list: "{{ omero_server_venv_vers.stdout | split (' ') | last | split ('.')}}"
-  when: venv_dir.stat.exists
-
-- name: omero server | get the Python version in present venv3
-  ansible.builtin.set_fact: 
-    extracted_python_version: "{{ extracted_list[0] }}.{{ extracted_list[1] }}"
-  when: venv_dir.stat.exists
-
-- debug: msg="extracted_python_version"
-  when: venv_dir.stat.exists
-- debug: msg="{{ extracted_python_version_string  | type_debug }}"
-  when: venv_dir.stat.exists
-- debug: msg="python3_virtualenv_version_string"
-  when: venv_dir.stat.exists
-- debug: msg="{{ python3_virtualenv_version_string  | type_debug }}"
-  when: venv_dir.stat.exists
+  changed_when: false
 
 - name: omero server | stop the server
   vars:
@@ -48,8 +23,7 @@
     state: stopped
   when:
     - venv_dir.stat.exists
-    - python3_virtualenv_version not in  omero_server_venv_vers.stdout
-
+    - python3_virtualenv_version not in omero_server_venv_vers.stdout
 
 - name: omero server | delete the omero_server_virtualenv_basedir
   vars:
@@ -60,4 +34,4 @@
     rm -rf {{ omero_server_virtualenv_basedir }}
   when:
     - venv_dir.stat.exists
-    - extracted_python_version_string != python3_virtualenv_version_string
+    - python3_virtualenv_version not in omero_server_venv_vers.stdout
