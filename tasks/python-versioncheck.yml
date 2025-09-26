@@ -11,7 +11,7 @@
     {{ omero_server_virtualenv_basedir }}/bin/python --version
   register: omero_server_venv_vers
   when: venv_dir.stat.exists
-  changed_when: "'Python' not in omero_server_venv_vers.stdout"
+  changed_when:  false
   failed_when: omero_server_venv_vers.stdout is not regex("^Python [0-9][0-9]?.[0-9][0-9]?.[0-9][0-9]?$")
 
 
