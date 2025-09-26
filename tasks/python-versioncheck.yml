@@ -2,7 +2,7 @@
 
 - name: omero server | check if the venv3 dir exists
   stat:
-    path: "{{ omero_server_virtualenv_basedir }}"
+    path: "{{ omero_server_virtualenv_basedir }}/bin/python"
   register: venv_dir
 
 - name: omero server | get output of the version cmd in present venv3
