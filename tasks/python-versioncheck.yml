@@ -14,9 +14,6 @@
   changed_when: false
 
 - name: omero server | stop the server
-  vars:
-    python3_virtualenv_version_string: "{{ python3_virtualenv_version | string }}"
-    extracted_python_version_string: "{{ extracted_python_version | string }}"
   become: true
   service:
     name: omero-server
@@ -26,9 +23,6 @@
     - python3_virtualenv_version not in omero_server_venv_vers.stdout
 
 - name: omero server | delete the omero_server_virtualenv_basedir
-  vars:
-    python3_virtualenv_version_string: "{{ python3_virtualenv_version | string }}"
-    extracted_python_version_string: "{{ extracted_python_version | string }}"
   become: true
   ansible.builtin.command: |
     rm -rf {{ omero_server_virtualenv_basedir }}
