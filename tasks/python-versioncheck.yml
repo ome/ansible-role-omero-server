@@ -49,7 +49,7 @@
     state: stopped
   when:
     - venv_dir.stat.exists
-    - extracted_python_version_string != python3_virtualenv_version_string
+    - python3_virtualenv_version not in  omero_server_venv_vers.stdout
 
 
 - name: omero server | delete the omero_server_virtualenv_basedir
