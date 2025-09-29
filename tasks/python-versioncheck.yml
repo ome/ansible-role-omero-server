@@ -16,7 +16,9 @@
 - name: omero server | check the output of the venv_vers
   debug:
     msg: "Output of the python --version cmd is not correct"
-  when: venv_dir.stat.exists
+  when:
+    - venv_dir.stat.exists
+    - omero_server_venv_vers.stdout is not regex("^Python [0-9][0-9]?.[0-9][0-9]?.[0-9][0-9]?$")
   failed_when: omero_server_venv_vers.stdout is not regex("^Python [0-9][0-9]?.[0-9][0-9]?.[0-9][0-9]?$")
 
 - name: omero server | stop the server
