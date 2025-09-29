@@ -22,6 +22,12 @@ Role Variables
 
 All variables are optional, see `defaults/main.yml` for the full list
 
+Python version.
+- `python3_virtualenv_version`: The desired Python version of the OMERO.server venv3.
+  The default is `3.12`. If Note that if the role is used for upgrade of Python in the venv3, the `force_delete_venv3` variable must be set to `true`.
+- `force_delete_venv3`: Allows deletiong of the `{{ omero_server_virtualenv_basedir }}`. 
+  The default is `false`. If set to `true`, and if other conditions are fulfilled, the role goes ahead with the python upgrade of the venv3 in which the OMERO.server is installed by means of deletion of the `{{ omero_server_virtualenv_basedir }}`. 
+
 OMERO.server version.
 - `omero_server_release`: The OMERO release, e.g. `5.6.0`.
   The default is `present` which will install the latest server if no server is installed, but will not modify an existing server.

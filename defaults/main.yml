@@ -63,6 +63,12 @@ omero_server_python_addons: []
 # Variable used to set the python version
 python3_virtualenv_version: "3.12"
 
+# Variable to force deletion of the venv3 dir on python upgrade
+# User has to consider whether the deletion of the virtualenv dir
+# is acceptable in case more packages were installed in the present
+# venv3
+force_delete_venv3: false
+
 # Derived variable used in the omero_server_python_requirements_ice_package
 omero_server_python_version: "{{ python3_virtualenv_version | replace('.', '') }}"
 

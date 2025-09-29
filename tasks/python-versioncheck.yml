@@ -21,6 +21,7 @@
   when:
     - venv_dir.stat.exists
     - python3_virtualenv_version not in omero_server_venv_vers.stdout
+    - force_delete_venv3
 
 - name: omero server | delete the omero_server_virtualenv_basedir
   become: true
@@ -29,3 +30,4 @@
   when:
     - venv_dir.stat.exists
     - python3_virtualenv_version not in omero_server_venv_vers.stdout
+    - force_delete_venv3
