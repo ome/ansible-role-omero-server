@@ -23,10 +23,10 @@ Role Variables
 All variables are optional, see `defaults/main.yml` for the full list
 
 Python version.
+This role supports Python versions 3.11-3.12. The upgrade of the virtualenv from Python 3.9 and 3.10 to either 3.11 or 3.12 is also supported. Although the range of pre-built manylinux wheel packages is 3.8 - 3.12, the upgrade to either 3.9 or 3.10 will fail as this role is using the ``ansible-role-python3-virtualenv`` role which supports only 3.11 - 3.12.
+**NOTE**: In case the ``python3_virtualenv_version`` variable does not match the Python version of a pre-existing virtualenv, the role playbook will print out a message to that effect in ``--check`` mode, indicating the next steps. When upgrading Python, running your playbook in ``--check`` mode first and watching for the output of the task ``Print message about python venv3 upgrade`` is **highly recommended**.
 - `python3_virtualenv_version`: The desired Python version of the OMERO.server venv3.
-  The default is `3.12`. If Note that if the role is used for upgrade of Python in the venv3, the `force_delete_venv3` variable must be set to `true`.
-- `force_delete_venv3`: Allows deletiong of the `{{ omero_server_virtualenv_basedir }}`. 
-  The default is `false`. If set to `true`, and if other conditions are fulfilled, the role goes ahead with the python upgrade of the venv3 in which the OMERO.server is installed by means of deletion of the `{{ omero_server_virtualenv_basedir }}`. 
+  The default is `3.12`.
 
 OMERO.server version.
 - `omero_server_release`: The OMERO release, e.g. `5.6.0`.
