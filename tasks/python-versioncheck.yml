@@ -1,11 +1,11 @@
 ---
 
-- name: omero server | check if the venv3 dir exists
-  stat:
+- name: omero server | Check if the venv3 dir exists
+  ansible.builtin.stat:
     path: "{{ omero_server_virtualenv_basedir }}/bin/python"
   register: venv_dir
 
-- name: omero server | get output of the version cmd in present venv3
+- name: omero server | Get output of the version cmd in present venv3
   become: true
   ansible.builtin.command: | 
     {{ omero_server_virtualenv_basedir }}/bin/python --version
@@ -14,7 +14,7 @@
   check_mode: false
   changed_when: false
 
-- name: omero server | check python venv vers could be obtained
+- name: omero server | Check python venv vers could be obtained
   ansible.builtin.assert:
     msg: "Python virtualenv found but unable to get version. You might have a corrupt installation."
     that: >-
@@ -30,7 +30,7 @@
     - venv_dir.stat.exists
     - python3_virtualenv_version not in omero_server_venv_vers.stdout
 
-- name: omero server | stop the server
+- name: omero server | Stop the server
   become: true
   ansible.builtin.service:
     name: omero-server
@@ -39,7 +39,7 @@
     - venv_dir.stat.exists
     - python3_virtualenv_version not in omero_server_venv_vers.stdout
 
-- name: omero server | rename the omero_server_virtualenv_basedir
+- name: omero server | Rename the omero_server_virtualenv_basedir
   become: true
   ansible.builtin.command:
    cmd: mv {{ omero_server_virtualenv_basedir }} {{ omero_server_virtualenv_basedir }}_{{ omero_server_venv_vers.stdout | replace(' ', '_') }}
