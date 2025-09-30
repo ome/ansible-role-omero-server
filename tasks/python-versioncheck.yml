@@ -11,31 +11,38 @@
     {{ omero_server_virtualenv_basedir }}/bin/python --version
   register: omero_server_venv_vers
   when: venv_dir.stat.exists
+  check_mode: false
   changed_when: false
 
-- name: omero server | check the output of the venv_vers
-  debug:
-    msg: "Output of the python --version cmd is not correct"
+- name: omero server | check python venv vers could be obtained
+  ansible.builtin.assert:
+    msg: "Python virtualenv found but unable to get version. You might have a corrupt installation."
+    that: >-
+      (not venv_dir.stat.exists) or (venv_dir.stat.exists and omero_server_venv_vers.stdout is regex("^Python [0-9][0-9]?.[0-9][0-9]?.[0-9][0-9]?$"))
+
+- name: omero server | Print message about python venv3 upgrade
+  ansible.builtin.debug:
+    msg: >-
+      Requested Python version {{ python3_virtualenv_version }} does not match present venv3 version {{ omero_server_venv_vers.stdout }}.
+      The omero-server will be stopped to enable the upgrade
+      and the {{ omero_server_virtualenv_basedir }} will be renamed and new venv3 created with the requested Python version {{ python3_virtualenv_version }}.
   when:
     - venv_dir.stat.exists
-    - omero_server_venv_vers.stdout is not regex("^Python [0-9][0-9]?.[0-9][0-9]?.[0-9][0-9]?$")
-  failed_when: omero_server_venv_vers.stdout is not regex("^Python [0-9][0-9]?.[0-9][0-9]?.[0-9][0-9]?$")
+    - python3_virtualenv_version not in omero_server_venv_vers.stdout
 
 - name: omero server | stop the server
   become: true
-  service:
+  ansible.builtin.service:
     name: omero-server
     state: stopped
   when:
     - venv_dir.stat.exists
     - python3_virtualenv_version not in omero_server_venv_vers.stdout
-    - force_delete_venv3
 
-- name: omero server | delete the omero_server_virtualenv_basedir
+- name: omero server | rename the omero_server_virtualenv_basedir
   become: true
-  ansible.builtin.command: |
-    rm -rf {{ omero_server_virtualenv_basedir }}
+  ansible.builtin.command:
+   cmd: mv {{ omero_server_virtualenv_basedir }} {{ omero_server_virtualenv_basedir }}_{{ omero_server_venv_vers.stdout | replace(' ', '_') }}
   when:
     - venv_dir.stat.exists
     - python3_virtualenv_version not in omero_server_venv_vers.stdout
-    - force_delete_venv3
