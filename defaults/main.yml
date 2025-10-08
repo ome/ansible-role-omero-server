@@ -60,9 +60,6 @@ omero_server_systemd_environment: {}
 # List of additional Python packages to be installed into virtualenv
 omero_server_python_addons: []
 
-# # Variable used to set the python version
-# python3_virtualenv_version: "3.12"
-
 # Derived variable used in the omero_server_python_requirements_ice_package
 omero_server_python_version: "{{ python_version | replace('.', '') }}"
 
