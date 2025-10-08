@@ -41,6 +41,7 @@ provisioner:
         postgresql_version: "13"
         ansible_python_interpreter: /usr/bin/python3
         omero_server_selfsigned_certificates: true
+        python_version: "3.12"
 scenario:
   name: rockylinux9
   converge_sequence:

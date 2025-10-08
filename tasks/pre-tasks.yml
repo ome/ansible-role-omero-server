@@ -17,9 +17,7 @@
   ansible.builtin.include_role:
     name: python3_virtualenv
   vars:
-    python_version: "{{ python3_virtualenv_version }}"
     virtualenv_basedir: "{{ omero_server_basedir }}"
-    service_name: "omero-server"
 
 - name: omero server | Include ome.ice role
   ansible.builtin.include_role:
