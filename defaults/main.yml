@@ -105,7 +105,10 @@ omero_server_python_requirements:
   - omero-server
 
 # Path to virtualenv
-omero_server_virtualenv_basedir: "{{ omero_server_basedir + '/venv3' }}"
+omero_server_virtualenv_basedir: "{{ omero_server_basedir }}/{{ omero_server_env_name }}"
+
+# Virtualenv dir name
+omero_server_env_name: venv3
 
 # OMERODIR
 omero_server_omerodir: "{{ omero_server_basedir }}/{{ omero_server_symlink }}"
