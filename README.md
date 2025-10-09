@@ -61,6 +61,7 @@ OMERO.server systemd configuration.
 - `omero_server_systemd_environment`: Dictionary of additional environment variables.
 
 Python virtualenv
+- `python_version`: Variable used in the `ansible-role-python3-virtualenv` and for the `omero_server_python_requirements_ice_package`. Use this variable for both omero-server and omero-web to upgrade/downgrade the python version in the virtualenvs the server/web are running in. Default is `"3.12"`. Supported versions are `"3.12"`, `"3.11"`.
 - `omero_server_python_addons`: List of additional Python packages to be installed into virtualenv.
   Alternatively you can install packages into `/opt/omero/server/venv3` independently from this role.
 

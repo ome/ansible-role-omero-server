@@ -1,3 +1,14 @@
+# Changes in Version 5
+
+## Summary of breaking changes
+
+-  New optional variable `python_version` enables Python upgrades/downgrades. This variable is consumed in the included `ansible-role-python3-virtualenv` which will make a symlink to the virtualenv directory if symlink is not present. As indicated by `python_version`, `ansible-role-python3-virtualenv` also upgrades/downgrades the python version accordingly, creating a new venv directory to which the symlink is pointing to, and renaming the old one if present.
+
+Note: if `python_version` is not specified in playbook, its default value `"3.12"` will cause an upgrade from e.g. pre-existing `"3.9"` Python version, renaming of the existing venv folder and creation of a symlink.
+
+-   `omero_server_python_requirements_ice_package` is simplified, i.e. not a nested dictionary anymore.
+
+
 # Changes in Version 4
 
 ## Summary of breaking changes
