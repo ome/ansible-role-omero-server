@@ -14,7 +14,7 @@
           password: omero
           databases: [omero]
 
-    - role: omero_server
+    - role: ome.omero_server
       omero_server_system_managedrepo_group: importer
       omero_server_config_set:
         Ice.IPv6: "0"
