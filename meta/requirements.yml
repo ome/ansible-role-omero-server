@@ -1,10 +1,25 @@
 ---
-- src: ome.omero_common
-- src: ome.basedeps
-- src: ome.java
+# - src: ome.omero_common
+- name: omero_common
+  src: https://github.com/pwalczysko/ansible-role-omero-common
+  version: update-framework
+# - src: ome.basedeps
+- name: basedeps
+  src: https://github.com/pwalczysko/ansible-role-basedeps
+  version: update-framework
+# - src: ome.java
+- name: java
+  src: https://github.com/khaledk2/ansible-role-java
+  version: update_ansible
 # - src: ome.python3_virtualenv
 - name: python3_virtualenv
   src: https://github.com/khaledk2/ansible-role-python3-virtualenv
   version: update_ansible_python
-- src: ome.ice
-- src: ome.postgresql_client
+# - src: ome.ice
+- name: ice
+  src: https://github.com/khaledk2/ansible-role-ice
+  version: Updating_to_the_latest_ansible_version
+# - src: ome.postgresql_client
+- name: postgresql_client
+  src: https://github.com/khaledk2/ansible-role-postgresql-client
+  version: update_ansible
