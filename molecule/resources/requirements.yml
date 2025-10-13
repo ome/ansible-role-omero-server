@@ -23,3 +23,7 @@
 - name: postgresql_client
   src: https://github.com/khaledk2/ansible-role-postgresql-client
   version: update_ansible
+# Adding temporarily postgres role for testing the branch
+- name: postgresql
+  src: https://github.com/pwalczysko/ansible-role-postgresql
+  version: p312
