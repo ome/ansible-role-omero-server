@@ -5,7 +5,7 @@
 
   roles:
 
-    - role: ome.postgresql
+    - role: postgresql
       postgresql_databases:
         - name: omero
           owner: omero
@@ -14,7 +14,7 @@
           password: omero
           databases: [omero]
 
-    - role: ome.omero_server
+    - role: omero_server
       omero_server_system_managedrepo_group: importer
       omero_server_config_set:
         Ice.IPv6: "0"
