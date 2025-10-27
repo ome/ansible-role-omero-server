@@ -249,6 +249,8 @@
 - name: server package | install debian blosc
   become: true
   ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 86400
     name: libblosc1
     state: present
   when: ansible_os_family | lower == 'debian'
