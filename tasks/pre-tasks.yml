@@ -3,15 +3,15 @@
 # undeclared variable failure
 - name: omero server | Import ome.omero_common role
   ansible.builtin.import_role:
-    name: omero_common
+    name: ome.omero_common
 
 - name: omero server | Include ome.basedeps role
   ansible.builtin.import_role:
-    name: basedeps
+    name: ome.basedeps
 
 - name: omero server | Include ome.java
   ansible.builtin.import_role:
-    name: java
+    name: ome.java
 
 - name: omero server | Include python3_virtualenv
   ansible.builtin.import_role:
@@ -21,7 +21,7 @@
 
 - name: omero server | Include ome.ice role
   ansible.builtin.import_role:
-    name: ice
+    name: ome.ice
   vars:
     ice_version: "{{ omero_server_ice_version }}"
     ice_install_devel: false
@@ -29,4 +29,4 @@
 
 - name: omero server | Include ome.postgresql_client
   ansible.builtin.import_role:
-    name: postgresql_client
+    name: ome.postgresql_client
