@@ -6,21 +6,21 @@
     name: omero_common
 
 - name: omero server | Include ome.basedeps role
-  ansible.builtin.include_role:
+  ansible.builtin.import_role:
     name: basedeps
 
 - name: omero server | Include ome.java
-  ansible.builtin.include_role:
+  ansible.builtin.import_role:
     name: java
 
 - name: omero server | Include python3_virtualenv
-  ansible.builtin.include_role:
+  ansible.builtin.import_role:
     name: python3_virtualenv
   vars:
     virtualenv_basedir: "{{ omero_server_basedir }}"
 
 - name: omero server | Include ome.ice role
-  ansible.builtin.include_role:
+  ansible.builtin.import_role:
     name: ice
   vars:
     ice_version: "{{ omero_server_ice_version }}"
@@ -28,5 +28,5 @@
     ice_install_python: false
 
 - name: omero server | Include ome.postgresql_client
-  ansible.builtin.include_role:
+  ansible.builtin.import_role:
     name: postgresql_client

@@ -23,18 +23,18 @@
   tasks:
 
     - name: create import user
-      user:
+      ansible.builtin.user:
         name: data-importer
         group: importer
 
     - name: create data directory
-      file:
+      ansible.builtin.file:
         path: /data/import
         state: directory
         mode: 0755
 
     - name: create fake image
-      copy:
+      ansible.builtin.copy:
         content: ''
         dest: /data/import/test.fake
         mode: 0644
@@ -45,7 +45,7 @@
 - hosts: vagrant-hosts
   tasks:
     - name: make vagrant home accessible
-      file:
+      ansible.builtin.file:
         owner: vagrant
         group: vagrant
         mode: "0711"
