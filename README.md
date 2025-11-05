@@ -7,6 +7,7 @@ OMERO Server
 Installs and configures OMERO.server.
 
 **Warning:** Only supports Python 3.
+**Warning** The versions >5 require `ome.python3_virtualenv`>0.1.2.
 See [`CHANGES.md`](./CHANGES.md) for details.
 
 
