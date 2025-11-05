@@ -9,7 +9,3 @@
   version: update_ansible_python
 - src: ome.ice
 - src: ome.postgresql_client
-# Adding temporarily postgres role for testing the branch
-- name: postgresql
-  src: https://github.com/pwalczysko/ansible-role-postgresql
-  version: p312
