@@ -2,9 +2,9 @@
 
 ## Summary of breaking changes
 
--   Requires `ome.python3_virtualenv`>0.1.2
+-   Requires `ome.python3_virtualenv`>=0.3.0
 
--   New optional variable `python_version` enables Python upgrades/downgrades. This variable is consumed in the included `ansible-role-python3-virtualenv` which will make a symlink to the virtualenv directory if symlink is not present. As indicated by `python_version`, `ansible-role-python3-virtualenv` also upgrades/downgrades the python version accordingly, creating a new venv directory to which the symlink is pointing to, and renaming the old one if present.
+-   New optional variable `python_version` enables Python upgrades/downgrades. This variable is consumed in the included `ome.python3_virtualenv` which will make a symlink to the virtualenv directory if symlink is not present. As indicated by `python_version`, `ome.python3_virtualenv` also upgrades/downgrades the python version accordingly, creating a new venv directory to which the symlink is pointing to, and renaming the old one if present.
 
 Note: if `python_version` is not specified in playbook, its default value `"3.12"` will cause an upgrade from e.g. pre-existing `"3.9"` Python version, renaming of the existing venv folder and creation of a symlink.
 
@@ -52,7 +52,7 @@ Note: if `python_version` is not specified in playbook, its default value `"3.12
 - The database is not backed-up by default since you probably want the backup to go to a custom path (set `omero_server_database_backupdir`).
 - Manual configuration changes are not copied when the server is upgraded.
 - Configuration should be done using a conf.d style directory.
-- This role requires Ansible 2.2.
+- This role requires Ansible >=2.11.
 
 ## Removed variables
 - `omero_datadir_create`: OMERO data directories are always created and the top-level owner/group/permissions reset
