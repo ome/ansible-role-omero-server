@@ -9,7 +9,7 @@
 
 - name: omero server | is virtualenv present
   become: true
-  stat:
+  ansible.builtin.stat:
     path: "{{ omero_server_virtualenv_basedir }}"
   register: omero_server_venv_st
 
@@ -90,7 +90,7 @@
     # Assume this is a dev or pre-release and upgrade
     # Ansible will exit 0 but show a failed task in the summary
 
-    - debug:
+    - ansible.builtin.debug:
         msg: >-
           Error comparing current version
           ({{ omero_server_version | default('') }})
@@ -98,10 +98,10 @@
           ({{ _omero_server_new_version }}), upgrading
 
     - name: omero server | checkupgrade failed
-      set_fact:
+      ansible.builtin.set_fact:
         _omero_server_update_needed: true
 
-- debug:
+- ansible.builtin.debug:
     msg: >-
       Upgrade needed: {{ omero_server_version | default('UNKNOWN') }} ->
       {{ omero_server_release }}
@@ -124,6 +124,14 @@
   become: true
   ansible.builtin.pip:
     name: "pip>=21"
+    state: present
+    virtualenv: "{{ omero_server_virtualenv_basedir }}"
+    virtualenv_command: /usr/local/bin/ome-python3-virtualenv
+
+- name: omero server | install  setuptools
+  become: true
+  ansible.builtin.pip:
+    name: setuptools
     state: present
     virtualenv: "{{ omero_server_virtualenv_basedir }}"
     virtualenv_command: /usr/local/bin/ome-python3-virtualenv
@@ -241,6 +249,8 @@
 - name: server package | install debian blosc
   become: true
   ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 86400
     name: libblosc1
     state: present
   when: ansible_os_family | lower == 'debian'

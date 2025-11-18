@@ -30,7 +30,7 @@
   tasks:
 
     - name: additional config file
-      copy:
+      ansible.builtin.copy:
         content: >
           config set omero.policy.binary_access -- "-read,-write,-image,-plate"
         dest: /opt/omero/server/config/molecule-additional-config.omero
@@ -44,18 +44,18 @@
   tasks:
 
     - name: create import user
-      user:
+      ansible.builtin.user:
         name: data-importer
         group: importer
 
     - name: create data directory
-      file:
+      ansible.builtin.file:
         path: /data/import
         state: directory
         mode: 0755
 
     - name: create fake image
-      copy:
+      ansible.builtin.copy:
         content: ''
         dest: /data/import/test.fake
         mode: 0644

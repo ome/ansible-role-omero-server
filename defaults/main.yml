@@ -60,6 +60,14 @@ omero_server_systemd_environment: {}
 # List of additional Python packages to be installed into virtualenv
 omero_server_python_addons: []
 
+# Variable used in the ome.python3_virtualenv and for the
+# omero_server_python_requirements_ice_package. Use the same variable
+# (python_version) for both omero-server and omero-web.
+python_version: "3.12"
+
+# Derived variable used in the omero_server_python_requirements_ice_package
+omero_server_python_version: "{{ python_version | replace('.', '') }}"
+
 # If non-empty dump the OMERO database to this directory before upgrading
 omero_server_database_backupdir: ""
 
@@ -73,13 +81,7 @@ omero_server_selfsigned_certificates: true
 
 omero_server_ice_version: "3.6"
 
-omero_server_python_requirements_ice_package:
-  RedHat:
-    9: "https://github.com/glencoesoftware/zeroc-ice-py-rhel9-x86_64/releases/download/\
-      20230830/zeroc_ice-3.6.5-cp39-cp39-linux_x86_64.whl"
-  Debian:
-    22: "https://github.com/glencoesoftware/zeroc-ice-py-ubuntu2204-x86_64/releases/download/\
-      20221004/zeroc_ice-3.6.5-cp310-cp310-linux_x86_64.whl"
+omero_server_python_requirements_ice_package: "https://github.com/glencoesoftware/zeroc-ice-py-linux-x86_64/releases/download/20240202/zeroc_ice-3.6.5-cp{{ omero_server_python_version }}-cp{{ omero_server_python_version }}-manylinux_2_28_x86_64.whl"
 
 
 # TODO: sort this out
@@ -95,8 +97,7 @@ _omero_dropbox_version: '>=5.6.1'
 omero_server_python_requirements:
   - omego==0.7.0
   # TODO: make the use of our non-standard wheel optional
-  - "{{ omero_server_python_requirements_ice_package[ansible_os_family][
-        ansible_distribution_major_version | int ] |
+  - "{{ omero_server_python_requirements_ice_package |
         default('zeroc-ice')}}"
   - "omero-py{{ _omero_py_version | default('') }}"
   - "omero-dropbox{{ _omero_dropbox_version  | default('') }}"
@@ -109,7 +110,10 @@ omero_server_python_requirements:
   - omero-server
 
 # Path to virtualenv
-omero_server_virtualenv_basedir: "{{ omero_server_basedir + '/venv3' }}"
+omero_server_virtualenv_basedir: "{{ omero_server_basedir }}/{{ omero_server_env_name }}"
+
+# Virtualenv dir name
+omero_server_env_name: venv3
 
 # OMERODIR
 omero_server_omerodir: "{{ omero_server_basedir }}/{{ omero_server_symlink }}"

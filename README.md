@@ -7,6 +7,7 @@ OMERO Server
 Installs and configures OMERO.server.
 
 **Warning:** Only supports Python 3.
+**Warning** The versions >5 require `ome.python3_virtualenv`>=0.3.0.
 See [`CHANGES.md`](./CHANGES.md) for details.
 
 
@@ -61,6 +62,7 @@ OMERO.server systemd configuration.
 - `omero_server_systemd_environment`: Dictionary of additional environment variables.
 
 Python virtualenv
+- `python_version`: Variable used in the `ome.python3_virtualenv` and for the `omero_server_python_requirements_ice_package`. Use this variable for both omero-server and omero-web to upgrade/downgrade the python version in the virtualenvs the server/web are running in. Default is `"3.12"`. Supported versions are `"3.12"`, `"3.11"`.
 - `omero_server_python_addons`: List of additional Python packages to be installed into virtualenv.
   Alternatively you can install packages into `/opt/omero/server/venv3` independently from this role.
 
@@ -88,14 +90,14 @@ Example Playbooks
       roles:
 
       - role: ome.postgresql
-        postgresql_version: "13"
+        postgresql_version: "16"
         postgresql_databases:
           - name: omero
             owner: omero
         postgresql_users:
           - user: omero
             password: omero
-            databases: [omero]
+            databases: []
 
       - role: ome.omero_server
 
@@ -104,13 +106,13 @@ Example Playbooks
     - hosts: localhost
       roles:
       - ome.omero_server
-        omero_server_release: 5.6.0
+        omero_server_release: 5.6.16
         omero_server_dbhost: postgres.example.org
         omero_server_dbuser: db_user
         omero_server_dbname: db_name
         omero_server_dbpassword: db_password
         # Version required for the psql client
-        postgresql_version: "13"
+        postgresql_version: "16"
 
 
 Author Information
