@@ -1,4 +1,4 @@
-# Changes in Version 6
+# Changes in Version 7
 
 ## Summary of breaking changes
 
