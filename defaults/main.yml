@@ -95,7 +95,7 @@ omero_server_python_requirements_ice_package: "https://github.com/glencoesoftwar
 _omero_py_version: '>=5.6.0'
 _omero_dropbox_version: '>=5.6.1'
 omero_server_python_requirements:
-  - omego==0.7.0
+  - omego==0.8.0
   # TODO: make the use of our non-standard wheel optional
   - "{{ omero_server_python_requirements_ice_package |
         default('zeroc-ice')}}"
