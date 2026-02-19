@@ -10,6 +10,7 @@ Note: if `python_version` is not specified in playbook, its default value `"3.12
 
 -   `omero_server_python_requirements_ice_package` is simplified, i.e. not a nested dictionary anymore.
 
+-   Bump of `omego==8.0.0` in versions >=7.0.1.
 
 # Changes in Version 4
 
