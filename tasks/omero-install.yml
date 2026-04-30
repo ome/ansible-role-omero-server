@@ -183,7 +183,7 @@
   ansible.builtin.command: >
     {{ omero_server_omego }}
     db dump
-    {{ omero_server_omego_db_options }}
+    {{ omero_server_omego_db_backup_options }}
     --serverdir {{ omero_server_basedir }}/{{ omero_server_symlink }}
   args:
     chdir: "{{ omero_server_database_backupdir }}"
