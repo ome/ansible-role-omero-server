@@ -203,3 +203,8 @@ omero_server_omego_db_options: >
   --dbname {{ omero_server_dbname | quote }}
   --dbpass {{ omero_server_dbpassword | quote  }}
   {{ omero_server_database_manage | ternary('--managedb', '') }}
+
+omero_server_omego_db_backup_options: >
+  --dbhost {{ omero_server_dbhost | quote }} --dbuser {{ omero_server_dbuser |
+  quote }} --dbname {{ omero_server_dbname | quote }} --dbpass {{
+  omero_server_dbpassword | quote }}
